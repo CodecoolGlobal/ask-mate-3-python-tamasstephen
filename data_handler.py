@@ -23,13 +23,14 @@ def get_question_by_id(question_id):
 
 
 # util
-def filter_items_by_id(question_id, questions):
-    return [question for question in questions if question["id"] == question_id]
+def filter_items_by_id(question_id, questions, question_or_answer="question"):
+    id_to_check = "id" if question_or_answer == "question" else "question_id"
+    return [question for question in questions if question[id_to_check] == question_id]
 
 
 def get_answers_by_question_id(question_id):
     answers = get_mutable_list("sample_data/answer.csv")
-    return filter_items_by_id(question_id, answers)
+    return filter_items_by_id(question_id, answers, "answers")
 
 
 def add_question(form_data):
@@ -59,7 +60,7 @@ def add_missing_initial_values_to_question(question, questions):
 
 
 if __name__ == "__main__":
-    print(get_answers_by_question_id("2"))
+    print(get_answers_by_question_id("1"))
     print(get_question_by_id("3"))
     add_question({"title": "Title", "message": "This is the message"})
 
