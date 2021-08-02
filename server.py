@@ -13,7 +13,7 @@ def open_questions():
 
 @app.route("/question/<question_id>")
 def open_question_page(question_id):
-    question_page_content = ["return value of a func with the question id arg"]
+    question_page_content = data_handler.get_question_by_id(question_id)
     return render_template("question.html", content=question_page_content)
 
 

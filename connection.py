@@ -1,7 +1,7 @@
 import csv
 
 
-def read_data_from_file():
-    with open("sample_data/question.csv", "r") as csvfile:
+def read_data_from_file(filename="sample_data/question.csv"):
+    with open(filename, "r") as csvfile:
         reader = csv.DictReader(csvfile)
         return list(reader)
