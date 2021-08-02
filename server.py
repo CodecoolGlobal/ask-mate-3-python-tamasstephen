@@ -20,7 +20,7 @@ def open_add_question():
     return render_template("add_question.html")
 
 
-@app.route("question/<question_id>/add_answer")
+@app.route("/question/<question_id>/add_answer")
 def add_answer(question_id):
     return render_template("add_answer.html", id=question_id)
 
