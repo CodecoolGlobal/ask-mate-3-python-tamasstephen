@@ -20,4 +20,6 @@ def open_add_question():
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(
+        debug=True
+    )
