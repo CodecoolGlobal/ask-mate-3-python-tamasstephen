@@ -9,14 +9,20 @@ def open_questions():
     return render_template("index.html", questions=questions) 
 
 
-@app.route("question/<question_id>")
+@app.route("/question/<question_id>")
 def open_question_page(question_id):
     question_page_content = ["return value of a func with the question id arg"]
     return render_template("question.html", content=question_page_content)
 
+
 @app.route("/add_question")
 def open_add_question():
     return render_template("add_question.html")
+
+
+@app.route("question/<question_id>/add_answer")
+def add_answer(question_id):
+    return render_template("add_answer.html", id=question_id)
 
 
 if __name__ == "__main__":
