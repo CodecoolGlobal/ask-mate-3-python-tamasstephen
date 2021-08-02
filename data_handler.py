@@ -12,9 +12,8 @@ def get_questions_from_file():
 
 
 # util function
-# TODO: need to get rid of HEADERS condition if we extend the program
 def get_mutable_list(filename):
-    return [{key: item for key, item in dictionary.items() if key in HEADERS}
+    return [{key: item for key, item in dictionary.items()}
             for dictionary in connection.read_data_from_file(filename)]
 
 
@@ -28,7 +27,7 @@ def filter_items_by_id(question_id, questions):
     return [question for question in questions if question["id"] == question_id]
 
 
-def get_answer_by_question_id(question_id):
+def get_answers_by_question_id(question_id):
     answers = get_mutable_list("sample_data/answer.csv")
     return filter_items_by_id(question_id, answers)
 
@@ -51,9 +50,8 @@ def generate_question_dict(form_data):
     return question_dict
 
 
-# TODO: provide id generator fn
 def add_missing_initial_values_to_question(question, questions):
-    question['id'] = generate_new_id(questions) 
+    question['id'] = generate_new_id(questions)
     question["submission_time"] = int(math.ceil(time()))
     question["image"] = question["image"] if question.get("image") else ""
     question["view_number"] = "0"
@@ -61,7 +59,7 @@ def add_missing_initial_values_to_question(question, questions):
 
 
 if __name__ == "__main__":
-    print(get_answer_by_question_id("2"))
+    print(get_answers_by_question_id("2"))
     print(get_question_by_id("3"))
     add_question({"title": "Title", "message": "This is the message"})
 
