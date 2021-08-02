@@ -2,8 +2,10 @@ from time import time
 import math
 import connection
 
+
 HEADERS = ["id", "submission_time", "view_number", "vote_number", "title", "message", "image"]
 ANSWER_HEADERS = ["id", "submission_time","question_id", "message"]
+
 
 def get_questions_from_file():
     questions = get_mutable_list("sample_data/test_questions.csv")
@@ -33,9 +35,9 @@ def get_answers_by_question_id(question_id):
     return filter_items_by_id(question_id, answers, "answers")
 
 
-def add_question(form_data):
+def add_question(form_data, filename="sample_data/test_questions.csv"):
     mutable_question = generate_question_dict(form_data)
-    questions = connection.read_data_from_file("sample_data/test_questions.csv")
+    questions = connection.read_data_from_file(filename)
     add_missing_initial_values_to_question(mutable_question, questions)
     questions.append(mutable_question)
     connection.write_data_to_file(questions, HEADERS)
@@ -59,6 +61,7 @@ def add_missing_initial_values_to_question(question, questions):
     question["vote_number"] = "0"
 
 
+# tests
 if __name__ == "__main__":
     print(get_answers_by_question_id("1"))
     print(get_question_by_id("3"))
