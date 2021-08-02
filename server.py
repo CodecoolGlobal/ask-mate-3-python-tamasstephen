@@ -1,12 +1,14 @@
 from flask import Flask, render_template 
+import data_handler
+
 
 app = Flask(__name__)
 
 
 @app.route("/")
 def open_questions():
-    questions= ["return value of a function"] 
-    return render_template("index.html", questions=questions) 
+    questions= data_handler.get_questions_from_file() 
+    return render_template("index.html", questions=questions, headers=data_handler.HEADERS) 
 
 
 @app.route("/question/<question_id>")
