@@ -14,6 +14,10 @@ def open_question_page(question_id):
     question_page_content = ["return value of a func with the question id arg"]
     return render_template("question.html", content=question_page_content)
 
+@app.route("/add_question")
+def open_add_question():
+    return render_template("add_question.html")
+
 
 if __name__ == "__main__":
     app.run()
