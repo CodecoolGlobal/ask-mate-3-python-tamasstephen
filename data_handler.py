@@ -34,25 +34,26 @@ def get_answer_by_question_id(question_id):
 
 
 def add_question(form_data):
-    question_with_id_and_time = generate_question_dict(form_data)
+    mutable_question = generate_question_dict(form_data)
     questions = connection.read_data_from_file("sample_data/test_questions.csv")
-    questions.append(question_with_id_and_time)
+    add_missing_initial_values_to_question(mutable_question, questions)
+    questions.append(mutable_question)
     connection.write_data_to_file(questions, HEADERS)
 
 
-def generate_new_id():
-    return
+def generate_new_id(list_of_dicts):
+    max_id = max([int(dict["id"]) for dict in list_of_dicts])
+    return max_id +1
 
 
 def generate_question_dict(form_data):
     question_dict = {key: value for key, value in form_data.items()}
-    add_missing_initial_values_to_question(question_dict)
     return question_dict
 
 
 # TODO: provide id generator fn
-def add_missing_initial_values_to_question(question):
-    question['id'] = "4"
+def add_missing_initial_values_to_question(question, questions):
+    question['id'] = generate_new_id(questions) 
     question["submission_time"] = int(math.ceil(time()))
     question["image"] = question["image"] if question.get("image") else ""
     question["view_number"] = "0"
@@ -63,6 +64,5 @@ if __name__ == "__main__":
     print(get_answer_by_question_id("2"))
     print(get_question_by_id("3"))
     add_question({"title": "Title", "message": "This is the message"})
-    
 
 
