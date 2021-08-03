@@ -8,7 +8,7 @@ HEADERS = ["id", "submission_time", "view_number", "vote_number", "title", "mess
 ANSWER_HEADERS = ["id", "submission_time", "vote_number", "question_id", "message", "image"]
 
 
-def get_questions_from_file(sorting_rule="submission_time"):
+def get_questions_from_file(sorting_rule="submission_time_desc"):
     questions = get_mutable_list("sample_data/test_questions.csv")
     # sorted_questions = sorted(questions, key=lambda x: int(x["submission_time"]), reverse=True)
     sorted_questions = util.sort_questions(questions, sorting_rule)
