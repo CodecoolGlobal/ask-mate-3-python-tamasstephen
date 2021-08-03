@@ -4,7 +4,7 @@ import connection
 
 
 HEADERS = ["id", "submission_time", "view_number", "vote_number", "title", "message", "image"]
-ANSWER_HEADERS = ["id", "submission_time","question_id", "message"]
+ANSWER_HEADERS = ["id", "submission_time", "vote_number", "question_id", "message", "image"]
 
 
 def get_questions_from_file():
@@ -40,11 +40,12 @@ def add_form_data(form_data, filename="sample_data/test_questions.csv", question
     data_to_write = connection.read_data_from_file(filename)
     add_missing_initial_values_to_question(mutable_form_data, data_to_write, question_id)
     data_to_write.append(mutable_form_data)
-    connection.write_data_to_file(data_to_write, HEADERS)
+    headers = HEADERS if "question_id" not in data_to_write[0].keys() else ANSWER_HEADERS 
+    connection.write_data_to_file(data_to_write, headers)
 
 
 def generate_new_id(list_of_dicts):
-    max_id = max([int(dict["id"]) for dict in list_of_dicts])
+    max_id = max([int(dict["id"]) for dict in list_of_dicts]) if list_of_dicts else 0
     return max_id +1
 
 
