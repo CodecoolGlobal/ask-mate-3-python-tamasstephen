@@ -36,11 +36,11 @@ def get_answers_by_question_id(question_id):
 
 
 def add_question(form_data, filename="sample_data/test_questions.csv"):
-    mutable_question = generate_question_dict(form_data)
-    questions = connection.read_data_from_file(filename)
-    add_missing_initial_values_to_question(mutable_question, questions)
-    questions.append(mutable_question)
-    connection.write_data_to_file(questions, HEADERS)
+    mutable_form_data = get_data_from_form(form_data)
+    data_to_write = connection.read_data_from_file(filename)
+    add_missing_initial_values_to_question(mutable_form_data, data_to_write)
+    data_to_write.append(mutable_form_data)
+    connection.write_data_to_file(data_to_write, HEADERS)
 
 
 def generate_new_id(list_of_dicts):
@@ -48,17 +48,18 @@ def generate_new_id(list_of_dicts):
     return max_id +1
 
 
-def generate_question_dict(form_data):
-    question_dict = {key: value for key, value in form_data.items()}
-    return question_dict
+# refact. one line, rename
+def get_data_from_form(form_data):
+    form_dict = {key: value for key, value in form_data.items()}
+    return form_dict
 
 
-def add_missing_initial_values_to_question(question, questions):
-    question['id'] = generate_new_id(questions)
-    question["submission_time"] = int(math.ceil(time()))
-    question["image"] = question["image"] if question.get("image") else ""
-    question["view_number"] = "0"
-    question["vote_number"] = "0"
+def add_missing_initial_values_to_question(new_data, data_list):
+    new_data['id'] = generate_new_id(data_list)
+    new_data["submission_time"] = int(math.ceil(time()))
+    new_data["image"] = new_data["image"] if new_data.get("image") else ""
+    new_data["vote_number"] = "0"
+    new_data["view_number"] = "0"
 
 
 # tests

@@ -1,8 +1,6 @@
 import csv
 
 
-
-
 def read_data_from_file(filename="sample_data/test_questions.csv"):
     with open(filename, "r") as csvfile:
         reader = csv.DictReader(csvfile)
