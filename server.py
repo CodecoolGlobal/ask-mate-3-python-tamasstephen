@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, url_for, redirect
 import data_handler
 
 
@@ -18,14 +18,17 @@ def open_question_page(question_id):
     return render_template("question.html", question=question, answers=answers)
 
 
-@app.route("/add_question", methods='POST')
+@app.route("/add_question", methods=['POST'])
 def open_add_question():
-    data_handler.add_question(request.form)
+    data_handler.add_form_data(request.form)
     return render_template("add_question.html")
 
 
-@app.route("/question/<question_id>/add_answer")
+@app.route("/question/<question_id>/add_answer", methods=["POST", "GET"])
 def add_answer(question_id):
+    if request.method == "POST":
+        data_handler.add_form_data(request.form, "sample_data/test_answers.csv", question_id)
+        return redirect(url_for('open_question_page', question_id=question_id))
     return render_template("add_answer.html", question_id=question_id)
 
 
