@@ -18,10 +18,12 @@ def open_question_page(question_id):
     return render_template("question.html", question=question, answers=answers)
 
 
-@app.route("/add_question", methods=['POST'])
+@app.route("/add_question", methods=["GET", "POST"])
 def open_add_question():
+    if request.method == "GET":
+        return render_template("add_question.html")
     data_handler.add_form_data(request.form)
-    return render_template("add_question.html")
+    redirect("/")
 
 
 @app.route("/question/<question_id>/add_answer", methods=["POST", "GET"])
