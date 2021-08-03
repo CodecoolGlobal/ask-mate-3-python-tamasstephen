@@ -37,18 +37,28 @@
     {% for question in questions %}
     <tr>
         {% for key, value in question.items() %}
-        {% if key != 'title' %}
-        <td style="{{ " width:500px;
-        " if key == "message" }}">
+        {% if key != 'title' and key == 'message' %}
+        <td style="{{ " width:500px;" }}">
         {{ value }}
         </td>
         {% else %}
+	{% if key == "image" %}
+	<td>
+		<img src="{{ value }}">
+	<td>
+	{% else %}
+	{% if key == "title" %}
         <td>
             <a href="{{ "/question/" + question['id'] }}">{{ value }}</a>
             <br>
             <br>
-            {% endif %}
         </td>
+	{% endif %}
+	<td>
+		{{ value }}
+	</td>
+	{% endif %}
+        {% endif %}
         {% endfor %}
         <td><form action="/add_question" method="post">
 
