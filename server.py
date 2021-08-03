@@ -18,7 +18,7 @@ def open_question_page(question_id):
     return render_template("question.html", question=question, answers=answers)
 
 
-@app.route("/add_question", methods='POST')
+@app.route("/add_question", methods=['POST'])
 def open_add_question():
     data_handler.add_form_data(request.form)
     return render_template("add_question.html")
