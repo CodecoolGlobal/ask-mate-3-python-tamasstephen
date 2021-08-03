@@ -6,34 +6,37 @@
     <h1>Ask Mate</h1>
 </head>
 <body>
-    <a href="/add_question">Add New Question</a>
-    <br>
-    <br>
-    <table>
-        <thead>
-        <tr>
-            {% for item in headers %}
-                <th align="left">{{ item }}</th>
-            {% endfor %}
-        </tr>
-        </thead>
-        <tbody>
-        {% for question in questions %}
-            <tr>
-                {% for key, value in question.items() %}
-                    {% if key != 'title' %}
-                        <td style="{{ "width:500px;" if key == "message" }}">
-                            {{ value }}
-                        {% else %}
-                            <a href="{{ "/question/" + question_id +"/add_answer" }}"></a>
-                        <br>
-                        <br>
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
+<a href="/add_question">Add New Question</a>
+<br>
+<br>
+<table>
+    <thead>
+    <tr>
+        {% for item in headers %}
+        <th align="left">{{ item }}</th>
         {% endfor %}
-        </tbody>
-    </table>
+    </tr>
+    </thead>
+    <tbody>
+    {% for question in questions %}
+    <tr>
+        {% for key, value in question.items() %}
+        {% if key != 'title' %}
+        <td style="{{ " width:500px;
+        " if key == "message" }}">
+        {{ value }}
+        </td>
+        {% else %}
+        <td>
+            <a href="{{ "/question/" + question['id'] +"/add_answer" }}">{{ value }}</a>
+            <br>
+            <br>
+            {% endif %}
+        </td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
 </body>
 </html>
