@@ -23,12 +23,13 @@ def open_add_question():
     if request.method == "GET":
         return render_template("add_question.html")
     data_handler.add_form_data(request.form)
-    redirect("/")
+    return redirect("/")
 
 
 @app.route("/question/<question_id>/add_answer", methods=["POST", "GET"])
 def add_answer(question_id):
     if request.method == "POST":
+        print(question_id)
         data_handler.add_form_data(request.form, "sample_data/test_answers.csv", question_id)
         return redirect(url_for('open_question_page', question_id=question_id))
     return render_template("add_answer.html", question_id=question_id)

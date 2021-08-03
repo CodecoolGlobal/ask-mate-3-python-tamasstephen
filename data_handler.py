@@ -21,6 +21,7 @@ def get_mutable_list(filename):
 
 def get_question_by_id(question_id):
     questions = get_mutable_list("sample_data/test_questions.csv")
+    print(questions)
     return filter_items_by_id(question_id, questions)[0]
 
 
@@ -31,8 +32,8 @@ def filter_items_by_id(question_id, questions, question_or_answer="question"):
 
 
 def get_answers_by_question_id(question_id):
-    answers = get_mutable_list("sample_data/answer.csv")
-    return filter_items_by_id(question_id, answers, "answers")
+    answers = get_mutable_list("sample_data/test_answers.csv")
+    return filter_items_by_id(question_id, answers, "test_answers")
 
 
 def add_form_data(form_data, filename="sample_data/test_questions.csv", question_id=None):
@@ -40,8 +41,9 @@ def add_form_data(form_data, filename="sample_data/test_questions.csv", question
     data_to_write = connection.read_data_from_file(filename)
     add_missing_initial_values_to_question(mutable_form_data, data_to_write, question_id)
     data_to_write.append(mutable_form_data)
+    print(data_to_write)
     headers = HEADERS if "question_id" not in data_to_write[0].keys() else ANSWER_HEADERS 
-    connection.write_data_to_file(data_to_write, headers)
+    connection.write_data_to_file(data_to_write, headers, filename)
 
 
 def generate_new_id(list_of_dicts):
