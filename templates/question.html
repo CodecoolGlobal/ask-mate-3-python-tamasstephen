@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Question</title>
+	</head>
+	<body>
+		<h1>{{ question.title }}</h1>
+		<h5>{{ question.message }}</h5>
+		<a href="{{ url_for("add_answer", question_id=question.id) }}"><p>Write an answer</p></a>
+		<h3>Answers:</h3>
+		{% for answer in answers %}
+			<p>{{ answer.message }}</p>
+		{% endfor %}
+	</body>
+</html>
