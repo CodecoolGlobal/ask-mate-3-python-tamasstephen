@@ -9,7 +9,9 @@ ANSWER_HEADERS = ["id", "submission_time", "vote_number", "question_id", "messag
 
 
 def get_questions_from_file(sorting_rule="submission_time_desc"):
-    questions = get_mutable_list("sample_data/test_questions.csv")
+    questions = get_mutable_list("sample_data/test_answers.csv")
+    if not questions:
+        return None 
     sorted_questions = util.sort_questions(questions, sorting_rule)
     return sorted_questions
 
