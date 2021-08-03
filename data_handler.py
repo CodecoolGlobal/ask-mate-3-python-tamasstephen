@@ -1,15 +1,17 @@
 from time import time
 import math
 import connection
+import util
 
 
 HEADERS = ["id", "submission_time", "view_number", "vote_number", "title", "message", "image"]
 ANSWER_HEADERS = ["id", "submission_time", "vote_number", "question_id", "message", "image"]
 
 
-def get_questions_from_file():
+def get_questions_from_file(sorting_rule="submission_time"):
     questions = get_mutable_list("sample_data/test_questions.csv")
-    sorted_questions = sorted(questions, key=lambda x: int(x["submission_time"]), reverse=True)
+    # sorted_questions = sorted(questions, key=lambda x: int(x["submission_time"]), reverse=True)
+    sorted_questions = util.sort_questions(questions, sorting_rule)
     return sorted_questions
 
 
@@ -73,3 +75,5 @@ def count_views(question_id):
     question_index = [index for index, value in enumerate(questions) if value['id'] == question_id][0]
     questions[question_index] = question
     connection.write_data_to_file(questions, HEADERS)
+
+
