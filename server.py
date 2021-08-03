@@ -5,10 +5,19 @@ import data_handler
 app = Flask(__name__)
 
 
-@app.route("/")
+@app.route("/", methods=["POST", "GET"])
 def open_questions():
-    questions= data_handler.get_questions_from_file()
+    if request.method == "POST":
+        questions = data_handler.get_questions_from_file(request.form["sort"])
+        return render_template("index.html", questions=questions, headers=data_handler.HEADERS)
+    questions = data_handler.get_questions_from_file()
     return render_template("index.html", questions=questions, headers=data_handler.HEADERS)
+
+
+# @app.route("/<sort>")
+# def open_sorted_questions(sort):
+#     questions = data_handler.get_questions_from_file(sort)
+#     return render_template("index.html", question=questions, headers=data_handler.HEADERS)
 
 
 @app.route("/question/<question_id>")
