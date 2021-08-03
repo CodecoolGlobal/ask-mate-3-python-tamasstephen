@@ -15,6 +15,7 @@ def open_questions():
 def open_question_page(question_id):
     question = data_handler.get_question_by_id(question_id)
     answers = data_handler.get_answers_by_question_id(question_id)
+    data_handler.count_views(question_id)
     return render_template("question.html", question=question, answers=answers)
 
 

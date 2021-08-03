@@ -21,7 +21,6 @@ def get_mutable_list(filename):
 
 def get_question_by_id(question_id):
     questions = get_mutable_list("sample_data/test_questions.csv")
-    print(questions)
     return filter_items_by_id(question_id, questions)[0]
 
 
@@ -41,7 +40,6 @@ def add_form_data(form_data, filename="sample_data/test_questions.csv", question
     data_to_write = connection.read_data_from_file(filename)
     add_missing_initial_values_to_question(mutable_form_data, data_to_write, question_id)
     data_to_write.append(mutable_form_data)
-    print(data_to_write)
     headers = HEADERS if "question_id" not in data_to_write[0].keys() else ANSWER_HEADERS 
     connection.write_data_to_file(data_to_write, headers, filename)
 
@@ -68,10 +66,10 @@ def add_missing_initial_values_to_question(new_data, data_list, question_id=None
         new_data["question_id"] = question_id
 
 
-# tests
-if __name__ == "__main__":
-    print(get_answers_by_question_id("1"))
-    print(get_question_by_id("3"))
-    add_form_data({"title": "Title", "message": "This is the message"})
-
-
+def count_views(question_id):
+    question = get_question_by_id(question_id)
+    question['view_number'] = str(int(question['view_number']) + 1)
+    questions = connection.read_data_from_file()
+    question_index = [index for index, value in enumerate(questions) if value['id'] == question_id][0]
+    questions[question_index] = question
+    connection.write_data_to_file(questions, HEADERS)
