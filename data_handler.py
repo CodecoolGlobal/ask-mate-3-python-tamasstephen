@@ -35,10 +35,10 @@ def get_answers_by_question_id(question_id):
     return filter_items_by_id(question_id, answers, "answers")
 
 
-def add_question(form_data, filename="sample_data/test_questions.csv"):
+def add_form_data(form_data, filename="sample_data/test_questions.csv", question_id=None):
     mutable_form_data = get_data_from_form(form_data)
     data_to_write = connection.read_data_from_file(filename)
-    add_missing_initial_values_to_question(mutable_form_data, data_to_write)
+    add_missing_initial_values_to_question(mutable_form_data, data_to_write, question_id)
     data_to_write.append(mutable_form_data)
     connection.write_data_to_file(data_to_write, HEADERS)
 
@@ -54,18 +54,21 @@ def get_data_from_form(form_data):
     return form_dict
 
 
-def add_missing_initial_values_to_question(new_data, data_list):
+def add_missing_initial_values_to_question(new_data, data_list, question_id=None):
     new_data['id'] = generate_new_id(data_list)
     new_data["submission_time"] = int(math.ceil(time()))
     new_data["image"] = new_data["image"] if new_data.get("image") else ""
     new_data["vote_number"] = "0"
-    new_data["view_number"] = "0"
+    if not question_id:
+        new_data["view_number"] = "0"
+    else:
+        new_data["question_id"] = question_id
 
 
 # tests
 if __name__ == "__main__":
     print(get_answers_by_question_id("1"))
     print(get_question_by_id("3"))
-    add_question({"title": "Title", "message": "This is the message"})
+    add_form_data({"title": "Title", "message": "This is the message"})
 
 
