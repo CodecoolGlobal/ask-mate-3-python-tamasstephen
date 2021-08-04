@@ -4,11 +4,13 @@ import connection
 import util
 import os
 
+
 HEADERS = ["id", "submission_time", "view_number", "vote_number", "title", "message", "image"]
 ANSWER_HEADERS = ["id", "submission_time", "vote_number", "question_id", "message", "image"]
 QUESTION_HEADERS_TO_PRINT = ["Submission time", "View number", "Vote number", "Title", "Message", "Image Path"]
 ALLOWED_FILES = [".jpg", ".png"]
 UPLOAD_FOLDER = ["./images/questions", "./images/answers"]
+
 
 def valid_file_extension(filename):
     return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_FILES
@@ -92,7 +94,8 @@ def count_views(question_id):
 def delete_item(item_id, headers, filename):
     questions = get_mutable_list(filename)
     question_index = [index for index, question in enumerate(questions) if question['id'] == item_id][0]
-    os.remove(questions[question_index]["image"])
+    if questions[question_index]["image"]:
+        os.remove(questions[question_index]["image"])
     questions.pop(question_index)
     connection.write_data_to_file(questions, headers, filename)
 
@@ -111,5 +114,21 @@ def delete_all_answers(question_id):
     answers_by_question = get_answers_by_question_id(question_id)
     for anwer in answers_by_question:
         delete_item(anwer['id'], ANSWER_HEADERS, "sample_data/test_answers.csv")
+
+
+def update_question(question_id, form_data):
+    question = get_question_by_id(question_id)
+    question["message"] = form_data["message"] 
+    question["title"] = form_data["title"]
+    questions = get_updated_questions(question_id, question)
+    connection.write_data_to_file(questions, HEADERS)
+
+
+def get_updated_questions(question_id, question):
+    questions = connection.read_data_from_file()
+    question_index = [index for index, current_question in enumerate(questions) 
+                      if current_question["id"] == question_id][0]
+    questions[question_index] = question
+    return questions
 
 
