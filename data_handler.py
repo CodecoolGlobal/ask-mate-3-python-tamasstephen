@@ -69,8 +69,6 @@ def get_data_from_form(form_data):
 
 
 def add_missing_initial_values_to_question(new_data, data_list, image_name, question_id=None):
-    print(new_data)
-    print(image_name)
     new_data['id'] = generate_new_id(data_list)
     new_data["submission_time"] = int(math.ceil(time()))
     new_data["image"] = f"{UPLOAD_FOLDER}/{image_name}" if image_name else ""
@@ -83,6 +81,7 @@ def add_missing_initial_values_to_question(new_data, data_list, image_name, ques
 
 def count_views(question_id):
     question = get_question_by_id(question_id)
+    # should be a function -> readable 
     question['view_number'] = str(int(question['view_number']) + 1)
     questions = connection.read_data_from_file()
     question_index = [index for index, value in enumerate(questions) if value['id'] == question_id][0]
