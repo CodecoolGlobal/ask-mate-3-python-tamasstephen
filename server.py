@@ -11,10 +11,10 @@ app.config['UPLOAD_FOLDER'] = data_handler.UPLOAD_FOLDER
 def open_questions():
     if request.method == "POST":
         questions = data_handler.get_questions_from_file(request.form["sort"])
-        return render_template("index.html", questions=questions, headers=data_handler.HEADERS)
+        return render_template("index.html", questions=questions, headers=data_handler.QUESTION_HEADERS_TO_PRINT)
     questions = data_handler.get_questions_from_file()
     question_id = ""
-    return render_template("index.html", questions=questions, headers=data_handler.HEADERS, question_id=question_id)
+    return render_template("index.html", questions=questions, headers=data_handler.QUESTION_HEADERS_TO_PRINT, question_id=question_id)
 
 
 @app.route("/question/<question_id>")

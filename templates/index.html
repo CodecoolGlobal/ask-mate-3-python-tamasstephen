@@ -37,16 +37,15 @@
     {% for question in questions %}
     <tr>
         {% for key, value in question.items() %}
-        {% if key != 'title' and key == 'message' %}
+        {% if key == 'message' %}
         <td style="{{ " width:500px;" }}">
 		<p>{{ value }}</p>
         </td>
-        {% else %}
-	{% if key == "title" %}
+        {% elif key == "title" %}
         <td>
 		<a href="{{ "/question/" + question['id'] }}"><p>{{ value }}</p></a>
         </td>
-	{% endif %}
+	{% elif key != "id" %}
 	<td>
 		<p>{{ value }}</p>
 	</td>
