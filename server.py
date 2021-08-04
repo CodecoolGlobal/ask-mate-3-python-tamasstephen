@@ -72,6 +72,20 @@ def delete_answer_from_question_page(answer_id):
     data_handler.delete_item(answer_id, data_handler.ANSWER_HEADERS, "sample_data/test_answers.csv")
     return redirect(url_for("open_question_page", question_id=question_id))
 
+
+@app.route("/question/<question_id>/vote_up", methods=["POST"])
+def vote_question_up(question_id):
+    data_handler.handle_votes(question_id, "vote_up")
+    return redirect("/")
+
+
+
+@app.route("/question/<question_id>/vote_down", methods=["POST"])
+def vote_question_down(question_id):
+    data_handler.handle_votes(question_id, "vote_down")
+    return redirect("/")
+
+
 if __name__ == "__main__":
     app.run(
         port=9000,

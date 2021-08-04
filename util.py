@@ -1,4 +1,5 @@
 from datetime import datetime
+import connection
 
 
 def sort_questions(questions, sort_key="submission_time_desc"):
@@ -24,3 +25,16 @@ def convert_secs_to_date(dictionary):
 def convert_questions_secs_to_date(questions):
     for question in questions:
         question["submission_time"] = datetime.fromtimestamp(int(question["submission_time"]))
+
+
+def get_mutable_list(filename):
+    return [{key: item for key, item in dictionary.items()}
+            for dictionary in connection.read_data_from_file(filename)]
+
+
+def get_updated_questions(question_id, question):
+    questions = connection.read_data_from_file()
+    question_index = [index for index, current_question in enumerate(questions) 
+                      if current_question["id"] == question_id][0]
+    questions[question_index] = question
+    return questions

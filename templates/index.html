@@ -52,7 +52,12 @@
         {% endif %}
         {% endfor %}
         <td>
-
+		<form action="{{ url_for("vote_question_up", question_id=question.id) }}" method="post">
+			<input type="submit" value="Vote up">
+		</form>
+		<form action="{{ url_for("vote_question_down", question_id=question.id) }}" method="post">
+			<input type="submit" value="Vote down">
+		</form>
         </td>
     </tr>
     {% endfor %}

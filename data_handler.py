@@ -17,7 +17,7 @@ def valid_file_extension(filename):
 
 
 def get_questions_from_file(sorting_rule="submission_time_desc"):
-    questions = get_mutable_list("sample_data/test_questions.csv")
+    questions = util.get_mutable_list("sample_data/test_questions.csv")
     if not questions:
         return None
     sorted_questions = util.sort_questions(questions, sorting_rule)
@@ -25,14 +25,8 @@ def get_questions_from_file(sorting_rule="submission_time_desc"):
     return sorted_questions
 
 
-# util function
-def get_mutable_list(filename):
-    return [{key: item for key, item in dictionary.items()}
-            for dictionary in connection.read_data_from_file(filename)]
-
-
 def get_item_by_id(question_id, filename="sample_data/test_questions.csv"):
-    questions = get_mutable_list(filename)
+    questions = util.get_mutable_list(filename)
     return filter_items_by_id(question_id, questions)[0]
 
 
@@ -43,7 +37,7 @@ def filter_items_by_id(question_id, questions, question_or_answer="question"):
 
 
 def get_answers_by_question_id(question_id):
-    answers = get_mutable_list("sample_data/test_answers.csv")
+    answers = util.get_mutable_list("sample_data/test_answers.csv")
     return filter_items_by_id(question_id, answers, "test_answers")
 
 
@@ -64,7 +58,6 @@ def generate_new_id(list_of_dicts):
     return max_id + 1
 
 
-# refact. one line, rename
 def get_data_from_form(form_data):
     form_dict = {key: value for key, value in form_data.items()}
     return form_dict
@@ -83,16 +76,13 @@ def add_missing_initial_values_to_question(new_data, data_list, image_name, ques
 
 def count_views(question_id):
     question = get_item_by_id(question_id)
-    # should be a function -> readable 
     question['view_number'] = str(int(question['view_number']) + 1)
-    questions = connection.read_data_from_file()
-    question_index = [index for index, value in enumerate(questions) if value['id'] == question_id][0]
-    questions[question_index] = question
+    questions = util.get_updated_questions(question_id, question) 
     connection.write_data_to_file(questions, HEADERS)
 
 
 def delete_item(item_id, headers, filename):
-    questions = get_mutable_list(filename)
+    questions = util.get_mutable_list(filename)
     question_index = [index for index, question in enumerate(questions) if question['id'] == item_id][0]
     if questions[question_index]["image"]:
         os.remove(questions[question_index]["image"])
@@ -110,15 +100,16 @@ def update_question(question_id, form_data):
     question = get_item_by_id(question_id)
     question["message"] = form_data["message"] 
     question["title"] = form_data["title"]
-    questions = get_updated_questions(question_id, question)
+    questions = util.get_updated_questions(question_id, question)
     connection.write_data_to_file(questions, HEADERS)
 
 
-def get_updated_questions(question_id, question):
-    questions = connection.read_data_from_file()
-    question_index = [index for index, current_question in enumerate(questions) 
-                      if current_question["id"] == question_id][0]
-    questions[question_index] = question
-    return questions
+def handle_votes(question_id, vote, filename="sample_data/test_questions.csv"):
+    question = get_item_by_id(question_id, filename)
+    question["vote_number"] = str(int(question["vote_number"]) + (1 if vote == "vote_up" else - 1))
+    questions = util.get_updated_questions(question_id, question)
+    headers = HEADERS if filename == "sample_data/test_questions.csv" else ANSWER_HEADERS
+    connection.write_data_to_file(questions, headers, filename)
+
 
 
