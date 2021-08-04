@@ -1,3 +1,5 @@
+from datetime import datetime
+
 
 def sort_questions(questions, sort_key="submission_time_desc"):
     sort_by_key = {
@@ -13,3 +15,12 @@ def sort_questions(questions, sort_key="submission_time_desc"):
             "message_desc": sorted(questions, key=lambda x: x["message"], reverse=True)
             }
     return sort_by_key[sort_key]
+
+
+def convert_secs_to_date(dictionary):
+    dictionary["submission_time"] = datetime.fromtimestamp(int(dictionary["submission_time"]))
+
+
+def convert_questions_secs_to_date(questions):
+    for question in questions:
+        question["submission_time"] = datetime.fromtimestamp(int(question["submission_time"]))

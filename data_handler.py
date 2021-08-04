@@ -4,7 +4,6 @@ import connection
 import util
 
 
-
 HEADERS = ["id", "submission_time", "view_number", "vote_number", "title", "message", "image"]
 ANSWER_HEADERS = ["id", "submission_time", "vote_number", "question_id", "message", "image"]
 ALLOWED_FILES = [".jpg", ".png"]
@@ -20,6 +19,7 @@ def get_questions_from_file(sorting_rule="submission_time_desc"):
     if not questions:
         return None 
     sorted_questions = util.sort_questions(questions, sorting_rule)
+    util.convert_questions_secs_to_date(sorted_questions)
     return sorted_questions
 
 
