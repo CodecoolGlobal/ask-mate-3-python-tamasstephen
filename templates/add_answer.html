@@ -3,16 +3,19 @@
 <head>
     <meta charset="utf-8">
     <title>Add Answer | Askmate1</title>
-    <h1>Add Answer</h1>
 </head>
 <body>
-    <form action={{ "/question/" + question_id + "/add_answer" }} method="post">
+    <h1>Add Answer</h1>
+    <a href="/">Back to main page</a>
+    <form action={{ "/question/" + question_id + "/add_answer" }} enctype="multipart/form-data" method="post">
     <label for="answer">Answer:</label>
     <br>
     <br>
     <textarea name="message" id="answer" cols="30" rows="10"></textarea>
     <br>
     <br>
+    <label for="file">Upload a file</label><br>
+    <input type="file" id="file" name="image"><br>
     <button type="submit">Add New Answer</button>
 </form>
 </body>

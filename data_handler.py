@@ -2,12 +2,17 @@ from time import time
 import math
 import connection
 import util
+<<<<<<< HEAD
+=======
+import os
+
+>>>>>>> 70aff64d3fcc8d2a3c22b3696af25d2da2f0f28b
 
 HEADERS = ["id", "submission_time", "view_number", "vote_number", "title", "message", "image"]
 ANSWER_HEADERS = ["id", "submission_time", "vote_number", "question_id", "message", "image"]
+QUESTION_HEADERS_TO_PRINT = ["Submission time", "View number", "Vote number", "Title", "Message", "Image Path"]
 ALLOWED_FILES = [".jpg", ".png"]
-UPLOAD_FOLDER = "./images"
-
+UPLOAD_FOLDER = ["./images/questions", "./images/answers"]
 
 def valid_file_extension(filename):
     return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_FILES
@@ -18,6 +23,7 @@ def get_questions_from_file(sorting_rule="submission_time_desc"):
     if not questions:
         return None
     sorted_questions = util.sort_questions(questions, sorting_rule)
+    util.convert_questions_secs_to_date(sorted_questions)
     return sorted_questions
 
 
@@ -69,7 +75,7 @@ def get_data_from_form(form_data):
 def add_missing_initial_values_to_question(new_data, data_list, image_name, question_id=None):
     new_data['id'] = generate_new_id(data_list)
     new_data["submission_time"] = int(math.ceil(time()))
-    new_data["image"] = f"{UPLOAD_FOLDER}/{image_name}" if image_name else ""
+    new_data["image"] = f"{UPLOAD_FOLDER[0] if not question_id else UPLOAD_FOLDER[1]}/{image_name}" if image_name else ""
     new_data["vote_number"] = "0"
     if not question_id:
         new_data["view_number"] = "0"
@@ -89,6 +95,7 @@ def count_views(question_id):
 
 def delete_item(item_id, headers, filename):
     questions = get_mutable_list(filename)
+<<<<<<< HEAD
 
     filtered_questions = [question for question in questions if question['id'] != item_id]
 
@@ -99,3 +106,17 @@ def delete_answer(answer_id, answer_headers, filename):
     answers = get_mutable_list(filename)
     filtered_answers = [answer for answer in answers if answer['id'] != answer_id]
     connection.write_data_to_file(filtered_answers, answer_headers, filename)
+=======
+    question_index = [index for index, question in enumerate(questions) if question['id'] == item_id][0]
+    os.remove(questions[question_index]["image"])
+    questions.pop(question_index)
+    connection.write_data_to_file(questions, headers, filename)
+
+
+def delete_all_answers(question_id):
+    answers_by_question = get_answers_by_question_id(question_id)
+    for anwer in answers_by_question:
+        delete_item(anwer['id'], ANSWER_HEADERS, "sample_data/test_answers.csv")
+
+
+>>>>>>> 70aff64d3fcc8d2a3c22b3696af25d2da2f0f28b

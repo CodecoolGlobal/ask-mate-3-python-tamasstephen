@@ -5,6 +5,7 @@
     <title>Question</title>
 </head>
 <body>
+<<<<<<< HEAD
 <h1>{{ question.title }}</h1>
 <h5 style="width: 500px">{{ question.message }}</h5>
 <form action={{
@@ -21,5 +22,33 @@
 </form>
 </p>
 {% endfor %}
+=======
+	<a href="/">Back to main page</a>
+	<h1>{{ question.title }}</h1>
+	<p style="width: 500px">{{ question.message }}</p>
+	{% if question.image %}
+		<p>{{ question.image }}</p>
+	{% endif %}
+	<a href="{{ url_for("add_answer", question_id=question.id) }}"><p>Write an answer</p></a>
+	<h3>Answers:</h3>
+	<table>
+		<thead>
+			<tr>
+				<td><p>Message</p></td>
+				<td><p>Image</p></td>
+			</tr>
+		</thead>
+		{% for answer in answers %}
+		<tr>
+			<td><p>{{ answer.message }}</p></td>
+			<td><p>{{ answer.image }}</p></td>
+		</tr>
+		{% endfor %}
+	</table>
+	<form action={{
+	"/question/" + this_question_id + "/delete" }} method="post">
+	<input type="submit" name="Delete" value="Delete">
+	</form>
+>>>>>>> 70aff64d3fcc8d2a3c22b3696af25d2da2f0f28b
 </body>
 </html>

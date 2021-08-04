@@ -29,7 +29,7 @@
     <thead>
     <tr>
         {% for item in headers %}
-        <th align="left">{{ item }}</th>
+	<th align="left"><p>{{ item }}</p></th>
         {% endfor %}
     </tr>
     </thead>
@@ -37,27 +37,18 @@
     {% for question in questions %}
     <tr>
         {% for key, value in question.items() %}
-        {% if key != 'title' and key == 'message' %}
+        {% if key == 'message' %}
         <td style="{{ " width:500px;" }}">
-        {{ value }}
+		<p>{{ value }}</p>
         </td>
-        {% else %}
-	{% if key == "image" %}
-	<td>
-		<img src="{{ value }}">
-	<td>
-	{% else %}
-	{% if key == "title" %}
+        {% elif key == "title" %}
         <td>
-            <a href="{{ "/question/" + question['id'] }}">{{ value }}</a>
-            <br>
-            <br>
+		<a href="{{ "/question/" + question['id'] }}"><p>{{ value }}</p></a>
         </td>
-	{% endif %}
+	{% elif key != "id" %}
 	<td>
-		{{ value }}
+		<p>{{ value }}</p>
 	</td>
-	{% endif %}
         {% endif %}
         {% endfor %}
         <td>

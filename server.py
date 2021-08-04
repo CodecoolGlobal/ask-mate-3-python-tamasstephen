@@ -10,10 +10,10 @@ app.config['UPLOAD_FOLDER'] = data_handler.UPLOAD_FOLDER
 def open_questions():
     if request.method == "POST":
         questions = data_handler.get_questions_from_file(request.form["sort"])
-        return render_template("index.html", questions=questions, headers=data_handler.HEADERS)
+        return render_template("index.html", questions=questions, headers=data_handler.QUESTION_HEADERS_TO_PRINT)
     questions = data_handler.get_questions_from_file()
     question_id = ""
-    return render_template("index.html", questions=questions, headers=data_handler.HEADERS, question_id=question_id)
+    return render_template("index.html", questions=questions, headers=data_handler.QUESTION_HEADERS_TO_PRINT, question_id=question_id)
 
 
 @app.route("/question/<question_id>")
@@ -29,8 +29,13 @@ def open_add_question():
     if request.method == "GET":
         return render_template("add_question.html")
     file = request.files["image"]
+<<<<<<< HEAD
     if file.filename != "":
         file.save(os.path.join(app.config["UPLOAD_FOLDER"], file.filename))
+=======
+    if file.filename != "": 
+        file.save(os.path.join(app.config["UPLOAD_FOLDER"][0], file.filename))
+>>>>>>> 70aff64d3fcc8d2a3c22b3696af25d2da2f0f28b
         data_handler.add_form_data(request.form, image_name=file.filename)
     else:
         data_handler.add_form_data(request.form)
@@ -40,13 +45,20 @@ def open_add_question():
 @app.route("/question/<question_id>/add_answer", methods=["POST", "GET"])
 def add_answer(question_id):
     if request.method == "POST":
-        data_handler.add_form_data(request.form, "sample_data/test_answers.csv", question_id)
+        file = request.files["image"]
+        print(file)
+        if file.filename != "": 
+            file.save(os.path.join(app.config["UPLOAD_FOLDER"][1], file.filename))
+            data_handler.add_form_data(request.form, "sample_data/test_answers.csv", question_id, image_name=file.filename)
+        else:
+            data_handler.add_form_data(request.form, "sample_data/test_answers.csv", question_id)
         return redirect(url_for('open_question_page', question_id=question_id))
     return render_template("add_answer.html", question_id=question_id)
 
 
 @app.route("/question/<question_id>/delete", methods=["POST"])
 def delete_question(question_id):
+    data_handler.delete_all_answers(question_id)
     data_handler.delete_item(question_id, data_handler.HEADERS, "sample_data/test_questions.csv")
     return redirect("/")
 
