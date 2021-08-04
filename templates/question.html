@@ -6,6 +6,7 @@
 </head>
 <body>
 <h1>{{ question.title }}</h1>
+    <a href="/">Back to main page</a>
 <h5 style="width: 500px">{{ question.message }}</h5>
 <a href="{{ url_for("add_answer", question_id=question.id) }}"><p>Write an answer</p></a>
 <h3>Answers:</h3>
