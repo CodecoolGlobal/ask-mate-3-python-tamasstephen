@@ -3,7 +3,6 @@ import data_handler
 import os
 
 
-
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = data_handler.UPLOAD_FOLDER
 
@@ -47,10 +46,9 @@ def add_answer(question_id):
     return render_template("add_answer.html", question_id=question_id)
 
 
-@app.route("/answer/<int:question_id>/delete", methods=["POST"])
-def delete_answer(question_id):
-    print('lol')
-    data_handler.delete_questions(question_id, "sample_data/test_questions.csv")
+@app.route("/question/<question_id>/delete", methods=["POST"])
+def delete_question(question_id):
+    data_handler.delete_item(question_id, data_handler.HEADERS, "sample_data/test_questions.csv")
     return redirect("/")
 
 

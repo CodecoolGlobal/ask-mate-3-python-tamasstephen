@@ -2,7 +2,7 @@ from time import time
 import math
 import connection
 import util
-from tempfile import NamedTemporaryFile
+
 
 
 HEADERS = ["id", "submission_time", "view_number", "vote_number", "title", "message", "image"]
@@ -90,16 +90,7 @@ def count_views(question_id):
     connection.write_data_to_file(questions, HEADERS)
 
 
-def delete_questions(question_id, filename):
-    print("reach this function")
-    tempfile = NamedTemporaryFile('w+t')
-    with open(filename, 'r') as csvfile, tempfile:
-        reader = csv.DictReader(csvfile)
-        writer = csv.DictWriter(tempfile, fieldnames=HEADERS)
-        writer.writeheader()
-        for row in reader:
-            if question_id != row["id"]:
-                writer.writerow(row)
-            # else:
-            #     pass
-    shutil.move(tempfile.name, filename)
+def delete_item(item_id, headers, filename):
+    questions = get_mutable_list(filename)
+    filtered_questions = [question for question in questions if question['id'] != item_id]
+    connection.write_data_to_file(filtered_questions, headers, filename)
