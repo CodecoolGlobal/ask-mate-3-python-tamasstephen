@@ -17,15 +17,16 @@
 	<table>
 		<thead>
 			<tr>
-				<td><p>Message</p></td>
-				<td><p>Votes</p></td>
-				<td><p>Image</p></td>
-				<td><p>Action</p></td>
+				<th><p>Message</p></th>
+				<th><p>Image</p></th>
+				<th><p>Votes</p></th>
+				<th><p>Action</p></th>
 			</tr>
 		</thead>
 		{% for answer in answers %}
 		<tr>
 			<td><p>{{ answer.message }}</p></td>
+			<td><p>{{ answer.image }}</p></td>
 			<td><p>{{ answer.vote_number }}</p></td>
 			<td>
 				<form action="{{ url_for("vote_answer_up", answer_id=answer.id ) }}" method="post">
@@ -35,7 +36,6 @@
 					<input type="submit" value="Vote down">
 				</form>
 			</td>
-			<td><p>{{ answer.image }}</p></td>
 			<td>
 				<form action="{{ url_for('delete_answer_from_question_page', answer_id=answer.id) }}" method="post">
 					<input type="submit" value="Delete answer" >
@@ -46,7 +46,7 @@
 	</table>
 	<form action={{
 	"/question/" + this_question_id + "/delete" }} method="post">
-	<input type="submit" name="Delete" value="Delete">
+	<input type="submit" name="Delete" value="Delete question">
 	</form>
 </body>
 </html>
