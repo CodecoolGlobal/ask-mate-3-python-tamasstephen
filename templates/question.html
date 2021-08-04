@@ -5,17 +5,31 @@
     <title>Question</title>
 </head>
 <body>
-<h1>{{ question.title }}</h1>
-    <a href="/">Back to main page</a>
-<h5 style="width: 500px">{{ question.message }}</h5>
-<a href="{{ url_for("add_answer", question_id=question.id) }}"><p>Write an answer</p></a>
-<h3>Answers:</h3>
-{% for answer in answers %}
-<p>{{ answer.message }}</p>
-{% endfor %}
-<form action={{
-"/question/" + this_question_id + "/delete" }} method="post">
-<input type="submit" name="Delete" value="Delete">
-</form>
+	<a href="/">Back to main page</a>
+	<h1>{{ question.title }}</h1>
+	<p style="width: 500px">{{ question.message }}</p>
+	{% if question.image %}
+		<p>{{ question.image }}</p>
+	{% endif %}
+	<a href="{{ url_for("add_answer", question_id=question.id) }}"><p>Write an answer</p></a>
+	<h3>Answers:</h3>
+	<table>
+		<thead>
+			<tr>
+				<td><p>Message</p></td>
+				<td><p>Image</p></td>
+			</tr>
+		</thead>
+		{% for answer in answers %}
+		<tr>
+			<td><p>{{ answer.message }}</p></td>
+			<td><p>{{ answer.image }}</p></td>
+		</tr>
+		{% endfor %}
+	</table>
+	<form action={{
+	"/question/" + this_question_id + "/delete" }} method="post">
+	<input type="submit" name="Delete" value="Delete">
+	</form>
 </body>
 </html>
