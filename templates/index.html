@@ -9,12 +9,12 @@
 <a href="/add_question">Add New Question</a>
 <br>
 <form action="/" method="post">
-	<select name="sort">
-		<option value="submission_time_desc">Submission time descending</option>
-		<option value="submission_time">Submission time ascending</option>
-		<option value="view_number">Sort by view number ascending</option>
-	</select>
-	<input type="submit">
+    <select name="sort">
+        <option value="submission_time_desc">Submission time descending</option>
+        <option value="submission_time">Submission time ascending</option>
+        <option value="view_number">Sort by view number ascending</option>
+    </select>
+    <input type="submit">
 </form>
 <br>
 <table>
@@ -42,7 +42,7 @@
             {% endif %}
         </td>
         {% endfor %}
-        <td><form action="/add_question" method="post">
+        <td>
 
         </td>
     </tr>
