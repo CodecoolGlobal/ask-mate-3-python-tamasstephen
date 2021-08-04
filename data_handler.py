@@ -91,8 +91,10 @@ def count_views(question_id):
 
 def delete_item(item_id, headers, filename):
     questions = get_mutable_list(filename)
-    filtered_questions = [question for question in questions if question['id'] != item_id]
-    connection.write_data_to_file(filtered_questions, headers, filename)
+    question_index = [index for index, question in enumerate(questions) if question['id'] == item_id][0]
+    os.remove(questions[question_index]["image"])
+    questions.pop(question_index)
+    connection.write_data_to_file(questions, headers, filename)
 
 
 def delete_answer(answer_id, answer_headers, filename):
