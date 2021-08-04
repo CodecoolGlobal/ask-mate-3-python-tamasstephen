@@ -10,6 +10,14 @@
 <br>
 {% if questions %}
 <form action="/" method="post">
+<<<<<<< HEAD
+    <select name="sort">
+        <option value="submission_time_desc">Submission time descending</option>
+        <option value="submission_time">Submission time ascending</option>
+        <option value="view_number">Sort by view number ascending</option>
+    </select>
+    <input type="submit">
+=======
 	<select name="sort">
 		<option value="submission_time_desc">Submission time descending</option>
 		<option value="submission_time">Submission time ascending</option>
@@ -23,6 +31,7 @@
 		<option value="message_desc">Sort by message Z-A</option>
 	</select>
 	<input type="submit">
+>>>>>>> e836616f1fb12d0d1f39fea63ad0cf149c17d702
 </form>
 <br>
 <table>
@@ -60,7 +69,7 @@
 	{% endif %}
         {% endif %}
         {% endfor %}
-        <td><form action="/add_question" method="post">
+        <td>
 
         </td>
     </tr>
