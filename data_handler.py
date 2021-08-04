@@ -107,7 +107,7 @@ def update_question(question_id, form_data):
 def handle_votes(question_id, vote, filename="sample_data/test_questions.csv"):
     question = get_item_by_id(question_id, filename)
     question["vote_number"] = str(int(question["vote_number"]) + (1 if vote == "vote_up" else - 1))
-    questions = util.get_updated_questions(question_id, question)
+    questions = util.get_updated_questions(question_id, question, filename)
     headers = HEADERS if filename == "sample_data/test_questions.csv" else ANSWER_HEADERS
     connection.write_data_to_file(questions, headers, filename)
 

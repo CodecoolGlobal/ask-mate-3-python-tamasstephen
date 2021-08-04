@@ -32,8 +32,8 @@ def get_mutable_list(filename):
             for dictionary in connection.read_data_from_file(filename)]
 
 
-def get_updated_questions(question_id, question):
-    questions = connection.read_data_from_file()
+def get_updated_questions(question_id, question, filename="sample_data/test_questions.csv"):
+    questions = connection.read_data_from_file(filename)
     question_index = [index for index, current_question in enumerate(questions) 
                       if current_question["id"] == question_id][0]
     questions[question_index] = question

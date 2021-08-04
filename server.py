@@ -24,6 +24,7 @@ def open_question_page(question_id):
     return render_template("question.html", question=question, answers=answers, this_question_id=question_id)
 
 
+# REFACTORING Needed
 @app.route("/add_question", methods=["GET", "POST"])
 def open_add_question():
     if request.method == "GET":
@@ -37,6 +38,7 @@ def open_add_question():
     return redirect("/")
 
 
+# REFACTORING Needed
 @app.route("/question/<question_id>/add_answer", methods=["POST", "GET"])
 def add_answer(question_id):
     if request.method == "POST":
@@ -79,11 +81,25 @@ def vote_question_up(question_id):
     return redirect("/")
 
 
-
 @app.route("/question/<question_id>/vote_down", methods=["POST"])
 def vote_question_down(question_id):
     data_handler.handle_votes(question_id, "vote_down")
     return redirect("/")
+
+
+@app.route("/answer/<answer_id>/vote_up", methods=["POST"])
+def vote_answer_up(answer_id):
+    question_id = data_handler.get_item_by_id(answer_id, "sample_data/test_answers.csv")['question_id']
+    data_handler.handle_votes(answer_id, "vote_up", "sample_data/test_answers.csv")
+    return redirect(url_for("open_question_page", question_id=question_id))
+
+
+
+@app.route("/answer/<answer_id>/vote_down", methods=["POST"])
+def vote_answer_down(answer_id):
+    question_id = data_handler.get_item_by_id(answer_id, "sample_data/test_answers.csv")['question_id']
+    data_handler.handle_votes(answer_id, "vote_down", "sample_data/test_answers.csv")
+    return redirect(url_for("open_question_page", question_id=question_id))
 
 
 if __name__ == "__main__":
