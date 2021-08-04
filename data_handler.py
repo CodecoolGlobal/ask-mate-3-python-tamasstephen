@@ -7,10 +7,18 @@ from tempfile import NamedTemporaryFile
 
 HEADERS = ["id", "submission_time", "view_number", "vote_number", "title", "message", "image"]
 ANSWER_HEADERS = ["id", "submission_time", "vote_number", "question_id", "message", "image"]
+ALLOWED_FILES = [".jpg", ".png"]
+UPLOAD_FOLDER = "./images"
+
+
+def valid_file_extension(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_FILES
 
 
 def get_questions_from_file(sorting_rule="submission_time_desc"):
     questions = get_mutable_list("sample_data/test_questions.csv")
+    if not questions:
+        return None 
     sorted_questions = util.sort_questions(questions, sorting_rule)
     return sorted_questions
 
@@ -37,13 +45,16 @@ def get_answers_by_question_id(question_id):
     return filter_items_by_id(question_id, answers, "test_answers")
 
 
-def add_form_data(form_data, filename="sample_data/test_questions.csv", question_id=None):
+def add_form_data(form_data, filename="sample_data/test_questions.csv", question_id=None, image_name=None):
     mutable_form_data = get_data_from_form(form_data)
     data_to_write = connection.read_data_from_file(filename)
-    add_missing_initial_values_to_question(mutable_form_data, data_to_write, question_id)
+    add_missing_initial_values_to_question(mutable_form_data, data_to_write, image_name, question_id)
     data_to_write.append(mutable_form_data)
-    headers = HEADERS if "question_id" not in data_to_write[0].keys() else ANSWER_HEADERS 
-    connection.write_data_to_file(data_to_write, headers, filename)
+    connection.write_data_to_file(data_to_write, get_header(data_to_write[0]), filename)
+
+
+def get_header(dictionary):
+    return HEADERS if "question_id" not in dictionary.keys() else ANSWER_HEADERS
 
 
 def generate_new_id(list_of_dicts):
@@ -57,10 +68,12 @@ def get_data_from_form(form_data):
     return form_dict
 
 
-def add_missing_initial_values_to_question(new_data, data_list, question_id=None):
+def add_missing_initial_values_to_question(new_data, data_list, image_name, question_id=None):
+    print(new_data)
+    print(image_name)
     new_data['id'] = generate_new_id(data_list)
     new_data["submission_time"] = int(math.ceil(time()))
-    new_data["image"] = new_data["image"] if new_data.get("image") else ""
+    new_data["image"] = f"{UPLOAD_FOLDER}/{image_name}" if image_name else ""
     new_data["vote_number"] = "0"
     if not question_id:
         new_data["view_number"] = "0"

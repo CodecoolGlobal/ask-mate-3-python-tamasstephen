@@ -8,13 +8,30 @@
 <body>
 <a href="/add_question">Add New Question</a>
 <br>
+{% if questions %}
 <form action="/" method="post">
+<<<<<<< HEAD
     <select name="sort">
         <option value="submission_time_desc">Submission time descending</option>
         <option value="submission_time">Submission time ascending</option>
         <option value="view_number">Sort by view number ascending</option>
     </select>
     <input type="submit">
+=======
+	<select name="sort">
+		<option value="submission_time_desc">Submission time descending</option>
+		<option value="submission_time">Submission time ascending</option>
+		<option value="view_number">Sort by view number ascending</option>
+		<option value="view_number_desc">Sort by view number descending</option>
+		<option value="vote_number">Sort by vote number ascending</option>
+		<option value="vote_number_desc">Sort by vote number descending</option>
+		<option value="title">Sort by title A-Z</option>
+		<option value="title_desc">Sort by title Z-A</option>
+		<option value="message">Sort by message A-Z</option>
+		<option value="message_desc">Sort by message Z-A</option>
+	</select>
+	<input type="submit">
+>>>>>>> e836616f1fb12d0d1f39fea63ad0cf149c17d702
 </form>
 <br>
 <table>
@@ -29,18 +46,28 @@
     {% for question in questions %}
     <tr>
         {% for key, value in question.items() %}
-        {% if key != 'title' %}
-        <td style="{{ " width:500px;
-        " if key == "message" }}">
+        {% if key != 'title' and key == 'message' %}
+        <td style="{{ " width:500px;" }}">
         {{ value }}
         </td>
         {% else %}
+	{% if key == "image" %}
+	<td>
+		<img src="{{ value }}">
+	<td>
+	{% else %}
+	{% if key == "title" %}
         <td>
             <a href="{{ "/question/" + question['id'] }}">{{ value }}</a>
             <br>
             <br>
-            {% endif %}
         </td>
+	{% endif %}
+	<td>
+		{{ value }}
+	</td>
+	{% endif %}
+        {% endif %}
         {% endfor %}
         <td>
 
@@ -49,5 +76,6 @@
     {% endfor %}
     </tbody>
 </table>
+{% endif %}
 </body>
 </html>

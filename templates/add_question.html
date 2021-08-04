@@ -6,7 +6,7 @@
     <h1>Add New Question</h1>
 </head>
 <body>
-<form action="/add_question" method="post">
+<form action="/add_question" method="post" enctype="multipart/form-data">
     <label for="title">Title:</label>
     <br>
     <br>
@@ -19,6 +19,8 @@
     <textarea name="message" id="message" cols="35" rows="10"></textarea>
     <br>
     <br>
+    <label for="file">Upload a file</label><br>
+    <input type="file" id="file" name="image"><br>
     <button type="submit">Add New Question</button>
 </form>
 </body>
