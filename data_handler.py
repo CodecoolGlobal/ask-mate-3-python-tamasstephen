@@ -2,11 +2,7 @@ from time import time
 import math
 import connection
 import util
-<<<<<<< HEAD
-=======
 import os
-
->>>>>>> 70aff64d3fcc8d2a3c22b3696af25d2da2f0f28b
 
 HEADERS = ["id", "submission_time", "view_number", "vote_number", "title", "message", "image"]
 ANSWER_HEADERS = ["id", "submission_time", "vote_number", "question_id", "message", "image"]
@@ -95,10 +91,7 @@ def count_views(question_id):
 
 def delete_item(item_id, headers, filename):
     questions = get_mutable_list(filename)
-<<<<<<< HEAD
-
     filtered_questions = [question for question in questions if question['id'] != item_id]
-
     connection.write_data_to_file(filtered_questions, headers, filename)
 
 
@@ -106,7 +99,6 @@ def delete_answer(answer_id, answer_headers, filename):
     answers = get_mutable_list(filename)
     filtered_answers = [answer for answer in answers if answer['id'] != answer_id]
     connection.write_data_to_file(filtered_answers, answer_headers, filename)
-=======
     question_index = [index for index, question in enumerate(questions) if question['id'] == item_id][0]
     os.remove(questions[question_index]["image"])
     questions.pop(question_index)
@@ -119,4 +111,3 @@ def delete_all_answers(question_id):
         delete_item(anwer['id'], ANSWER_HEADERS, "sample_data/test_answers.csv")
 
 
->>>>>>> 70aff64d3fcc8d2a3c22b3696af25d2da2f0f28b

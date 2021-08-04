@@ -29,13 +29,8 @@ def open_add_question():
     if request.method == "GET":
         return render_template("add_question.html")
     file = request.files["image"]
-<<<<<<< HEAD
-    if file.filename != "":
-        file.save(os.path.join(app.config["UPLOAD_FOLDER"], file.filename))
-=======
     if file.filename != "": 
         file.save(os.path.join(app.config["UPLOAD_FOLDER"][0], file.filename))
->>>>>>> 70aff64d3fcc8d2a3c22b3696af25d2da2f0f28b
         data_handler.add_form_data(request.form, image_name=file.filename)
     else:
         data_handler.add_form_data(request.form)
@@ -46,7 +41,6 @@ def open_add_question():
 def add_answer(question_id):
     if request.method == "POST":
         file = request.files["image"]
-        print(file)
         if file.filename != "": 
             file.save(os.path.join(app.config["UPLOAD_FOLDER"][1], file.filename))
             data_handler.add_form_data(request.form, "sample_data/test_answers.csv", question_id, image_name=file.filename)
