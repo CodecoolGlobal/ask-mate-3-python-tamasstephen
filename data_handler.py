@@ -3,8 +3,6 @@ import math
 import connection
 import util
 
-
-
 HEADERS = ["id", "submission_time", "view_number", "vote_number", "title", "message", "image"]
 ANSWER_HEADERS = ["id", "submission_time", "vote_number", "question_id", "message", "image"]
 ALLOWED_FILES = [".jpg", ".png"]
@@ -18,7 +16,7 @@ def valid_file_extension(filename):
 def get_questions_from_file(sorting_rule="submission_time_desc"):
     questions = get_mutable_list("sample_data/test_questions.csv")
     if not questions:
-        return None 
+        return None
     sorted_questions = util.sort_questions(questions, sorting_rule)
     return sorted_questions
 
@@ -59,7 +57,7 @@ def get_header(dictionary):
 
 def generate_new_id(list_of_dicts):
     max_id = max([int(dict["id"]) for dict in list_of_dicts]) if list_of_dicts else 0
-    return max_id +1
+    return max_id + 1
 
 
 # refact. one line, rename
@@ -91,5 +89,13 @@ def count_views(question_id):
 
 def delete_item(item_id, headers, filename):
     questions = get_mutable_list(filename)
+
     filtered_questions = [question for question in questions if question['id'] != item_id]
+
     connection.write_data_to_file(filtered_questions, headers, filename)
+
+
+def delete_answer(answer_id, answer_headers, filename):
+    answers = get_mutable_list(filename)
+    filtered_answers = [answer for answer in answers if answer['id'] != answer_id]
+    connection.write_data_to_file(filtered_answers, answer_headers, filename)

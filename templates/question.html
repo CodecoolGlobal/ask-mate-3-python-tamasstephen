@@ -7,14 +7,19 @@
 <body>
 <h1>{{ question.title }}</h1>
 <h5 style="width: 500px">{{ question.message }}</h5>
-<a href="{{ url_for("add_answer", question_id=question.id) }}"><p>Write an answer</p></a>
-<h3>Answers:</h3>
-{% for answer in answers %}
-<p>{{ answer.message }}</p>
-{% endfor %}
 <form action={{
 "/question/" + this_question_id + "/delete" }} method="post">
-<input type="submit" name="Delete" value="Delete">
+<input type="submit" name="Delete" value="Delete Question">
 </form>
+<a href="{{ url_for(" add_answer", question_id=question.id) }}"><p>Write an answer</p></a>
+<h3>Answers:</h3>
+
+{% for answer in answers %}
+<p>{{ answer.message }}
+<form action="{{'/answer/' + answers['id'] + '/delete' }}">
+    <input type="submit" name="Delete Answer" value="Delete Answer">
+</form>
+</p>
+{% endfor %}
 </body>
 </html>

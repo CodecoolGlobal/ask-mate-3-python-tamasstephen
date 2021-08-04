@@ -2,7 +2,6 @@ from flask import Flask, render_template, request, url_for, redirect
 import data_handler
 import os
 
-
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = data_handler.UPLOAD_FOLDER
 
@@ -30,7 +29,7 @@ def open_add_question():
     if request.method == "GET":
         return render_template("add_question.html")
     file = request.files["image"]
-    if file.filename != "": 
+    if file.filename != "":
         file.save(os.path.join(app.config["UPLOAD_FOLDER"], file.filename))
         data_handler.add_form_data(request.form, image_name=file.filename)
     else:
@@ -50,6 +49,12 @@ def add_answer(question_id):
 def delete_question(question_id):
     data_handler.delete_item(question_id, data_handler.HEADERS, "sample_data/test_questions.csv")
     return redirect("/")
+
+
+@app.route("/answer/<answer_id>/delete", methods=["POST"])
+def delete_answer(answer_id):
+    data_handler.delete_answer(answer_id, data_handler.ANSWER_HEADERS, "sample_data/test_answer.csv")
+    return render_template("question.html")
 
 
 if __name__ == "__main__":
