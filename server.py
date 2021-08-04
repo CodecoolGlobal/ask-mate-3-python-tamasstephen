@@ -18,7 +18,7 @@ def open_questions():
 
 @app.route("/question/<question_id>")
 def open_question_page(question_id):
-    question = data_handler.get_question_by_id(question_id)
+    question = data_handler.get_item_by_id(question_id)
     answers = data_handler.get_answers_by_question_id(question_id)
     data_handler.count_views(question_id)
     return render_template("question.html", question=question, answers=answers, this_question_id=question_id)
@@ -57,20 +57,20 @@ def delete_question(question_id):
     return redirect("/")
 
 
-@app.route("/answer/<answer_id>/delete", methods=["POST"])
-def delete_answer(answer_id):
-    data_handler.delete_answer(answer_id, data_handler.ANSWER_HEADERS, "sample_data/test_answer.csv")
-    return render_template("question.html")
-
-
 @app.route("/question/<question_id>/edit", methods=["GET", "POST"])
 def open_edit_question(question_id):
     if request.method == "GET":
-        question = data_handler.get_question_by_id(question_id)
+        question = data_handler.get_item_by_id(question_id)
         return render_template("edit_question.html", question=question, question_id=question_id)
     data_handler.update_question(question_id, request.form)
     return redirect(url_for("open_question_page", question_id=question_id))
 
+
+@app.route("/answer/<answer_id>/delete", methods=["POST"])
+def delete_answer_from_question_page(answer_id):
+    question_id = data_handler.get_item_by_id(answer_id, "sample_data/test_answers.csv")['question_id']
+    data_handler.delete_item(answer_id, data_handler.ANSWER_HEADERS, "sample_data/test_answers.csv")
+    return redirect(url_for("open_question_page", question_id=question_id))
 
 if __name__ == "__main__":
     app.run(

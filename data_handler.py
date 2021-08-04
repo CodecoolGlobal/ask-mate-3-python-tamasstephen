@@ -31,8 +31,8 @@ def get_mutable_list(filename):
             for dictionary in connection.read_data_from_file(filename)]
 
 
-def get_question_by_id(question_id):
-    questions = get_mutable_list("sample_data/test_questions.csv")
+def get_item_by_id(question_id, filename="sample_data/test_questions.csv"):
+    questions = get_mutable_list(filename)
     return filter_items_by_id(question_id, questions)[0]
 
 
@@ -82,7 +82,7 @@ def add_missing_initial_values_to_question(new_data, data_list, image_name, ques
 
 
 def count_views(question_id):
-    question = get_question_by_id(question_id)
+    question = get_item_by_id(question_id)
     # should be a function -> readable 
     question['view_number'] = str(int(question['view_number']) + 1)
     questions = connection.read_data_from_file()
@@ -100,16 +100,6 @@ def delete_item(item_id, headers, filename):
     connection.write_data_to_file(questions, headers, filename)
 
 
-def delete_answer(answer_id, answer_headers, filename):
-    answers = get_mutable_list(filename)
-    filtered_answers = [answer for answer in answers if answer['id'] != answer_id]
-    connection.write_data_to_file(filtered_answers, answer_headers, filename)
-    question_index = [index for index, question in enumerate(questions) if question['id'] == item_id][0]
-    os.remove(questions[question_index]["image"])
-    questions.pop(question_index)
-    connection.write_data_to_file(questions, headers, filename)
-
-
 def delete_all_answers(question_id):
     answers_by_question = get_answers_by_question_id(question_id)
     for anwer in answers_by_question:
@@ -117,7 +107,7 @@ def delete_all_answers(question_id):
 
 
 def update_question(question_id, form_data):
-    question = get_question_by_id(question_id)
+    question = get_item_by_id(question_id)
     question["message"] = form_data["message"] 
     question["title"] = form_data["title"]
     questions = get_updated_questions(question_id, question)

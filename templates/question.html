@@ -19,12 +19,18 @@
 			<tr>
 				<td><p>Message</p></td>
 				<td><p>Image</p></td>
+				<td><p>Action</p></td>
 			</tr>
 		</thead>
 		{% for answer in answers %}
 		<tr>
 			<td><p>{{ answer.message }}</p></td>
 			<td><p>{{ answer.image }}</p></td>
+			<td>
+				<form action="{{ url_for('delete_answer_from_question_page', answer_id=answer.id) }}" method="post">
+					<input type="submit" value="Delete answer" >
+				</form>
+			</td>
 		</tr>
 		{% endfor %}
 	</table>
