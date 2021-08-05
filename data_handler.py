@@ -77,7 +77,7 @@ def add_missing_initial_values_to_question(new_data, data_list, image_name, ques
 def count_views(question_id):
     question = get_item_by_id(question_id)
     question['view_number'] = str(int(question['view_number']) + 1)
-    questions = util.get_updated_questions(question_id, question) 
+    questions = util.get_updated_questions(question_id, question)
     connection.write_data_to_file(questions, HEADERS)
 
 
@@ -98,7 +98,7 @@ def delete_all_answers(question_id):
 
 def update_question(question_id, form_data):
     question = get_item_by_id(question_id)
-    question["message"] = form_data["message"] 
+    question["message"] = form_data["message"]
     question["title"] = form_data["title"]
     questions = util.get_updated_questions(question_id, question)
     connection.write_data_to_file(questions, HEADERS)
