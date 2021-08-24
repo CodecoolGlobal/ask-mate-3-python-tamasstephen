@@ -47,13 +47,30 @@ def get_answers_by_question_id(cursor, question_id):
     return cursor.fetchall()
 
 
-def add_form_data(form_data, filename="sample_data/test_questions.csv", question_id=None, image_name=None):
+def add_question(form_data, filename="sample_data/test_questions.csv", question_id=None, image_name=None):
     mutable_form_data = get_data_from_form(form_data)
-    # data_to_write = connection.read_data_from_file(filename)
     add_missing_initial_values_to_question(mutable_form_data, image_name, question_id)
-    # data_to_write.append(mutable_form_data)
-    #connection.write_data_to_file(data_to_write, get_header(data_to_write[0]), filename)
     add_question_to_db(mutable_form_data)
+
+
+def add_new_answer(form_data, question_id, image_name=None):
+    mutable_form_data = get_data_from_form(form_data)
+    add_missing_initial_values_to_question(mutable_form_data, image_name, question_id)
+    add_answer_to_db(mutable_form_data)
+
+
+@connection.connection_handler
+def add_answer_to_db(cursor, answer):
+    query = """
+        INSERT INTO answer
+        (submission_time, vote_number, question_id, message, image)
+        VALUES (%(submission_time)s, %(vote_number)s, %(question_id)s, %(message)s, %(image)s)
+    """
+    cursor.execute(query, {"submission_time": answer["submission_time"],
+                           "vote_number": answer["vote_number"],
+                           "question_id": answer["question_id"],
+                           "message": answer["message"],
+                           "image": answer["image"]})
 
 
 @connection.connection_handler

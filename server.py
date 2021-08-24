@@ -23,9 +23,10 @@ def open_question_page(question_id):
     # question = data_handler.get_item_by_id(question_id)
     answers = data_handler.get_answers_by_question_id(question_id)
     print(answers)
-    question = util.get_data_by_id(question_id, "question")
+    question = util.get_data_by_id(question_id, "question")[0]
     print(question)
     data_handler.count_views(question_id)
+    print(question)
     return render_template("question.html", question=question, answers=answers, this_question_id=question_id)
 
 
@@ -37,22 +38,23 @@ def open_add_question():
     file = request.files["image"]
     if file.filename != "":
         file.save(os.path.join(app.config["UPLOAD_FOLDER"][0], file.filename))
-        data_handler.add_form_data(request.form, image_name=file.filename)
+        data_handler.add_question(request.form, image_name=file.filename)
     else:
-        data_handler.add_form_data(request.form)
+        data_handler.add_question(request.form)
     return redirect("/")
 
 
 # REFACTORING Needed
 @app.route("/question/<question_id>/add_answer", methods=["POST", "GET"])
 def add_answer(question_id):
+    print("isfasd")
     if request.method == "POST":
         file = request.files["image"]
         if file.filename != "":
             file.save(os.path.join(app.config["UPLOAD_FOLDER"][1], file.filename))
-            data_handler.add_form_data(request.form, "sample_data/test_answers.csv", question_id, image_name=file.filename)
+            data_handler.add_new_answer(request.form, question_id, image_name=file.filename)
         else:
-            data_handler.add_form_data(request.form, "sample_data/test_answers.csv", question_id)
+            data_handler.add_new_answer(request.form, question_id)
         return redirect(url_for('open_question_page', question_id=question_id))
     return render_template("add_answer.html", question_id=question_id)
 
