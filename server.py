@@ -20,7 +20,6 @@ def open_questions():
 
 @app.route("/question/<question_id>")
 def open_question_page(question_id):
-    # question = data_handler.get_item_by_id(question_id)
     answers = data_handler.get_answers_by_question_id(question_id)
     question = util.get_data_by_id(question_id, "question")[0]
     data_handler.count_views(question_id)
