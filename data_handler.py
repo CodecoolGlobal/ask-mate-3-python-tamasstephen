@@ -3,6 +3,7 @@ import math
 import connection
 import util
 import os
+from datetime import datetime
 
 
 HEADERS = ["id", "submission_time", "view_number", "vote_number", "title", "message", "image"]
@@ -48,10 +49,27 @@ def get_answers_by_question_id(cursor, question_id):
 
 def add_form_data(form_data, filename="sample_data/test_questions.csv", question_id=None, image_name=None):
     mutable_form_data = get_data_from_form(form_data)
-    data_to_write = connection.read_data_from_file(filename)
-    add_missing_initial_values_to_question(mutable_form_data, data_to_write, image_name, question_id)
-    data_to_write.append(mutable_form_data)
-    connection.write_data_to_file(data_to_write, get_header(data_to_write[0]), filename)
+    # data_to_write = connection.read_data_from_file(filename)
+    add_missing_initial_values_to_question(mutable_form_data, image_name, question_id)
+    # data_to_write.append(mutable_form_data)
+    #connection.write_data_to_file(data_to_write, get_header(data_to_write[0]), filename)
+    add_question_to_db(mutable_form_data)
+
+
+@connection.connection_handler
+def add_question_to_db(cursor, question):
+    query = """
+        INSERT INTO question
+        (submission_time, view_number, vote_number, title, message, image)
+        VALUES (%(submission_time)s, %(view_number)s, %(vote_number)s, %(title)s, %(message)s, %(image)s)
+    """
+    cursor.execute(query, {"submission_time": question["submission_time"],
+                           "view_number": question["view_number"],
+                           "vote_number": question["vote_number"],
+                           "title": question["title"],
+                           "message": question["message"],
+                           "image": question["image"]})
+
 
 
 def get_header(dictionary):
@@ -68,9 +86,9 @@ def get_data_from_form(form_data):
     return form_dict
 
 
-def add_missing_initial_values_to_question(new_data, data_list, image_name, question_id=None):
-    new_data['id'] = generate_new_id(data_list)
-    new_data["submission_time"] = int(math.ceil(time()))
+def add_missing_initial_values_to_question(new_data, image_name, question_id=None):
+    # new_data['id'] = generate_new_id(data_list)
+    new_data["submission_time"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     new_data["image"] = f"{UPLOAD_FOLDER[0] if not question_id else UPLOAD_FOLDER[1]}/{image_name}" if image_name else ""
     new_data["vote_number"] = "0"
     if not question_id:
@@ -78,13 +96,10 @@ def add_missing_initial_values_to_question(new_data, data_list, image_name, ques
     else:
         new_data["question_id"] = question_id
 
+
 @connection.connection_handler
 def count_views(cursor, question_id):
     question_id = int(question_id)
-    # question = get_item_by_id(question_id)
-    # question['view_number'] = str(int(question['view_number']) + 1)
-    # questions = util.get_updated_questions(question_id, question)
-    # connection.write_data_to_file(questions, HEADERS)
     query = """
         UPDATE question
         SET view_number = view_number + 1
