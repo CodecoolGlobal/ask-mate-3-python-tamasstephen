@@ -61,3 +61,13 @@ def get_data_by_id(cursor, item_id, table_name):
     cursor.execute(sql.SQL(query).format(table_name=sql.Identifier(table_name),
                                          item_id=sql.Literal(item_id)))
     return cursor.fetchall()
+
+
+@connection.connection_handler
+def delete_item_by_id(cursor, item_id, table_name):
+    query = """
+        DELETE FROM {table_name}
+        WHERE id = {item_id}
+    """
+    cursor.execute(sql.SQL(query).format(table_name=sql.Identifier(table_name),
+                                         item_id=sql.Literal(item_id)))

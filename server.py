@@ -22,11 +22,8 @@ def open_questions():
 def open_question_page(question_id):
     # question = data_handler.get_item_by_id(question_id)
     answers = data_handler.get_answers_by_question_id(question_id)
-    print(answers)
     question = util.get_data_by_id(question_id, "question")[0]
-    print(question)
     data_handler.count_views(question_id)
-    print(question)
     return render_template("question.html", question=question, answers=answers, this_question_id=question_id)
 
 
@@ -77,8 +74,8 @@ def open_edit_question(question_id):
 
 @app.route("/answer/<answer_id>/delete", methods=["POST"])
 def delete_answer_from_question_page(answer_id):
-    question_id = data_handler.get_item_by_id(answer_id, "sample_data/test_answers.csv")['question_id']
-    data_handler.delete_item(answer_id, data_handler.ANSWER_HEADERS, "sample_data/test_answers.csv")
+    question_id = util.get_data_by_id(answer_id, "answer")[0]["question_id"]
+    util.delete_item_by_id(answer_id,"answer")
     return redirect(url_for("open_question_page", question_id=question_id))
 
 
