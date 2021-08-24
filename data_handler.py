@@ -136,8 +136,8 @@ def delete_item(item_id, headers, filename):
 
 def delete_all_answers(question_id):
     answers_by_question = get_answers_by_question_id(question_id)
-    for anwer in answers_by_question:
-        delete_item(anwer['id'], ANSWER_HEADERS, "sample_data/test_answers.csv")
+    for answer in answers_by_question:
+        util.delete_item_by_id(answer["id"], "answer")
 
 
 def update_question(question_id, form_data):

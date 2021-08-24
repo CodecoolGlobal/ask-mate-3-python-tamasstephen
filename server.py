@@ -59,7 +59,7 @@ def add_answer(question_id):
 @app.route("/question/<question_id>/delete", methods=["POST"])
 def delete_question(question_id):
     data_handler.delete_all_answers(question_id)
-    data_handler.delete_item(question_id, data_handler.HEADERS, "sample_data/test_questions.csv")
+    util.delete_item_by_id(question_id, "question")
     return redirect("/")
 
 
