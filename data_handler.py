@@ -140,12 +140,17 @@ def delete_all_answers(question_id):
         util.delete_item_by_id(answer["id"], "answer")
 
 
-def update_question(question_id, form_data):
-    question = get_item_by_id(question_id)
-    question["message"] = form_data["message"]
-    question["title"] = form_data["title"]
-    questions = util.get_updated_questions(question_id, question)
-    connection.write_data_to_file(questions, HEADERS)
+@connection.connection_handler
+def update_question(cursor, question_id, form_data):
+    query = """
+        UPDATE question
+        SET message = %(message)s,
+            title = %(title)s
+        WHERE id = %(question_id)s
+    """
+    cursor.execute(query, {"message": form_data["message"],
+                           "title": form_data["title"],
+                           "question_id": question_id})
 
 
 def handle_votes(question_id, vote, filename="sample_data/test_questions.csv"):

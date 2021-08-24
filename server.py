@@ -66,7 +66,7 @@ def delete_question(question_id):
 @app.route("/question/<question_id>/edit", methods=["GET", "POST"])
 def open_edit_question(question_id):
     if request.method == "GET":
-        question = data_handler.get_item_by_id(question_id)
+        question = util.get_data_by_id(question_id, "question")[0]
         return render_template("edit_question.html", question=question, question_id=question_id)
     data_handler.update_question(question_id, request.form)
     return redirect(url_for("open_question_page", question_id=question_id))
