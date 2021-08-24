@@ -17,11 +17,11 @@ def valid_file_extension(filename):
 
 
 def get_questions_from_file(sorting_rule="submission_time_desc"):
-    questions = util.get_mutable_list("sample_data/test_questions.csv")
+    questions = util.get_mutable_list()
     if not questions:
         return None
     sorted_questions = util.sort_questions(questions, sorting_rule)
-    util.convert_questions_secs_to_date(sorted_questions)
+    # util.convert_questions_secs_to_date(sorted_questions)
     return sorted_questions
 
 
@@ -36,9 +36,14 @@ def filter_items_by_id(question_id, questions, question_or_answer="question"):
     return [question for question in questions if question[id_to_check] == question_id]
 
 
-def get_answers_by_question_id(question_id):
-    answers = util.get_mutable_list("sample_data/test_answers.csv")
-    return filter_items_by_id(question_id, answers, "test_answers")
+@connection.connection_handler
+def get_answers_by_question_id(cursor, question_id):
+    query = """
+        SELECT * FROM answer
+        WHERE question_id = %(question_id)s 
+    """
+    cursor.execute(query, {"question_id": question_id})
+    return cursor.fetchall()
 
 
 def add_form_data(form_data, filename="sample_data/test_questions.csv", question_id=None, image_name=None):
@@ -73,12 +78,19 @@ def add_missing_initial_values_to_question(new_data, data_list, image_name, ques
     else:
         new_data["question_id"] = question_id
 
-
-def count_views(question_id):
-    question = get_item_by_id(question_id)
-    question['view_number'] = str(int(question['view_number']) + 1)
-    questions = util.get_updated_questions(question_id, question)
-    connection.write_data_to_file(questions, HEADERS)
+@connection.connection_handler
+def count_views(cursor, question_id):
+    question_id = int(question_id)
+    # question = get_item_by_id(question_id)
+    # question['view_number'] = str(int(question['view_number']) + 1)
+    # questions = util.get_updated_questions(question_id, question)
+    # connection.write_data_to_file(questions, HEADERS)
+    query = """
+        UPDATE question
+        SET view_number = view_number + 1
+        WHERE id = %(question_id)s
+    """
+    cursor.execute(query, {"question_id": question_id})
 
 
 def delete_item(item_id, headers, filename):

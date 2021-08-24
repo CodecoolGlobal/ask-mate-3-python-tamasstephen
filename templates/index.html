@@ -43,7 +43,7 @@
         </td>
         {% elif key == "title" %}
         <td>
-		<a href="{{ "/question/" + question['id'] }}"><p>{{ value }}</p></a>
+		<a href="{{ url_for('open_question_page', question_id=question['id']) }}"><p>{{ value }}</p></a>
         </td>
 	{% elif key != "id" %}
 	<td>

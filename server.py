@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, url_for, redirect
 import data_handler
 import os
 
+import util
+
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = data_handler.UPLOAD_FOLDER
 
@@ -18,8 +20,11 @@ def open_questions():
 
 @app.route("/question/<question_id>")
 def open_question_page(question_id):
-    question = data_handler.get_item_by_id(question_id)
+    # question = data_handler.get_item_by_id(question_id)
     answers = data_handler.get_answers_by_question_id(question_id)
+    print(answers)
+    question = util.get_data_by_id(question_id, "question")
+    print(question)
     data_handler.count_views(question_id)
     return render_template("question.html", question=question, answers=answers, this_question_id=question_id)
 
