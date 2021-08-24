@@ -4,6 +4,7 @@ import connection
 import util
 import os
 from datetime import datetime
+from psycopg2 import sql
 
 
 HEADERS = ["id", "submission_time", "view_number", "vote_number", "title", "message", "image"]
@@ -153,12 +154,19 @@ def update_question(cursor, question_id, form_data):
                            "question_id": question_id})
 
 
-def handle_votes(question_id, vote, filename="sample_data/test_questions.csv"):
-    question = get_item_by_id(question_id, filename)
-    question["vote_number"] = str(int(question["vote_number"]) + (1 if vote == "vote_up" else - 1))
-    questions = util.get_updated_questions(question_id, question, filename)
-    headers = HEADERS if filename == "sample_data/test_questions.csv" else ANSWER_HEADERS
-    connection.write_data_to_file(questions, headers, filename)
+def handle_votes(item_id, vote, table="question"):
+    print(item_id, "fuck")
+    vote_count = 1 if vote == "vote_up" else -1
+    handle_db_votes(table, vote_count, item_id)
 
 
-
+@connection.connection_handler
+def handle_db_votes(cursor, table, vote, item_id):
+    query = """
+        UPDATE {table}
+        SET vote_number = vote_number + {vote}
+        WHERE id = {item_id}
+    """
+    cursor.execute(sql.SQL(query).format(table=sql.Identifier(table),
+                                         vote=sql.Literal(vote),
+                                         item_id=sql.Literal(item_id)))

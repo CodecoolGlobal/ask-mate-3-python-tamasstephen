@@ -81,28 +81,28 @@ def delete_answer_from_question_page(answer_id):
 
 @app.route("/question/<question_id>/vote_up", methods=["POST"])
 def vote_question_up(question_id):
-    data_handler.handle_votes(question_id, "vote_up")
+    print(question_id)
+    data_handler.handle_votes(int(question_id), "vote_up")
     return redirect("/")
 
 
 @app.route("/question/<question_id>/vote_down", methods=["POST"])
 def vote_question_down(question_id):
-    data_handler.handle_votes(question_id, "vote_down")
+    data_handler.handle_votes(int(question_id), "vote_down")
     return redirect("/")
 
 
 @app.route("/answer/<answer_id>/vote_up", methods=["POST"])
 def vote_answer_up(answer_id):
-    question_id = data_handler.get_item_by_id(answer_id, "sample_data/test_answers.csv")['question_id']
-    data_handler.handle_votes(answer_id, "vote_up", "sample_data/test_answers.csv")
+    question_id = util.get_data_by_id(answer_id, "answer")[0]['question_id']
+    data_handler.handle_votes(answer_id, "vote_up", "answer")
     return redirect(url_for("open_question_page", question_id=question_id))
-
 
 
 @app.route("/answer/<answer_id>/vote_down", methods=["POST"])
 def vote_answer_down(answer_id):
-    question_id = data_handler.get_item_by_id(answer_id, "sample_data/test_answers.csv")['question_id']
-    data_handler.handle_votes(answer_id, "vote_down", "sample_data/test_answers.csv")
+    question_id = util.get_data_by_id(answer_id, "answer")[0]['question_id']
+    data_handler.handle_votes(answer_id, "vote_down", "answer")
     return redirect(url_for("open_question_page", question_id=question_id))
 
 
