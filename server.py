@@ -24,8 +24,13 @@ def open_questions():
 def open_question_page(question_id):
     answers = data_handler.get_answers_by_question_id(question_id)
     question = util.get_data_by_id(question_id, "question")[0]
+    question_comments = comment.get_comments("question_id", question_id)
     data_handler.count_views(question_id)
-    return render_template("question.html", question=question, answers=answers, this_question_id=question_id)
+    return render_template("question.html",
+                           question=question,
+                           answers=answers,
+                           question_comments=question_comments,
+                           this_question_id=question_id)
 
 
 # REFACTORING Needed

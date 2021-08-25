@@ -8,6 +8,19 @@
 	<a href="/">Back to main page</a>
 	<h1>{{ question.title }}</h1>
 	<p style="width: 500px">{{ question.message }}</p>
+    {% if question_comments %}
+        {% for comment in question_comments %}
+            <div class="comment">
+                <p>{{ comment.message }}</p>
+                <div>
+                    <p>{{ comment.submission_time }}</p>
+                    {% if comment.edited_count %}
+                        <p>{{ comment.edited_count }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
 	{% if question.image %}
 		<p>{{ question.image }}</p>
 	{% endif %}
