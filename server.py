@@ -25,11 +25,14 @@ def open_question_page(question_id):
     answers = data_handler.get_answers_by_question_id(question_id)
     question = util.get_data_by_id(question_id, "question")[0]
     question_comments = comment.get_comments("question_id", question_id)
+    answer_comments = {answer["id"]: comment.get_comments("answer_id", answer["id"]) for answer in answers}
+    print(answer_comments)
     data_handler.count_views(question_id)
     return render_template("question.html",
                            question=question,
                            answers=answers,
                            question_comments=question_comments,
+                           answer_comments=answer_comments,
                            this_question_id=question_id)
 
 
@@ -125,7 +128,6 @@ def add_comment_to_answer(answer_id):
     if request.method == "POST":
         comment.add_comment_to_answer_db(answer_id, request.form["message"], util.get_current_time())
         question_id = data_handler.get_question_id_by_answer_id(answer_id)[0]["question_id"]
-        print(question_id)
         return redirect(url_for("open_question_page", question_id=question_id))
     return render_template("answer_comment.html", answer_id=answer_id)
 

@@ -40,6 +40,17 @@
 		{% for answer in answers %}
 		<tr>
 			<td><p>{{ answer.message }}</p></td>
+            <td>
+                {% if answer_comments %}
+                {% for key in answer_comments.keys() %}
+                    {% if key == answer.id %}
+                        {% for comment in answer_comments[answer.id]  %}
+                            <p>{{ comment.message }}</p>
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+            </td>
 			<td><p>{{ answer.image }}</p></td>
             <td><p><a href="{{ url_for('add_comment_to_answer', answer_id=answer.id) }}">Add comment</a></p></td>
 			<td><p>{{ answer.vote_number }}</p></td>
