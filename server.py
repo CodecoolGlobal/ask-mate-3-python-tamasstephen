@@ -22,9 +22,12 @@ def open_questions():
 
 @app.route("/list")
 def open_all_questions():
+    if request.args.get("sort"):
+        questions = data_handler.get_all_questions(request.args.get("sort"))
+        return render_template("index.html", questions=questions, headers=data_handler.QUESTION_HEADERS_TO_PRINT, all=True)
     questions = data_handler.get_all_questions()
     question_id = ""
-    return render_template("index.html", questions=questions, headers=data_handler.QUESTION_HEADERS_TO_PRINT, question_id=question_id)
+    return render_template("index.html", questions=questions, headers=data_handler.QUESTION_HEADERS_TO_PRINT, question_id=question_id, all=True)
 
 
 @app.route("/question/<question_id>")
