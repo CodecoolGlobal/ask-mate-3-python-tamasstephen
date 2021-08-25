@@ -37,6 +37,27 @@ def get_answers_by_question_id(cursor, question_id):
     return cursor.fetchall()
 
 
+@connection.connection_handler
+def update_answer(cursor, answer_id, message):
+    query="""
+    UPDATE answer
+    SET message = %(message)s
+    WHERE id = %(answer_id)s
+    """
+    cursor.execute(query, {"message": message,
+                           "answer_id": answer_id})
+
+
+@connection.connection_handler
+def get_answer_by_answer_id(cursor, answer_id):
+    query = """
+        SELECT * FROM answer
+        WHERE id = %(answer_id)s 
+    """
+    cursor.execute(query, {"answer_id": answer_id})
+    return cursor.fetchall()
+
+
 def add_question(form_data, question_id=None, image_name=None):
     mutable_form_data = get_data_from_form(form_data)
     add_missing_initial_values_to_question(mutable_form_data, image_name, question_id)

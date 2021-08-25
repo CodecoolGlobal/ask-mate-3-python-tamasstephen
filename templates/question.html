@@ -53,6 +53,7 @@
             </td>
 			<td><p>{{ answer.image }}</p></td>
             <td><p><a href="{{ url_for('add_comment_to_answer', answer_id=answer.id) }}">Add comment</a></p></td>
+            <td><p><a href="{{ url_for('edit_answer', answer_id=answer.id) }}">Edit answer</a></p></td>
 			<td><p>{{ answer.vote_number }}</p></td>
 			<td>
 				<form action="{{ url_for("vote_answer_up", answer_id=answer.id ) }}" method="post">

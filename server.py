@@ -132,6 +132,16 @@ def add_comment_to_answer(answer_id):
     return render_template("answer_comment.html", answer_id=answer_id)
 
 
+@app.route("/answer/<answer_id>/edit", methods=["GET", "POST"])
+def edit_answer(answer_id):
+    if request.method == "POST":
+        data_handler.update_answer(answer_id, request.form["message"])
+        question_id = data_handler.get_question_id_by_answer_id(answer_id)[0]["question_id"]
+        return redirect(url_for("open_question_page", question_id=question_id))
+    message = data_handler.get_answer_by_answer_id(answer_id)[0]["message"]
+    return render_template('edit_answer.html', answer_id=answer_id, message=message)
+
+
 
 if __name__ == "__main__":
     app.run(
