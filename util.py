@@ -19,6 +19,10 @@ def sort_questions(questions, sort_key="submission_time_desc"):
     return sort_by_key[sort_key]
 
 
+def get_current_time():
+    return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+
 def convert_date_to_secs(date):
     secs = (date-datetime(1970, 1, 1)).total_seconds()
     return secs

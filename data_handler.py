@@ -148,3 +148,5 @@ def handle_db_votes(cursor, table, vote, item_id):
     cursor.execute(sql.SQL(query).format(table=sql.Identifier(table),
                                          vote=sql.Literal(vote),
                                          item_id=sql.Literal(item_id)))
+
+

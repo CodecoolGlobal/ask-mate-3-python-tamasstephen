@@ -11,6 +11,7 @@
 	{% if question.image %}
 		<p>{{ question.image }}</p>
 	{% endif %}
+    <p><a href="{{ url_for('add_comment_to_question', question_id=question.id) }}">Add comment</a></p>
 	<a href="{{ url_for("open_edit_question", question_id=question.id) }}"><p>Edit question</p></a>
 	<a href="{{ url_for("add_answer", question_id=question.id) }}"><p>Write an answer</p></a>
 	<h3>Answers:</h3>

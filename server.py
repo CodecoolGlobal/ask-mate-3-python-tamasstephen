@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, url_for, redirect
 import data_handler
+import util
 import os
+import comment
 
 import util
 
@@ -103,6 +105,15 @@ def vote_answer_down(answer_id):
     question_id = util.get_data_by_id(answer_id, "answer")[0]['question_id']
     data_handler.handle_votes(answer_id, "vote_down", "answer")
     return redirect(url_for("open_question_page", question_id=question_id))
+
+
+@app.route("/question/<question_id>/comment", methods=["GET", "POST"])
+def add_comment_to_question(question_id):
+    if request.method == "POST":
+        comment.add_comment_to_question_db(question_id, request.form["message"], util.get_current_time())
+        return redirect(url_for("open_question_page", question_id=question_id))
+    return render_template("comment.html", question_id=question_id)
+
 
 
 if __name__ == "__main__":
