@@ -18,14 +18,31 @@ def valid_file_extension(filename):
     return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_FILES
 
 
-def get_questions_from_file(sorting_rule="submission_time_desc"):
+def get_all_questions(sorting_rule="submission_time_desc"):
     questions = util.get_mutable_list()
     if not questions:
         return None
     sorted_questions = util.sort_questions(questions, sorting_rule)
-    # util.convert_questions_secs_to_date(sorted_questions)
     return sorted_questions
 
+
+def get_last_five_questions(sorting_rule="submission_time_desc"):
+    questions = get_last_five_questions_from_db()
+    print(questions)
+    if sorting_rule == "submission_time_desc":
+        return questions
+    return util.sort_questions(questions, sorting_rule)
+
+
+@connection.connection_handler
+def get_last_five_questions_from_db(cursor):
+    query = """
+        SELECT * FROM question
+        ORDER BY submission_time DESC
+        LIMIT 5
+    """
+    cursor.execute(query)
+    return cursor.fetchall()
 
 @connection.connection_handler
 def get_answers_by_question_id(cursor, question_id):

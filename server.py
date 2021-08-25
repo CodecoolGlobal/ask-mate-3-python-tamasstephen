@@ -10,12 +10,19 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = data_handler.UPLOAD_FOLDER
 
 
-@app.route("/", methods=["POST", "GET"])
+@app.route("/")
 def open_questions():
-    if request.method == "POST":
-        questions = data_handler.get_questions_from_file(request.form["sort"])
+    if request.args.get("sort"):
+        questions = data_handler.get_last_five_questions(request.args.get("sort"))
         return render_template("index.html", questions=questions, headers=data_handler.QUESTION_HEADERS_TO_PRINT)
-    questions = data_handler.get_questions_from_file()
+    questions = data_handler.get_last_five_questions_from_db()
+    question_id = ""
+    return render_template("index.html", questions=questions, headers=data_handler.QUESTION_HEADERS_TO_PRINT, question_id=question_id)
+
+
+@app.route("/list")
+def open_all_questions():
+    questions = data_handler.get_all_questions()
     question_id = ""
     return render_template("index.html", questions=questions, headers=data_handler.QUESTION_HEADERS_TO_PRINT, question_id=question_id)
 

@@ -11,10 +11,10 @@ def sort_questions(questions, sort_key="submission_time_desc"):
             "vote_number_desc": sorted(questions, key=lambda x: int(x["vote_number"]), reverse=True),
             "view_number": sorted(questions, key=lambda x: int(x["view_number"])),
             "view_number_desc": sorted(questions, key=lambda x: int(x["view_number"]), reverse=True),
-            "title": sorted(questions, key=lambda x: x["title"]),
-            "title_desc": sorted(questions, key=lambda x: x["title"], reverse=True),
-            "message": sorted(questions, key=lambda x: x["message"]),
-            "message_desc": sorted(questions, key=lambda x: x["message"], reverse=True)
+            "title": sorted(questions, key=lambda x: x["title"].lower()),
+            "title_desc": sorted(questions, key=lambda x: x["title"].lower(), reverse=True),
+            "message": sorted(questions, key=lambda x: x["message"].lower()),
+            "message_desc": sorted(questions, key=lambda x: x["message"].lower(), reverse=True)
             }
     return sort_by_key[sort_key]
 
