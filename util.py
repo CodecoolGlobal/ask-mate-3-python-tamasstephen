@@ -28,16 +28,6 @@ def convert_date_to_secs(date):
     return secs
 
 
-# Need to delete?
-def convert_secs_to_date(dictionary):
-    dictionary["submission_time"] = datetime.fromtimestamp(int(dictionary["submission_time"]))
-
-# Need to delete?
-def convert_questions_secs_to_date(questions):
-    for question in questions:
-        question["submission_time"] = datetime.fromtimestamp(int(question["submission_time"]))
-
-
 def get_mutable_list():
     return [{key: item for key, item in dictionary.items()}
             for dictionary in get_all_question()]

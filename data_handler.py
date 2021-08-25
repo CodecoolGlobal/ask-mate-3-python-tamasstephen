@@ -28,7 +28,6 @@ def get_all_questions(sorting_rule="submission_time_desc"):
 
 def get_last_five_questions(sorting_rule="submission_time_desc"):
     questions = get_last_five_questions_from_db()
-    print(questions)
     if sorting_rule == "submission_time_desc":
         return questions
     return util.sort_questions(questions, sorting_rule)
@@ -182,7 +181,6 @@ def delete_all_answers(question_id):
 
 
 def handle_votes(item_id, vote, table="question"):
-    print(item_id, "fuck")
     vote_count = 1 if vote == "vote_up" else -1
     handle_db_votes(table, vote_count, item_id)
 

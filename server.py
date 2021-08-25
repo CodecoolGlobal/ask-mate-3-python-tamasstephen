@@ -36,7 +36,6 @@ def open_question_page(question_id):
     question = util.get_data_by_id(question_id, "question")[0]
     question_comments = comment.get_comments("question_id", question_id)
     answer_comments = {answer["id"]: comment.get_comments("answer_id", answer["id"]) for answer in answers}
-    print(answer_comments)
     data_handler.count_views(question_id)
     return render_template("question.html",
                            question=question,
@@ -63,7 +62,6 @@ def open_add_question():
 # REFACTORING Needed
 @app.route("/question/<question_id>/add_answer", methods=["POST", "GET"])
 def add_answer(question_id):
-    print("isfasd")
     if request.method == "POST":
         file = request.files["image"]
         if file.filename != "":
@@ -100,7 +98,6 @@ def delete_answer_from_question_page(answer_id):
 
 @app.route("/question/<question_id>/vote_up", methods=["POST"])
 def vote_question_up(question_id):
-    print(question_id)
     data_handler.handle_votes(int(question_id), "vote_up")
     return redirect("/")
 
@@ -159,7 +156,6 @@ def edit_comment(comment_id):
         question_id = comment.get_question_id_by_comment_id(comment_id)
         return redirect(url_for("open_question_page", question_id=question_id))
     message = comment.get_comment_by_comment_id(comment_id)[0]["message"]
-    print(comment_id)
     return render_template("edit_comment.html", message=message, comment_id=comment_id)
 
 
