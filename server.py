@@ -142,6 +142,18 @@ def edit_answer(answer_id):
     return render_template('edit_answer.html', answer_id=answer_id, message=message)
 
 
+@app.route("/comment/<comment_id>/edit", methods=["GET", "POST"])
+def edit_comment(comment_id):
+    if request.method == "POST":
+        comment.update_comment(comment_id, request.form["message"], util.get_current_time())
+        question_id = comment.get_question_id_by_comment_id(comment_id)
+        return redirect(url_for("open_question_page", question_id=question_id))
+    message = comment.get_comment_by_comment_id(comment_id)[0]["message"]
+    print(comment_id)
+    return render_template("edit_comment.html", message=message, comment_id=comment_id)
+
+
+
 
 if __name__ == "__main__":
     app.run(
