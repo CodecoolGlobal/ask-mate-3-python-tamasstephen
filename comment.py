@@ -23,3 +23,16 @@ def get_comments(cursor, column, item_id):
     cursor.execute(sql.SQL(query).format(column=sql.Identifier(column),
                                          item_id=sql.Literal(item_id)))
     return cursor.fetchall()
+
+
+@connection.connection_handler
+def add_comment_to_answer_db(cursor, answer_id, message, submission_time):
+    query = """
+       INSERT INTO comment
+       ("answer_id", "message", "submission_time")
+       VALUES
+       (%(answer_id)s, %(message)s, %(submission_time)s) 
+    """
+    cursor.execute(query, {"answer_id": answer_id,
+                           "message": message,
+                           "submission_time": submission_time})

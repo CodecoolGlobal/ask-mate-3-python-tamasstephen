@@ -1,0 +1,4 @@
+{% extends "comment.html" %}
+{% block comment_url %}
+    {{ url_for("add_comment_to_answer", answer_id=answer_id) }}
+{% endblock %}

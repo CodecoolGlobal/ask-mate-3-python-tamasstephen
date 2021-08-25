@@ -64,6 +64,16 @@ def add_answer_to_db(cursor, answer):
 
 
 @connection.connection_handler
+def get_question_id_by_answer_id(cursor, answer_id):
+    query = """
+        SELECT question_id FROM answer
+        WHERE id = %(answer_id)s
+    """
+    cursor.execute(query, {"answer_id": answer_id})
+    return cursor.fetchall()
+
+
+@connection.connection_handler
 def add_question_to_db(cursor, question):
     query = """
         INSERT INTO question
@@ -117,6 +127,7 @@ def count_views(cursor, question_id):
     cursor.execute(query, {"question_id": question_id})
 
 
+# delete?
 def delete_item(item_id, headers, filename):
     questions = util.get_mutable_list(filename)
     question_index = [index for index, question in enumerate(questions) if question['id'] == item_id][0]
