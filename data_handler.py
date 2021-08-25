@@ -27,17 +27,6 @@ def get_questions_from_file(sorting_rule="submission_time_desc"):
     return sorted_questions
 
 
-def get_item_by_id(question_id, filename="sample_data/test_questions.csv"):
-    questions = util.get_mutable_list(filename)
-    return filter_items_by_id(question_id, questions)[0]
-
-
-# util
-def filter_items_by_id(question_id, questions, question_or_answer="question"):
-    id_to_check = "id" if question_or_answer == "question" else "question_id"
-    return [question for question in questions if question[id_to_check] == question_id]
-
-
 @connection.connection_handler
 def get_answers_by_question_id(cursor, question_id):
     query = """
@@ -116,6 +105,19 @@ def add_missing_initial_values_to_question(new_data, image_name, question_id=Non
 
 
 @connection.connection_handler
+def update_question(cursor, question_id, form_data):
+    query = """
+        UPDATE question
+        SET message = %(message)s,
+            title = %(title)s
+        WHERE id = %(question_id)s
+    """
+    cursor.execute(query, {"message": form_data["message"],
+                           "title": form_data["title"],
+                           "question_id": question_id})
+
+
+@connection.connection_handler
 def count_views(cursor, question_id):
     question_id = int(question_id)
     query = """
@@ -139,19 +141,6 @@ def delete_all_answers(question_id):
     answers_by_question = get_answers_by_question_id(question_id)
     for answer in answers_by_question:
         util.delete_item_by_id(answer["id"], "answer")
-
-
-@connection.connection_handler
-def update_question(cursor, question_id, form_data):
-    query = """
-        UPDATE question
-        SET message = %(message)s,
-            title = %(title)s
-        WHERE id = %(question_id)s
-    """
-    cursor.execute(query, {"message": form_data["message"],
-                           "title": form_data["title"],
-                           "question_id": question_id})
 
 
 def handle_votes(item_id, vote, table="question"):
