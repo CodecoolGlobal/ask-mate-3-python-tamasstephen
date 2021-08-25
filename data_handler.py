@@ -37,7 +37,7 @@ def get_answers_by_question_id(cursor, question_id):
     return cursor.fetchall()
 
 
-def add_question(form_data, filename="sample_data/test_questions.csv", question_id=None, image_name=None):
+def add_question(form_data, question_id=None, image_name=None):
     mutable_form_data = get_data_from_form(form_data)
     add_missing_initial_values_to_question(mutable_form_data, image_name, question_id)
     add_question_to_db(mutable_form_data)
@@ -78,23 +78,12 @@ def add_question_to_db(cursor, question):
                            "image": question["image"]})
 
 
-
-def get_header(dictionary):
-    return HEADERS if "question_id" not in dictionary.keys() else ANSWER_HEADERS
-
-
-def generate_new_id(list_of_dicts):
-    max_id = max([int(dict["id"]) for dict in list_of_dicts]) if list_of_dicts else 0
-    return max_id + 1
-
-
 def get_data_from_form(form_data):
     form_dict = {key: value for key, value in form_data.items()}
     return form_dict
 
 
 def add_missing_initial_values_to_question(new_data, image_name, question_id=None):
-    # new_data['id'] = generate_new_id(data_list)
     new_data["submission_time"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     new_data["image"] = f"{UPLOAD_FOLDER[0] if not question_id else UPLOAD_FOLDER[1]}/{image_name}" if image_name else ""
     new_data["vote_number"] = "0"
