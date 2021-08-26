@@ -1,8 +1,9 @@
 {% extends "layout.html" %}
     {% block content %}
-        <form action="{% block comment_url %}{{ url_for('add_comment_to_question', question_id = question_id) }}{% endblock %}" method="post">
+        <form class="form_container" action="{% block comment_url %}{{ url_for('add_comment_to_question', question_id = question_id) }}{% endblock %}" method="post">
+            <h1>Add Comment</h1>
             <label for="message">Message</label>
-            <textarea name="message" id="message">{% block message %}{% endblock %}</textarea>
+            <textarea name="message" id="message" cols="30" rows="10">{% block message %}{% endblock %}</textarea>
             <input type="submit" value="submit">
         </form>
 {% endblock %}

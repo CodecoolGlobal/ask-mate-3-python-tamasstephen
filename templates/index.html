@@ -2,7 +2,7 @@
 {% block content %}
 <div class="wrapper">
     <div class="top_options">
-        <a href="/add_question">Add New Question</a>
+        <a href="/add_question" class="primary_button">Add New Question</a>
         {% if questions %}
             {% if not all %}
                 <form action="/" method="get">
@@ -29,12 +29,12 @@
             <div class="card_frame">
                 <div class="vote_box">
                     <form action="{{ url_for("vote_question_up", question_id=question.id) }}" method="post">
-                        <input type="submit" value="Vote up">
+                        <input type="image" src="{{ url_for('static', filename='/images/icons/keyboard_arrow_up_black_24dp.svg') }}" value="Vote up">
                     </form>
                     <p class="vote_label">Votes</p>
                     <p>{{ question.vote_number }}</p>
                     <form action="{{ url_for("vote_question_down", question_id=question.id) }}" method="post">
-                        <input type="submit" value="Vote down">
+                        <input type="image" src="{{ url_for('static', filename='/images/icons/keyboard_arrow_down_black_24dp.svg') }}" value="Vote down">
                     </form>
                 </div>
                 <div class="topic_box">
@@ -42,12 +42,12 @@
                         <h3><a href="{{ url_for('open_question_page', question_id=question['id']) }}">{{ question.title }}</a></h3>
                         <p>{{ question.message }}</p>
                         <div class="misc_data">
-                            <p>{{ question.submission_time }}</p>
+                            <p>Posted: {{ question.submission_time }}</p>
                             <p>View number: {{ question.view_number }}</p>
                         </div>
                     </div>
                     {% if question.image %}
-                        <img src="{{ question.image }}" alt="image" width="300" height="150">
+                        <img src="{{ question.image }}" alt="image" width="200" height="100">
                     {% endif %}
                 </div>
             </div>

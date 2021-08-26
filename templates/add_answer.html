@@ -1,18 +1,13 @@
 {% extends "layout.html" %}
 {% block content %}
-    <h1>Add Answer</h1>
-    <a href="/">Back to main page</a>
-    <form action={% block url %}{{ "/question/" + question_id + "/add_answer" }}{% endblock %} enctype="multipart/form-data" method="post">
+    <form class="form_container" action={% block url %}{{ "/question/" + question_id + "/add_answer" }}{% endblock %} enctype="multipart/form-data" method="post">
+        <h1>Add Answer</h1>
     <label for="answer">Answer:</label>
-    <br>
-    <br>
     <textarea name="message" id="answer" cols="30" rows="10">{% block prev_answer %}{% endblock %}</textarea>
-    <br>
-    <br>
     {% block add_image %}
         <label for="file">Upload a file</label><br>
         <input type="file" id="file" name="image"><br>
     {% endblock %}
-    <button type="submit">Add New Answer</button>
+    <input type="submit" value="Add new answer">
 </form>
 {% endblock %}
