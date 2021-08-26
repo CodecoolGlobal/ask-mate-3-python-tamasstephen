@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, url_for, redirect
 import data_handler
+import search
 import util
 import os
 import comment
@@ -159,6 +160,11 @@ def edit_comment(comment_id):
     return render_template("edit_comment.html", message=message, comment_id=comment_id)
 
 
+@app.route("/search")
+def search_data():
+    questions = search.get_items_with_phrase(request.args.get("q"))
+    print(questions)
+    return render_template("index.html", questions=questions, headers=data_handler.QUESTION_HEADERS_TO_PRINT)
 
 
 if __name__ == "__main__":
