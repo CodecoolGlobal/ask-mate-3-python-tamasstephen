@@ -1,6 +1,7 @@
 import connection
 import util
 from flask import Markup
+from string import ascii_lowercase
 
 
 def get_items_with_phrase(phrase):
@@ -29,8 +30,8 @@ def get_search_coordinates(phrase, expression):
     expression_list = expression.split()
     coordinates = []
     for index, word in enumerate(expression_list):
-        if word.lower() == phrase_list[0].lower():
-            if "".join(expression_list[index:index+len(phrase_list)]).lower() == "".join(phrase_list):
+        if remove_special_characters(word.lower()) == remove_special_characters(phrase_list[0].lower()):
+            if remove_special_characters("".join(expression_list[index:index+len(phrase_list)]).lower()) == remove_special_characters("".join(phrase_list)):
                 coordinates.append((index, index+len(phrase_list)))
     return coordinates
 
@@ -43,6 +44,11 @@ def insert_highlight_tags_to_text(coordinates, text):
         text_list[coordinate[0]] = f"<span class='search_highlight'>{text_list[coordinate[0]]}"
         text_list[coordinate[1]-1] = f"{text_list[coordinate[1]-1]}</span>"
     return Markup(" ".join(text_list))
+
+
+def remove_special_characters(text):
+    raw_text = "".join([letter for letter in list(text) if letter in ascii_lowercase])
+    return raw_text
 
 
 @connection.connection_handler
