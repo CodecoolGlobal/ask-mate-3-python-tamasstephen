@@ -162,7 +162,12 @@ def edit_answer(answer_id):
 @app.route("/comment/<comment_id>/edit", methods=["GET", "POST"])
 def edit_comment(comment_id):
     if request.method == "POST":
-        comment.update_comment(comment_id, request.form["message"], util.get_current_time())
+        comment_mod = comment.get_comment_by_comment_id(comment_id)
+        if not comment_mod[0]["edited_count"]:
+            comment_mod = 1
+        else:
+            comment_mod = comment_mod[0]["edited_count"] + 1
+        comment.update_comment(comment_id, request.form["message"], util.get_current_time(), comment_mod)
         question_id = comment.get_question_id_by_comment_id(comment_id)
         return redirect(url_for("open_question_page", question_id=question_id))
     message = comment.get_comment_by_comment_id(comment_id)[0]["message"]

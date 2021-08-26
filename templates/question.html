@@ -1,110 +1,122 @@
 {% extends "layout.html" %}
 {% block content %}
-    <body>
-    <a href="/">Back to main page</a>
-    <h1>{{ question.title }}</h1>
-    <p style="width: 500px">{{ question.message }}</p>
-    {% for tag in tags %}
-        {% if tag %}
-            <div class="tag"><p>{{ tag[0].name }}</p>
-                <a href="{{ url_for('delete_tag_from_question', tag_id=tag[0].id, question_id=question.id) }}">
-                    <img src="{{ url_for('static', filename='images/icons/close_black_24dp.svg') }}" height="16"
-                         width="16">
-                </a>
+    <div class="wrapper">
+        <div class="question_hl">
+            <h1>{{ question.title }}</h1>
+            <div class="question_more">
+                <a class="primary_button" href="{{ url_for("open_edit_question", question_id=question.id) }}"><p>Edit question</p></a>
+                <a class="primary_button" href="{{ url_for("add_tag", question_id=question.id) }}"><p>Add tag</p></a>
+                <form action={{ "/question/" + this_question_id + "/delete" }} method="post">
+                    <input class="delete_question" type="submit" name="Delete" value="Delete question">
+                </form>
             </div>
-        {% endif %}
-    {% endfor %}
-    {% if question_comments %}
-        {% for comment in question_comments %}
-            <div class="comment_box">
-                <p>{{ comment.message }}</p>
-                <p><a href="{{ url_for("edit_comment", comment_id=comment.id) }}">Edit
-                    comment</a></p>
-                <div>
-                    <p>{{ comment.submission_time }}</p>
-                    {% if comment.edited_count %}
-                        <p>{{ comment.edited_count }}</p>
+        </div>
+        <div class="question_main_content">
+            <div class="question_left">
+                <p>{{ question.message }}</p>
+                {% for tag in tags %}
+                    {% if tag %}
+                        <div class="tag"><p>{{ tag[0].name }}</p>
+                            <a href="{{ url_for('delete_tag_from_question', tag_id=tag[0].id, question_id=question.id) }}">
+                                <img src="{{ url_for('static', filename='images/icons/close_black_24dp.svg') }}" height="16"
+                                     width="16">
+                            </a>
+                        </div>
                     {% endif %}
-                </div>
-                <a href="#popup{{ comment.id }}"><img
-                        src="{{ url_for('static', filename='/images/icons/trash.svg') }}"
-                        width="16" height="16"></a>
-                <div class="popupwindow" id="popup{{ comment.id }}">
-                    <form action="{{ url_for('delete_comment', comment_id=comment.id) }}"
-                          method="post">
-                        <p><a href="#">Cancel</a></p>
-                        <input type="submit" value="Delete">
-                    </form>
-                </div>
-            </div>
-        {% endfor %}
-    {% endif %}
-    {% if question.image %}
-        <p>{{ question.image }}</p>
-    {% endif %}
-    <a href="{{ url_for("open_edit_question", question_id=question.id) }}"><p>Edit question</p></a>
-    <a href="{{ url_for("add_tag", question_id=question.id) }}"><p>Add tag</p></a>
-    <p><a href="{{ url_for('add_comment_to_question', question_id=question.id) }}">Add comment</a></p>
-    <a href="{{ url_for("add_answer", question_id=question.id) }}"><p>Write an answer</p></a>
-    <h3>Answers:</h3>
-    <table>
-        <thead>
-        <tr>
-            <th><p>Message</p></th>
-            <th><p>Image</p></th>
-            <th><p>Votes</p></th>
-            <th><p>Action</p></th>
-        </tr>
-        </thead>
-        {% for answer in answers %}
-            <tr>
-                <td><p>{{ answer.message }}</p></td>
-                <td>
-                    {% if answer_comments %}
-                        {% for key in answer_comments.keys() %}
-                            {% if key == answer.id %}
-                                {% for comment in answer_comments[answer.id] %}
-                                    <div class="comment_box">
-                                        <p>{{ comment.message }}</p>
-                                        <p><a href="{{ url_for("edit_comment", comment_id=comment.id) }}">Edit
-                                            comment</a></p>
-                                        <a href="#popup{{ comment.id }}"><img
-                                                src="{{ url_for('static', filename='/images/icons/trash.svg') }}"
-                                                width="16" height="16"></a>
-                                        <div class="popupwindow" id="popup{{ comment.id }}">
-                                            <form action="{{ url_for('delete_comment', comment_id=comment.id) }}"
-                                                  method="post">
-                                                <p><a href="#">Cancel</a></p>
-                                                <input type="submit" value="Delete">
-                                            </form>
-                                        </div>
+                {% endfor %}
+                <p><a href="{{ url_for('add_comment_to_question', question_id=question.id) }}">Add comment</a></p>
+                {% if question_comments %}
+                    <div class="comment_wrapper">
+                        {% for comment in question_comments %}
+                            <div class="comment_box">
+                                <p>{{ comment.message }}</p>
+                                <p><a href="{{ url_for("edit_comment", comment_id=comment.id) }}">Edit
+                                    comment</a></p>
+                                <div class="comment_more">
+                                    <div>
+                                        <p>{{ comment.submission_time }}</p>
+                                        {% if comment.edited_count %}
+                                            <p>Edited: {{ comment.edited_count }} times</p>
+                                        {% endif %}
                                     </div>
-                                {% endfor %}
-                            {% endif %}
+                                    <a href="#popup{{ comment.id }}">
+                                        <img src="{{ url_for('static', filename='/images/icons/trash.svg') }}" width="16" height="16">
+                                    </a>
+                                    <div class="popupwindow" id="popup{{ comment.id }}">
+                                        <form action="{{ url_for('delete_comment', comment_id=comment.id) }}"
+                                              method="post">
+                                            <p><a href="#">Cancel</a></p>
+                                            <input type="submit" value="Delete">
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         {% endfor %}
-                    {% endif %}
-                </td>
-                <td><p>{{ answer.image }}</p></td>
-                <td><p><a href="{{ url_for('add_comment_to_answer', answer_id=answer.id) }}">Add comment</a></p></td>
-                <td><p><a href="{{ url_for('edit_answer', answer_id=answer.id) }}">Edit answer</a></p></td>
-                <td><p>{{ answer.vote_number }}</p></td>
-                <td>
-                    <form action="{{ url_for("vote_answer_up", answer_id=answer.id ) }}" method="post">
-                        <input type="submit" value="Vote up">
-                    </form>
-                    <form action="{{ url_for("vote_answer_down", answer_id=answer.id ) }}" method="post">
-                        <input type="submit" value="Vote down">
-                    </form>
-                </td>
-                <td>
-                    <form action="{{ url_for('delete_answer_from_question_page', answer_id=answer.id) }}" method="post">
-                        <input type="submit" value="Delete answer">
-                    </form>
-                </td>
+                    </div>
+                {% endif %}
+            </div>
+            {% if question.image %}
+                <img src="{{ question.image }}" alt="image" width="300" height="150">
+            {% endif %}
+        </div>
+        <a href="{{ url_for("add_answer", question_id=question.id) }}"><p>Write an answer</p></a>
+        <h3>Answers:</h3>
+        <table>
+            <thead>
+            <tr>
+                <th><p>Message</p></th>
+                <th><p>Image</p></th>
+                <th><p>Votes</p></th>
+                <th><p>Action</p></th>
             </tr>
-        {% endfor %}
-    </table>
-    <form action={{ "/question/" + this_question_id + "/delete" }} method="post">
-        <input type="submit" name="Delete" value="Delete question">
-    </form>
+            </thead>
+            {% for answer in answers %}
+                <tr>
+                    <td><p>{{ answer.message }}</p></td>
+                    <td>
+                        {% if answer_comments %}
+                            {% for key in answer_comments.keys() %}
+                                {% if key == answer.id %}
+                                    {% for comment in answer_comments[answer.id] %}
+                                        <div class="comment_box">
+                                            <p>{{ comment.message }}</p>
+                                            <p><a href="{{ url_for("edit_comment", comment_id=comment.id) }}">Edit
+                                                comment</a></p>
+                                            <a href="#popup{{ comment.id }}"><img
+                                                    src="{{ url_for('static', filename='/images/icons/trash.svg') }}"
+                                                    width="16" height="16"></a>
+                                            <div class="popupwindow" id="popup{{ comment.id }}">
+                                                <form action="{{ url_for('delete_comment', comment_id=comment.id) }}"
+                                                      method="post">
+                                                    <p><a href="#">Cancel</a></p>
+                                                    <input type="submit" value="Delete">
+                                                </form>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </td>
+                    <td><p>{{ answer.image }}</p></td>
+                    <td><p><a href="{{ url_for('add_comment_to_answer', answer_id=answer.id) }}">Add comment</a></p></td>
+                    <td><p><a href="{{ url_for('edit_answer', answer_id=answer.id) }}">Edit answer</a></p></td>
+                    <td><p>{{ answer.vote_number }}</p></td>
+                    <td>
+                        <form action="{{ url_for("vote_answer_up", answer_id=answer.id ) }}" method="post">
+                            <input type="submit" value="Vote up">
+                        </form>
+                        <form action="{{ url_for("vote_answer_down", answer_id=answer.id ) }}" method="post">
+                            <input type="submit" value="Vote down">
+                        </form>
+                    </td>
+                    <td>
+                        <form action="{{ url_for('delete_answer_from_question_page', answer_id=answer.id) }}" method="post">
+                            <input type="submit" value="Delete answer">
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
 {% endblock %}
