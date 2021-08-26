@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, url_for, redirect
 import data_handler
 import search
-import util
+import tag
 import os
 import comment
 
@@ -37,12 +37,14 @@ def open_question_page(question_id):
     question = util.get_data_by_id(question_id, "question")[0]
     question_comments = comment.get_comments("question_id", question_id)
     answer_comments = {answer["id"]: comment.get_comments("answer_id", answer["id"]) for answer in answers}
+    tags = tag.get_question_tags(question_id)
     data_handler.count_views(question_id)
     return render_template("question.html",
                            question=question,
                            answers=answers,
                            question_comments=question_comments,
                            answer_comments=answer_comments,
+                           tags=tags,
                            this_question_id=question_id)
 
 
@@ -165,6 +167,16 @@ def search_data():
     questions = search.get_items_with_phrase(request.args.get("q"))
     print(questions)
     return render_template("index.html", questions=questions, headers=data_handler.QUESTION_HEADERS_TO_PRINT)
+
+
+@app.route("/question/<question_id>/new-tag", methods=["GET", "POST"])
+def add_tag(question_id):
+    if request.method == "GET":
+        tags = tag.get_unused_tags(question_id)
+        return render_template("tags.html", tags=tags, question_id=question_id)
+    print(request.form)
+    tag.add_tags_to_question(question_id, request.form)
+    return redirect(url_for('open_question_page', question_id=question_id))
 
 
 if __name__ == "__main__":
