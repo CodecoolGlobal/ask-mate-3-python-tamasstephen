@@ -29,7 +29,6 @@ def get_tags_in_use(cursor, question_id):
 
 def add_tags_to_question(question_id, tags):
     for tag in tags.values():
-        print(tag)
         add_attach_tag_to_question(question_id, tag)
 
 
@@ -46,7 +45,6 @@ def add_attach_tag_to_question(cursor, question_id, tag_id):
 
 def get_question_tags(question_id):
     tags = [get_tags_by_tag_id(item["tag_id"]) for item in get_tags_in_use(question_id)]
-    print(tags)
     return tags
 
 

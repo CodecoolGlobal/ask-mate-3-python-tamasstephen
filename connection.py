@@ -1,22 +1,6 @@
-import csv
 import os
 import psycopg2
 import psycopg2.extras
-
-
-def read_data_from_file(filename="sample_data/test_questions.csv"):
-    with open(filename, "r") as csvfile:
-        reader = csv.DictReader(csvfile)
-        return list(reader)
-
-
-def write_data_to_file(data, headers, filename="sample_data/test_questions.csv"):
-    with open(filename, "w") as csvfile:
-        fieldnames = headers
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-        writer.writeheader()
-        for fields in data:
-            writer.writerow(fields)
 
 
 def get_connection_string():
@@ -41,6 +25,5 @@ def connection_handler(fn):
         cursor.close()
         connection.close()
         return result
+
     return wrapper
-
-
