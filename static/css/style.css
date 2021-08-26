@@ -9,9 +9,14 @@ div.popupwindow {
     width: 400px;
     height: 200px;
 }
-div.popupwindow:target{
+
+div.popupwindow:target {
     visibility: visible;
     opacity: 100;
     background-color: whitesmoke;
     box-shadow: 1rem 1rem 1rem rgba(0, 0, 0, .15);
+}
+
+.search_highlight {
+    background-color: yellow;
 }
