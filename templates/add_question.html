@@ -5,30 +5,30 @@
     <title>Add new question | Askmate1</title>
 </head>
 <body>
-    <h1>Add New Question</h1>
-    <a href="/">Back to main page</a>
-    {% if not question_id %}
-		<form action="/add_question" method="post" enctype="multipart/form-data">
-    {% else %}
-    		{% block form %}{% endblock %}
-    {% endif %}
-    <label for="title">Title:</label>
-    <br>
-    <br>
-    <textarea name="title" id="title" cols="20" rows="1">{% block title %}{% endblock %}</textarea>
-    <br>
-    <br>
-    <label for="message">Question:</label>
-    <br>
-    <br>
-    <textarea name="message" id="message" cols="35" rows="10">{% block message %}{% endblock %}</textarea>
-    <br>
-    <br>
-    {% if not question_id %}
+<h1>Add New Question</h1>
+<a href="/">Back to main page</a>
+{% if not question_id %}
+    <form action="/add_question" method="post" enctype="multipart/form-data">
+{% else %}
+        {% block form %}{% endblock %}
+{% endif %}
+<label for="title">Title:</label>
+<br>
+<br>
+<textarea name="title" id="title" cols="20" rows="1">{% block title %}{% endblock %}</textarea>
+<br>
+<br>
+<label for="message">Question:</label>
+<br>
+<br>
+<textarea name="message" id="message" cols="35" rows="10">{% block message %}{% endblock %}</textarea>
+<br>
+<br>
+{% if not question_id %}
     <label for="file">Upload a file</label><br>
     <input type="file" id="file" name="image"><br>
-    {% endif %}
-    <input type="submit" value="Add New Question">
+{% endif %}
+<input type="submit" value="Add New Question">
 </form>
 </body>
 </html>
