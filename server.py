@@ -105,6 +105,13 @@ def vote_question_up(question_id):
     return redirect("/")
 
 
+@app.route("/comments/<comment_id>/delete", methods=['POST'])
+def delete_comment(comment_id):
+    question_id = comment.get_question_id_by_comment_id(comment_id)
+    comment.delete_comment_by_comment_id(comment_id)
+    return redirect(url_for("open_question_page", question_id=question_id))
+
+
 @app.route("/question/<question_id>/vote_down", methods=["POST"])
 def vote_question_down(question_id):
     data_handler.handle_votes(int(question_id), "vote_down")

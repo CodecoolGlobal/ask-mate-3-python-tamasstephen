@@ -69,3 +69,11 @@ def get_question_id_by_comment_id(comment_id):
         return comment["question_id"]
     question_id = data_handler.get_question_id_by_answer_id(comment["answer_id"])[0]["question_id"]
     return question_id
+
+@connection.connection_handler
+def delete_comment_by_comment_id(cursor, comment_id):
+    query = '''
+    DELETE from comment
+    WHERE id = %(comment_id)s
+    '''
+    cursor.execute(query, {"comment_id": comment_id})
