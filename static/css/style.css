@@ -1,5 +1,21 @@
 * {
     box-sizing: border-box;
+    font-family: "Cabin", sans-serif;
+}
+
+:root {
+	--color-yellow-highlight: yellow;
+	--color-bg-white: whitesmoke;
+}
+
+body {
+	margin: 0;
+	margin-bottom: 2rem;
+}
+
+.wrapper {
+	width: 70%;
+	margin: 0 auto;
 }
 
 div.popupwindow {
@@ -13,10 +29,97 @@ div.popupwindow {
 div.popupwindow:target {
     visibility: visible;
     opacity: 100;
-    background-color: whitesmoke;
+    background-color: var(--color-bg-white);
     box-shadow: 1rem 1rem 1rem rgba(0, 0, 0, .15);
 }
 
 .search_highlight {
-    background-color: yellow;
+    background-color: var(--color-yellow-highlight);
 }
+
+nav {
+	background-color: white;
+	box-shadow: 1rem 1rem 1rem rgba(0, 0, 0, .15);
+	margin-bottom: 1rem;
+}
+
+nav > .wrapper {
+	display: flex;
+	align-items: center;
+}
+
+.logo {
+	padding-right: 1rem;
+	font-size: 1.5rem;
+	font-weight: 700;
+}
+
+/* INDEX PAGE */
+.top_options {
+	display: flex;
+	width: 100%;
+	align-items: center;
+	justify-content: space-between;
+	padding-top: 1rem;
+	padding-bottom: 2rem;
+}
+
+.card_frame {
+	display: flex;
+	align-items: center;
+	width: 100%;
+	justify-content: space-between;
+}
+
+.card_frame + .card_frame {
+	margin-top: 1rem;
+}
+
+.vote_box {
+	background-color: grey;
+	margin-right: 1rem;
+	border-radius: 2px;
+	padding: 0.5rem;
+}
+
+.topic_box {
+	flex-grow: 2;
+	display: flex;
+	align-items: center;
+	padding: 0.5rem;
+	border-radius: 8px;
+	box-shadow: 0rem 0rem 1rem rgba(0, 0, 0, .15);
+	padding-left: 1rem;
+}
+
+.topic_box > div {
+	flex-grow: 2;
+}
+
+.open_all {
+	width: 100%;
+	text-align: center;
+	padding-top: 2rem;
+	padding-bottom: 2rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

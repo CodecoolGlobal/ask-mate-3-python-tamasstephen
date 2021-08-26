@@ -1,56 +1,59 @@
 {% extends "layout.html" %}
 {% block content %}
-<a href="/add_question">Add New Question</a>
-{% if questions %}
-    {% if not all %}
-        <form action="/" method="get">
-    {% else %}
-        <form action="{{ url_for('open_all_questions')}}" method="get">
-    {% endif %}
-	<select name="sort">
-		<option value="submission_time_desc">Submission time descending</option>
-		<option value="submission_time">Submission time ascending</option>
-		<option value="view_number">Sort by view number ascending</option>
-		<option value="view_number_desc">Sort by view number descending</option>
-		<option value="vote_number">Sort by vote number ascending</option>
-		<option value="vote_number_desc">Sort by vote number descending</option>
-		<option value="title">Sort by title A-Z</option>
-		<option value="title_desc">Sort by title Z-A</option>
-		<option value="message">Sort by message A-Z</option>
-		<option value="message_desc">Sort by message Z-A</option>
-	</select>
-	<input type="submit" value="Sort">
-</form>
-<br>
-{% for question in questions %}
-    {% if question %}
-        <div class="card_frame">
-            <div class="vote_box">
-                <form action="{{ url_for("vote_question_up", question_id=question.id) }}" method="post">
-                    <input type="submit" value="Vote up">
-                </form>
-                <p class="vote_label">Votes</p>
-                <p>{{ question.vote_number }}</p>
-                <form action="{{ url_for("vote_question_down", question_id=question.id) }}" method="post">
-                    <input type="submit" value="Vote down">
-                </form>
-            </div>
-            <div class="topic_box">
-                <div>
-                    <h3><a href="{{ url_for('open_question_page', question_id=question['id']) }}">{{ question.title }}</a></h3>
-                    <p>{{ question.message }}</p>
-                    <div class="misc_data">
-                        <p>{{ question.submission_time }}</p>
-                        <p>View number: {{ question.view_number }}</p>
-                    </div>
+<div class="wrapper">
+    <div class="top_options">
+        <a href="/add_question">Add New Question</a>
+        {% if questions %}
+            {% if not all %}
+                <form action="/" method="get">
+            {% else %}
+                <form action="{{ url_for('open_all_questions')}}" method="get">
+            {% endif %}
+            <select name="sort">
+                <option value="submission_time_desc">Submission time descending</option>
+                <option value="submission_time">Submission time ascending</option>
+                <option value="view_number">Sort by view number ascending</option>
+                <option value="view_number_desc">Sort by view number descending</option>
+                <option value="vote_number">Sort by vote number ascending</option>
+                <option value="vote_number_desc">Sort by vote number descending</option>
+                <option value="title">Sort by title A-Z</option>
+                <option value="title_desc">Sort by title Z-A</option>
+                <option value="message">Sort by message A-Z</option>
+                <option value="message_desc">Sort by message Z-A</option>
+            </select>
+            <input type="submit" value="Sort">
+        </form>
+    </div>
+    {% for question in questions %}
+        {% if question %}
+            <div class="card_frame">
+                <div class="vote_box">
+                    <form action="{{ url_for("vote_question_up", question_id=question.id) }}" method="post">
+                        <input type="submit" value="Vote up">
+                    </form>
+                    <p class="vote_label">Votes</p>
+                    <p>{{ question.vote_number }}</p>
+                    <form action="{{ url_for("vote_question_down", question_id=question.id) }}" method="post">
+                        <input type="submit" value="Vote down">
+                    </form>
                 </div>
-                {% if question.image %}
-                    <img src="{{ question.image }}" alt="image" width="300" height="150">
-                {% endif %}
+                <div class="topic_box">
+                    <div>
+                        <h3><a href="{{ url_for('open_question_page', question_id=question['id']) }}">{{ question.title }}</a></h3>
+                        <p>{{ question.message }}</p>
+                        <div class="misc_data">
+                            <p>{{ question.submission_time }}</p>
+                            <p>View number: {{ question.view_number }}</p>
+                        </div>
+                    </div>
+                    {% if question.image %}
+                        <img src="{{ question.image }}" alt="image" width="300" height="150">
+                    {% endif %}
+                </div>
             </div>
-        </div>
+        {% endif %}
+    {% endfor %}
+        <p class="open_all"><a href="{{ url_for('open_all_questions') }}">All questions</a></p>
     {% endif %}
-{% endfor %}
-    <p><a href="{{ url_for('open_all_questions') }}">All questions</a></p>
-{% endif %}
+</div>
 {% endblock %}

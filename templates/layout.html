@@ -3,15 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{{ url_for('static', filename='/css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cabin:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     <title>AskMate</title>
 </head>
 <body>
 <nav>
-    <p class="logo"><a href="{{ url_for('open_questions') }}">Ask Mate</a></p>
-    <form class="search_bar" action="{{ url_for('search_data') }}" method="get">
-        <input type="text" name="q">
-        <input type="submit" value="Search">
-    </form>
+    <div class="wrapper">
+        <p class="logo"><a href="{{ url_for('open_questions') }}">Ask Mate</a></p>
+        <form class="search_bar" action="{{ url_for('search_data') }}" method="get">
+            <input type="text" name="q">
+            <input type="submit" value="Search">
+        </form>
+    </div>
 </nav>
 {% block content %}{% endblock %}
 </body>
