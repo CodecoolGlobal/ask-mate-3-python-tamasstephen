@@ -61,7 +61,7 @@ def get_tags_by_tag_id(cursor, tag_id):
 
 
 def create_new_tag(tag):
-    #later need to validate(wether tag exist or not)
+    # later need to validate(wether tag exist or not)
     add_new_tag_to_db(tag)
 
 
@@ -73,3 +73,12 @@ def add_new_tag_to_db(cursor, tag):
     VALUES(%(tag)s)
     '''
     cursor.execute(query, {'tag': tag})
+
+
+@connection.connection_handler
+def delete_tag_from_question_tag_db(cursor, question_id, tag_id):
+    query = '''
+    DELETE FROM question_tag
+    WHERE question_id = %(question_id)s and tag_id = %(tag_id)s
+    '''
+    cursor.execute(query, {"question_id": question_id, "tag_id": tag_id})

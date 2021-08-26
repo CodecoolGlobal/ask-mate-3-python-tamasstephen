@@ -6,7 +6,12 @@
     <p style="width: 500px">{{ question.message }}</p>
     {% for tag in tags %}
         {% if tag %}
-            <div class="tag"><p>{{ tag[0].name }}</p></div>
+            <div class="tag"><p>{{ tag[0].name }}</p>
+                <a href="{{ url_for('delete_tag_from_question', tag_id=tag[0].id, question_id=question.id) }}">
+                    <img src="{{ url_for('static', filename='images/icons/close_black_24dp.svg') }}" height="16"
+                                 width="16">
+                </a>
+            </div>
         {% endif %}
     {% endfor %}
     {% if question_comments %}

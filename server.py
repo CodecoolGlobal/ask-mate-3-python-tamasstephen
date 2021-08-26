@@ -189,6 +189,12 @@ def add_tag(question_id):
     return redirect(url_for('open_question_page', question_id=question_id))
 
 
+@app.route("/question/<question_id>/tag/<tag_id>/delete")
+def delete_tag_from_question(question_id, tag_id):
+    tag.delete_tag_from_question_tag_db(question_id, tag_id)
+    return redirect(url_for('open_question_page', question_id=question_id))
+
+
 if __name__ == "__main__":
     app.run(
         port=9000,
