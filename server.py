@@ -172,7 +172,6 @@ def edit_comment(comment_id):
 @app.route("/search")
 def search_data():
     questions = search.get_items_with_phrase(request.args.get("q"))
-    print(questions)
     return render_template("index.html", questions=questions, headers=data_handler.QUESTION_HEADERS_TO_PRINT)
 
 
@@ -181,7 +180,6 @@ def add_tag(question_id):
     if request.method == "GET":
         tags = tag.get_unused_tags(question_id)
         return render_template("tags.html", tags=tags, question_id=question_id)
-    print(request.form.get("new_tag"))
     if request.form.get('new_tag'):
         tag.create_new_tag(request.form.get("new_tag"))
     else:

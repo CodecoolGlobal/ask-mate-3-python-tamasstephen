@@ -16,7 +16,6 @@ def get_items_with_phrase(phrase):
     for question in filtered_questions:
         question["message"] = highlight_msg(question["message"], phrase)
         question["title"] = highlight_msg(question["title"], phrase)
-    print(filtered_questions)
     return filtered_questions
 
 
