@@ -11,21 +11,37 @@ HEADERS = ["id", "submission_time", "view_number", "vote_number", "title", "mess
 ANSWER_HEADERS = ["id", "submission_time", "vote_number", "question_id", "message", "image"]
 QUESTION_HEADERS_TO_PRINT = ["Submission time", "View number", "Vote number", "Title", "Message", "Image Path"]
 ALLOWED_FILES = [".jpg", ".png"]
-UPLOAD_FOLDER = ["./images/questions", "./images/answers"]
+UPLOAD_FOLDER = ["./static/images/question", "./static/images/answer"]
 
 
 def valid_file_extension(filename):
     return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_FILES
 
 
-def get_questions_from_file(sorting_rule="submission_time_desc"):
+def get_all_questions(sorting_rule="submission_time_desc"):
     questions = util.get_mutable_list()
     if not questions:
         return None
     sorted_questions = util.sort_questions(questions, sorting_rule)
-    # util.convert_questions_secs_to_date(sorted_questions)
     return sorted_questions
 
+
+def get_last_five_questions(sorting_rule="submission_time_desc"):
+    questions = get_last_five_questions_from_db()
+    if sorting_rule == "submission_time_desc":
+        return questions
+    return util.sort_questions(questions, sorting_rule)
+
+
+@connection.connection_handler
+def get_last_five_questions_from_db(cursor):
+    query = """
+        SELECT * FROM question
+        ORDER BY submission_time DESC
+        LIMIT 5
+    """
+    cursor.execute(query)
+    return cursor.fetchall()
 
 @connection.connection_handler
 def get_answers_by_question_id(cursor, question_id):
@@ -116,7 +132,7 @@ def get_data_from_form(form_data):
 
 def add_missing_initial_values_to_question(new_data, image_name, question_id=None):
     new_data["submission_time"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    new_data["image"] = f"{UPLOAD_FOLDER[0] if not question_id else UPLOAD_FOLDER[1]}/{image_name}" if image_name else ""
+    new_data["image"] = f"{UPLOAD_FOLDER[0][1:] if not question_id else UPLOAD_FOLDER[1][1:]}/{image_name}" if image_name else ""
     new_data["vote_number"] = "0"
     if not question_id:
         new_data["view_number"] = "0"
@@ -165,7 +181,6 @@ def delete_all_answers(question_id):
 
 
 def handle_votes(item_id, vote, table="question"):
-    print(item_id, "fuck")
     vote_count = 1 if vote == "vote_up" else -1
     handle_db_votes(table, vote_count, item_id)
 

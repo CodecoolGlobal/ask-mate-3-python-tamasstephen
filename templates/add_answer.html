@@ -1,10 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>Add Answer | Askmate1</title>
-</head>
-<body>
+{% extends "layout.html" %}
+{% block content %}
     <h1>Add Answer</h1>
     <a href="/">Back to main page</a>
     <form action={% block url %}{{ "/question/" + question_id + "/add_answer" }}{% endblock %} enctype="multipart/form-data" method="post">
@@ -20,5 +15,4 @@
     {% endblock %}
     <button type="submit">Add New Answer</button>
 </form>
-</body>
-</html>
+{% endblock %}

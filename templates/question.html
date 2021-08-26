@@ -1,9 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Question</title>
-</head>
+{% extends "layout.html" %}
+{% block content %}
 <body>
 	<a href="/">Back to main page</a>
 	<h1>{{ question.title }}</h1>
@@ -77,5 +73,4 @@
 	"/question/" + this_question_id + "/delete" }} method="post">
 	<input type="submit" name="Delete" value="Delete question">
 	</form>
-</body>
-</html>
+{% endblock %}

@@ -2,11 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/style.css') }}">
     <title>AskMate</title>
 </head>
 <body>
 <nav>
-    <p class="logo">Ask Mate</p>
+    <p class="logo"><a href="{{ url_for('open_questions') }}">Ask Mate</a></p>
+    <form class="search_bar" action="{{ url_for('search_data') }}" method="get">
+        <input type="text" name="q">
+        <input type="submit" value="Search">
+    </form>
 </nav>
 {% block content %}{% endblock %}
 </body>

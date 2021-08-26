@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, url_for, redirect
 import data_handler
+import search
 import util
 import os
 import comment
@@ -10,14 +11,24 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = data_handler.UPLOAD_FOLDER
 
 
-@app.route("/", methods=["POST", "GET"])
+@app.route("/")
 def open_questions():
-    if request.method == "POST":
-        questions = data_handler.get_questions_from_file(request.form["sort"])
+    if request.args.get("sort"):
+        questions = data_handler.get_last_five_questions(request.args.get("sort"))
         return render_template("index.html", questions=questions, headers=data_handler.QUESTION_HEADERS_TO_PRINT)
-    questions = data_handler.get_questions_from_file()
+    questions = data_handler.get_last_five_questions_from_db()
     question_id = ""
     return render_template("index.html", questions=questions, headers=data_handler.QUESTION_HEADERS_TO_PRINT, question_id=question_id)
+
+
+@app.route("/list")
+def open_all_questions():
+    if request.args.get("sort"):
+        questions = data_handler.get_all_questions(request.args.get("sort"))
+        return render_template("index.html", questions=questions, headers=data_handler.QUESTION_HEADERS_TO_PRINT, all=True)
+    questions = data_handler.get_all_questions()
+    question_id = ""
+    return render_template("index.html", questions=questions, headers=data_handler.QUESTION_HEADERS_TO_PRINT, question_id=question_id, all=True)
 
 
 @app.route("/question/<question_id>")
@@ -26,7 +37,6 @@ def open_question_page(question_id):
     question = util.get_data_by_id(question_id, "question")[0]
     question_comments = comment.get_comments("question_id", question_id)
     answer_comments = {answer["id"]: comment.get_comments("answer_id", answer["id"]) for answer in answers}
-    print(answer_comments)
     data_handler.count_views(question_id)
     return render_template("question.html",
                            question=question,
@@ -53,7 +63,6 @@ def open_add_question():
 # REFACTORING Needed
 @app.route("/question/<question_id>/add_answer", methods=["POST", "GET"])
 def add_answer(question_id):
-    print("isfasd")
     if request.method == "POST":
         file = request.files["image"]
         if file.filename != "":
@@ -90,7 +99,6 @@ def delete_answer_from_question_page(answer_id):
 
 @app.route("/question/<question_id>/vote_up", methods=["POST"])
 def vote_question_up(question_id):
-    print(question_id)
     data_handler.handle_votes(int(question_id), "vote_up")
     return redirect("/")
 
@@ -149,10 +157,14 @@ def edit_comment(comment_id):
         question_id = comment.get_question_id_by_comment_id(comment_id)
         return redirect(url_for("open_question_page", question_id=question_id))
     message = comment.get_comment_by_comment_id(comment_id)[0]["message"]
-    print(comment_id)
     return render_template("edit_comment.html", message=message, comment_id=comment_id)
 
 
+@app.route("/search")
+def search_data():
+    questions = search.get_items_with_phrase(request.args.get("q"))
+    print(questions)
+    return render_template("index.html", questions=questions, headers=data_handler.QUESTION_HEADERS_TO_PRINT)
 
 
 if __name__ == "__main__":
