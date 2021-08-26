@@ -11,7 +11,7 @@ HEADERS = ["id", "submission_time", "view_number", "vote_number", "title", "mess
 ANSWER_HEADERS = ["id", "submission_time", "vote_number", "question_id", "message", "image"]
 QUESTION_HEADERS_TO_PRINT = ["Submission time", "View number", "Vote number", "Title", "Message", "Image Path"]
 ALLOWED_FILES = [".jpg", ".png"]
-UPLOAD_FOLDER = ["./images/questions", "./images/answers"]
+UPLOAD_FOLDER = ["./static/images/question", "./static/images/answer"]
 
 
 def valid_file_extension(filename):
@@ -132,7 +132,7 @@ def get_data_from_form(form_data):
 
 def add_missing_initial_values_to_question(new_data, image_name, question_id=None):
     new_data["submission_time"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    new_data["image"] = f"{UPLOAD_FOLDER[0] if not question_id else UPLOAD_FOLDER[1]}/{image_name}" if image_name else ""
+    new_data["image"] = f"{UPLOAD_FOLDER[0][1:] if not question_id else UPLOAD_FOLDER[1][1:]}/{image_name}" if image_name else ""
     new_data["vote_number"] = "0"
     if not question_id:
         new_data["view_number"] = "0"
