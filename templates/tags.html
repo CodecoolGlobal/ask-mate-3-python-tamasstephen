@@ -6,4 +6,9 @@
     {% endfor %}
     <input type="submit">
 </form>
+    <form action="{{ url_for('add_tag', question_id=question_id) }}" method="post">
+        <label for="new_tag">Create new tag</label>
+        <input type="text" name="new_tag">
+        <input type="submit">
+    </form>
 {% endblock %}

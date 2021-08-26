@@ -181,8 +181,11 @@ def add_tag(question_id):
     if request.method == "GET":
         tags = tag.get_unused_tags(question_id)
         return render_template("tags.html", tags=tags, question_id=question_id)
-    print(request.form)
-    tag.add_tags_to_question(question_id, request.form)
+    print(request.form.get("new_tag"))
+    if request.form.get('new_tag'):
+        tag.create_new_tag(request.form.get("new_tag"))
+    else:
+        tag.add_tags_to_question(question_id, request.form)
     return redirect(url_for('open_question_page', question_id=question_id))
 
 

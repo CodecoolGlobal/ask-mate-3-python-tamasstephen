@@ -59,3 +59,17 @@ def get_tags_by_tag_id(cursor, tag_id):
     cursor.execute(query, {"tag_id": tag_id})
     return cursor.fetchall()
 
+
+def create_new_tag(tag):
+    #later need to validate(wether tag exist or not)
+    add_new_tag_to_db(tag)
+
+
+@connection.connection_handler
+def add_new_tag_to_db(cursor, tag):
+    query = '''
+    INSERT INTO tag
+    (name)
+    VALUES(%(tag)s)
+    '''
+    cursor.execute(query, {'tag': tag})
