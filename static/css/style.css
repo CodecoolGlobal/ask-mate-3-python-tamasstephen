@@ -23,6 +23,11 @@ body {
 	background-color: var(--color-light); 
 }
 
+div.wrapper {
+	animation: .1s fadein;
+
+}
+
 p, h3 {
 	margin: 0;
 	line-height: 150%;
@@ -141,11 +146,11 @@ div.popupwindow form {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	margin-top: 1rem;
 }
 
 
 div.popupwindow form > input {
-	margin-top: 1rem;
 	margin-left: 1rem;
 }
 
@@ -154,6 +159,7 @@ div.popupwindow:target {
     opacity: 100;
     background-color: var(--color-bg-white);
     box-shadow: 1rem 1rem 1rem rgba(0, 0, 0, .15);
+    animation: .15s card_appear;
 }
 
 .search_highlight {
@@ -349,6 +355,7 @@ div.topic_box .misc_data p {
 	margin-bottom: 2rem;
 	border-radius: 8px;
 	padding: 1rem;
+	animation: .15s card_appear;
 }
 
 .comment_box + .comment_box {
@@ -477,9 +484,26 @@ input[type="submit"].answer_delete {
 	margin-top: 1rem;
 }
 
+/* Basic anim*/
+@keyframes fadein {
+	from {
+		opacity: 0;
+	}
 
+	to {
+		opacity: 100;
+	}
+}
 
+@keyframes card_appear {
+	from {
+		scale: 0;
+	}
 
+	to {
+		scale: 1;
+	}
+}
 
 
 
