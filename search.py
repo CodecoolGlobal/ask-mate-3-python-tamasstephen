@@ -12,8 +12,16 @@ def get_items_with_phrase(phrase):
                           if phrase in item["message"].lower() or
                           phrase in item["title"].lower() or
                           item["id"] in answers_question_id_s]
+    for question in filtered_questions:
+        question["message"] = highlight_msg(question["message"], phrase)
+        question["title"] = highlight_msg(question["title"], phrase)
     print(filtered_questions)
     return filtered_questions
+
+
+def highlight_msg(msg, phrase):
+    coordinates = get_search_coordinates(phrase, msg)
+    return insert_highlight_tags_to_text(coordinates, msg)
 
 
 def get_search_coordinates(phrase, expression):
@@ -25,6 +33,16 @@ def get_search_coordinates(phrase, expression):
             if "".join(expression_list[index:index+len(phrase_list)]).lower() == "".join(phrase_list):
                 coordinates.append((index, index+len(phrase_list)))
     return coordinates
+
+
+def insert_highlight_tags_to_text(coordinates, text):
+    if not coordinates:
+        return text
+    text_list = text.split()
+    for coordinate in coordinates:
+        text_list[coordinate[0]] = f"<span class='search_highlight'>{text_list[coordinate[0]]}"
+        text_list[coordinate[1]-1] = f"{text_list[coordinate[1]-1]}</span>"
+    return Markup(" ".join(text_list))
 
 
 @connection.connection_handler

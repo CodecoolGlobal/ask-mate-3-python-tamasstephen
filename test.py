@@ -19,3 +19,4 @@ test.assertEqual(data_handler.get_answers_by_question_id(1)[0]["id"], 1)
 test.assertEqual(search.get_items_with_phrase("list")[0]["title"], "Wordpress loading multiple jQuery Versions")
 
 test.assertEqual(search.get_search_coordinates("it", PHRASE), [(0, 1), (3, 4)])
+test.assertEqual(search.insert_highlight_tags_to_text([(0, 1), (3, 4)], PHRASE), "<span class='search_highlight'>It </span>is what <span class='search_highlight'>it </span>is")
