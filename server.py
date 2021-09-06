@@ -7,8 +7,8 @@ import search
 import tag
 import os
 import comment
+import user_commits
 from bonus_questions import SAMPLE_QUESTIONS
-
 import util
 
 app = Flask(__name__)
@@ -65,11 +65,15 @@ def open_add_question():
     if request.method == "GET":
         return render_template("add_question.html")
     file = request.files["image"]
+    # TODO: remove TEST DATA ------------------
+    session['user_id'] = 1
+    # ----------------------------
+    user_id = session['user_id']
     if file.filename != "":
         file.save(os.path.join(app.config["UPLOAD_FOLDER"][0], file.filename))
-        data_handler.add_question(request.form, image_name=file.filename)
+        data_handler.add_question(request.form, user_id, image_name=file.filename)
     else:
-        data_handler.add_question(request.form)
+        data_handler.add_question(request.form, user_id)
     return redirect("/")
 
 
@@ -78,11 +82,15 @@ def open_add_question():
 def add_answer(question_id):
     if request.method == "POST":
         file = request.files["image"]
+        # TODO: remove TEST DATA ------------------
+        session['user_id'] = 1
+        # ----------------------------
+        user_id = session['user_id']
         if file.filename != "":
             file.save(os.path.join(app.config["UPLOAD_FOLDER"][1], file.filename))
-            data_handler.add_new_answer(request.form, question_id, image_name=file.filename)
+            data_handler.add_new_answer(request.form, question_id, user_id, image_name=file.filename)
         else:
-            data_handler.add_new_answer(request.form, question_id)
+            data_handler.add_new_answer(request.form, question_id, user_id)
         return redirect(url_for('open_question_page', question_id=question_id))
     return render_template("add_answer.html", question_id=question_id)
 
@@ -146,7 +154,12 @@ def vote_answer_down(answer_id):
 @app.route("/question/<question_id>/comment", methods=["GET", "POST"])
 def add_comment_to_question(question_id):
     if request.method == "POST":
+        # TODO: remove TEST DATA ------------------
+        session['user_id'] = 1
+        # ----------------------------
+        user_id = session['user_id']
         comment.add_comment_to_question_db(question_id, request.form["message"], util.get_current_time())
+        user_commits.handle_new_message(user_id, "comment_id", "comment", "comment_to_user")
         return redirect(url_for("open_question_page", question_id=question_id))
     return render_template("comment.html", question_id=question_id)
 
@@ -154,8 +167,13 @@ def add_comment_to_question(question_id):
 @app.route("/answer/<answer_id>/new-comment", methods=["GET", "POST"])
 def add_comment_to_answer(answer_id):
     if request.method == "POST":
+        # TODO: remove TEST DATA ------------------
+        session['user_id'] = 1
+        # ----------------------------
+        user_id = session['user_id']
         comment.add_comment_to_answer_db(answer_id, request.form["message"], util.get_current_time())
         question_id = data_handler.get_question_id_by_answer_id(answer_id)[0]["question_id"]
+        user_commits.handle_new_message(user_id, "comment_id", "comment", "comment_to_user")
         return redirect(url_for("open_question_page", question_id=question_id))
     return render_template("answer_comment.html", answer_id=answer_id)
 
