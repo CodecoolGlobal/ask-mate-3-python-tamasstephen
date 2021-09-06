@@ -1,5 +1,7 @@
 import bcrypt
 from flask import Flask, render_template, request, url_for, redirect, session
+
+import connection
 import data_handler
 import search
 import tag
@@ -11,7 +13,6 @@ import util
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = data_handler.UPLOAD_FOLDER
-
 
 app.secret_key = os.urandom(12)
 
@@ -217,13 +218,24 @@ def registration():
         hashed_pw = hash_password(request.form['password'])
         username = request.form['username']
 
+
 def hash_password(plain_text_password):
     hashed_bytes = bcrypt.hashpw(plain_text_password.encode('utf-8'), bcrypt.gensalt())
     return hashed_bytes.decode('utf-8')
 
+
 def verify_password(plain_text_word, hashed_password):
     hashed_bytes_password = hashed_password.encode('utf-8')
     return bcrypt.checkpw(plain_text_word.encode('utf-8'), hashed_bytes_password)
+
+
+@connection.connection_handler
+def register_new_account_into_db(cursor, username, hashed_password):
+    query = '''
+    INSERT INTO user_table(user_name, )
+    '''
+
+
 # register END
 
 
