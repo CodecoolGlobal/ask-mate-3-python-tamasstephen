@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, url_for, redirect
+import bcrypt
+from flask import Flask, render_template, request, url_for, redirect, session
 import data_handler
 import search
 import tag
@@ -12,6 +13,9 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = data_handler.UPLOAD_FOLDER
 
 
+app.secret_key = os.urandom(12)
+
+
 @app.route("/")
 def open_questions():
     if request.args.get("sort"):
@@ -19,19 +23,23 @@ def open_questions():
         return render_template("index.html", questions=questions, headers=data_handler.QUESTION_HEADERS_TO_PRINT)
     questions = data_handler.get_last_five_questions_from_db()
     question_id = ""
-    return render_template("index.html", questions=questions, headers=data_handler.QUESTION_HEADERS_TO_PRINT, question_id=question_id)
+    return render_template("index.html", questions=questions, headers=data_handler.QUESTION_HEADERS_TO_PRINT,
+                           question_id=question_id)
 
 
 @app.route("/list")
 def open_all_questions():
     if request.args.get("sort"):
         questions = data_handler.get_all_questions(request.args.get("sort"))
-        return render_template("index.html", questions=questions, headers=data_handler.QUESTION_HEADERS_TO_PRINT, all=True)
+        return render_template("index.html", questions=questions, headers=data_handler.QUESTION_HEADERS_TO_PRINT,
+                               all=True)
     questions = data_handler.get_all_questions()
     question_id = ""
-    return render_template("index.html", questions=questions, headers=data_handler.QUESTION_HEADERS_TO_PRINT, question_id=question_id, all=True)
+    return render_template("index.html", questions=questions, headers=data_handler.QUESTION_HEADERS_TO_PRINT,
+                           question_id=question_id, all=True)
 
 
+# validate if user logged in or not
 @app.route("/question/<question_id>")
 def open_question_page(question_id):
     answers = data_handler.get_answers_by_question_id(question_id)
@@ -49,6 +57,7 @@ def open_question_page(question_id):
                            this_question_id=question_id)
 
 
+# validate if user logged in or not
 # REFACTORING Needed
 @app.route("/add_question", methods=["GET", "POST"])
 def open_add_question():
@@ -96,7 +105,7 @@ def open_edit_question(question_id):
 @app.route("/answer/<answer_id>/delete", methods=["POST"])
 def delete_answer_from_question_page(answer_id):
     question_id = util.get_data_by_id(answer_id, "answer")[0]["question_id"]
-    util.delete_item_by_id(answer_id,"answer")
+    util.delete_item_by_id(answer_id, "answer")
     return redirect(url_for("open_question_page", question_id=question_id))
 
 
@@ -199,6 +208,25 @@ def delete_tag_from_question(question_id, tag_id):
     return redirect(url_for('open_question_page', question_id=question_id))
 
 
+# register BEGIN
+@app.route('/registration', methods=['GET', 'POST'])
+def registration():
+    if request.method == 'GET':
+        return render_template('register.html')
+    else:
+        hashed_pw = hash_password(request.form['password'])
+        username = request.form['username']
+
+def hash_password(plain_text_password):
+    hashed_bytes = bcrypt.hashpw(plain_text_password.encode('utf-8'), bcrypt.gensalt())
+    return hashed_bytes.decode('utf-8')
+
+def verify_password(plain_text_word, hashed_password):
+    hashed_bytes_password = hashed_password.encode('utf-8')
+    return bcrypt.checkpw(plain_text_word.encode('utf-8'), hashed_bytes_password)
+# register END
+
+
 @app.route("/bonus-questions")
 def main():
     return render_template('bonus_questions.html', questions=SAMPLE_QUESTIONS)
@@ -209,4 +237,3 @@ if __name__ == "__main__":
         port=5000,
         debug=True
     )
-
