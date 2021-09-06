@@ -279,6 +279,12 @@ def logout():
     return redirect(url_for('open_all_questions'))
 
 
+@app.route('/users')
+def list_all_users():
+    users = data_handler.get_all_users()
+    return render_template('list_users.html', users=users)
+
+
 @app.route("/bonus-questions")
 def main():
     return render_template('bonus_questions.html', questions=SAMPLE_QUESTIONS)

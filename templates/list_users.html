@@ -1,0 +1,15 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="topic_box">
+{% for user in users %}
+    <a href="#">{{ user.user_name }}</a>
+    <div class="misc_data">
+        <p>Registration Date: {{ user.registration_date }}</p>
+        <p>Asked questions: {{ user.asked_questions }}</p>
+        <p>Number_of_answers: {{ user.number_of_answers }}</p>
+        <p>Number of comments: {{ user.number_of_comments }}</p>
+        <p>Reputation: {{ user.reputation }}</p>
+    </div>
+{% endfor %}
+</div>
+{% endblock %}

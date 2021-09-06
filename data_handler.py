@@ -7,7 +7,6 @@ import os
 from datetime import datetime
 from psycopg2 import sql
 
-
 HEADERS = ["id", "submission_time", "view_number", "vote_number", "title", "message", "image"]
 ANSWER_HEADERS = ["id", "submission_time", "vote_number", "question_id", "message", "image"]
 QUESTION_HEADERS_TO_PRINT = ["Submission time", "View number", "Vote number", "Title", "Message", "Image Path"]
@@ -44,6 +43,7 @@ def get_last_five_questions_from_db(cursor):
     cursor.execute(query)
     return cursor.fetchall()
 
+
 @connection.connection_handler
 def get_answers_by_question_id(cursor, question_id):
     query = """
@@ -56,7 +56,7 @@ def get_answers_by_question_id(cursor, question_id):
 
 @connection.connection_handler
 def update_answer(cursor, answer_id, message):
-    query="""
+    query = """
     UPDATE answer
     SET message = %(message)s
     WHERE id = %(answer_id)s
@@ -145,7 +145,8 @@ def get_data_from_form(form_data):
 
 def add_missing_initial_values_to_question(new_data, image_name, question_id=None):
     new_data["submission_time"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    new_data["image"] = f"{UPLOAD_FOLDER[0][1:] if not question_id else UPLOAD_FOLDER[1][1:]}/{image_name}" if image_name else ""
+    new_data[
+        "image"] = f"{UPLOAD_FOLDER[0][1:] if not question_id else UPLOAD_FOLDER[1][1:]}/{image_name}" if image_name else ""
     new_data["vote_number"] = "0"
     if not question_id:
         new_data["view_number"] = "0"
@@ -210,3 +211,11 @@ def handle_db_votes(cursor, table, vote, item_id):
                                          item_id=sql.Literal(item_id)))
 
 
+@connection.connection_handler
+def get_all_users(cursor):
+    query = '''
+    SELECT user_name, registration_date, asked_questions, number_of_answers, number_of_comments, reputation
+    FROM user_table
+    '''
+    cursor.execute(query)
+    return cursor.fetchall()
