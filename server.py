@@ -80,11 +80,15 @@ def open_add_question():
 def add_answer(question_id):
     if request.method == "POST":
         file = request.files["image"]
+        # TEST DATA ------------------
+        session['user_id'] = 1
+        # ----------------------------
+        user_id = session['user_id']
         if file.filename != "":
             file.save(os.path.join(app.config["UPLOAD_FOLDER"][1], file.filename))
-            data_handler.add_new_answer(request.form, question_id, image_name=file.filename)
+            data_handler.add_new_answer(request.form, question_id, user_id, image_name=file.filename)
         else:
-            data_handler.add_new_answer(request.form, question_id)
+            data_handler.add_new_answer(request.form, question_id, user_id)
         return redirect(url_for('open_question_page', question_id=question_id))
     return render_template("add_answer.html", question_id=question_id)
 

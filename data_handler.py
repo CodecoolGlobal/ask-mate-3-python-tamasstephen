@@ -82,10 +82,11 @@ def add_question(form_data, user_id, question_id=None, image_name=None):
     user_commits.handle_new_message(user_id, "question_id", "question", "quelstion_to_user")
 
 
-def add_new_answer(form_data, question_id, image_name=None):
+def add_new_answer(form_data, question_id, user_id, image_name=None):
     mutable_form_data = get_data_from_form(form_data)
     add_missing_initial_values_to_question(mutable_form_data, image_name, question_id)
     add_answer_to_db(mutable_form_data)
+    user_commits.handle_new_message(user_id, "answer_id", "answer", "answer_to_user")
 
 
 @connection.connection_handler
