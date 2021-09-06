@@ -91,7 +91,12 @@ def add_new_answer(form_data, question_id, user_id, image_name=None):
     mutable_form_data = get_data_from_form(form_data)
     add_missing_initial_values_to_question(mutable_form_data, image_name, question_id)
     add_answer_to_db(mutable_form_data)
-    user_commits.handle_new_message(user_id, "answer_id", "answer", "answer_to_user")
+    bind_dict = {"id": user_id,
+                 "bind_column": "answer_id",
+                 "message_table": "answer",
+                 "connection_table": "answer_to_user",
+                 "user_table_column": "number_of_answers"}
+    user_commits.bind_user_to_message(bind_dict)
 
 
 @connection.connection_handler
