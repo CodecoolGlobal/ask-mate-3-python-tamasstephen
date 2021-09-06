@@ -1,6 +1,7 @@
 from time import time
 import math
 import connection
+import user_commits
 import util
 import os
 from datetime import datetime
@@ -74,10 +75,11 @@ def get_answer_by_answer_id(cursor, answer_id):
     return cursor.fetchall()
 
 
-def add_question(form_data, question_id=None, image_name=None):
+def add_question(form_data, user_id, question_id=None, image_name=None):
     mutable_form_data = get_data_from_form(form_data)
     add_missing_initial_values_to_question(mutable_form_data, image_name, question_id)
     add_question_to_db(mutable_form_data)
+    user_commits.handle_new_message(user_id, "question_id", "question", "quelstion_to_user")
 
 
 def add_new_answer(form_data, question_id, image_name=None):

@@ -63,11 +63,15 @@ def open_add_question():
     if request.method == "GET":
         return render_template("add_question.html")
     file = request.files["image"]
+    # TEST DATA ------------------
+    session['user_id'] = 1
+    # ----------------------------
+    user_id = session['user_id']
     if file.filename != "":
         file.save(os.path.join(app.config["UPLOAD_FOLDER"][0], file.filename))
-        data_handler.add_question(request.form, image_name=file.filename)
+        data_handler.add_question(request.form, user_id, image_name=file.filename)
     else:
-        data_handler.add_question(request.form)
+        data_handler.add_question(request.form, user_id)
     return redirect("/")
 
 
