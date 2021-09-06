@@ -1,7 +1,5 @@
-import bcrypt
 from flask import Flask, render_template, request, url_for, redirect, session
 
-import connection
 import data_handler
 import search
 import tag
@@ -9,10 +7,8 @@ import os
 import comment
 import user_commits
 from bonus_questions import SAMPLE_QUESTIONS
-<<<<<<< HEAD
-=======
+
 import register_new_user
->>>>>>> register
 import util
 
 app = Flask(__name__)
@@ -238,32 +234,9 @@ def registration():
     else:
         hashed_pw = register_new_user.hash_password((request.form['password']))
         username = request.form['username']
-<<<<<<< HEAD
-
-
-def hash_password(plain_text_password):
-    hashed_bytes = bcrypt.hashpw(plain_text_password.encode('utf-8'), bcrypt.gensalt())
-    return hashed_bytes.decode('utf-8')
-
-
-def verify_password(plain_text_word, hashed_password):
-    hashed_bytes_password = hashed_password.encode('utf-8')
-    return bcrypt.checkpw(plain_text_word.encode('utf-8'), hashed_bytes_password)
-
-
-@connection.connection_handler
-def register_new_account_into_db(cursor, username, hashed_password):
-    query = '''
-    INSERT INTO user_table(user_name, )
-    '''
-
-
-# register END
-=======
         registration_date = util.get_current_time()
         register_new_user.add_new_account_into_db(username, hashed_pw, registration_date)
         return redirect(url_for('open_all_questions'))
->>>>>>> register
 
 
 @app.route("/bonus-questions")
