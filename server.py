@@ -153,7 +153,12 @@ def vote_answer_down(answer_id):
 @app.route("/question/<question_id>/comment", methods=["GET", "POST"])
 def add_comment_to_question(question_id):
     if request.method == "POST":
+        # TODO: remove TEST DATA ------------------
+        session['user_id'] = 1
+        # ----------------------------
+        user_id = session['user_id']
         comment.add_comment_to_question_db(question_id, request.form["message"], util.get_current_time())
+        user_commits.handle_new_message(user_id, "comment_id", "comment", "comment_to_user")
         return redirect(url_for("open_question_page", question_id=question_id))
     return render_template("comment.html", question_id=question_id)
 
