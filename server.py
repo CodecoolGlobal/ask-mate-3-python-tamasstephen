@@ -7,7 +7,7 @@ import os
 import comment
 import user_commits
 from bonus_questions import SAMPLE_QUESTIONS
-
+import login
 import register_new_user
 import util
 
@@ -43,38 +43,48 @@ def open_all_questions():
 # validate if user logged in or not
 @app.route("/question/<question_id>")
 def open_question_page(question_id):
-    answers = data_handler.get_answers_by_question_id(question_id)
-    question = util.get_data_by_id(question_id, "question")[0]
-    question_comments = comment.get_comments("question_id", question_id)
-    answer_comments = {answer["id"]: comment.get_comments("answer_id", answer["id"]) for answer in answers}
-    tags = tag.get_question_tags(question_id)
-    data_handler.count_views(question_id)
-    return render_template("question.html",
-                           question=question,
-                           answers=answers,
-                           question_comments=question_comments,
-                           answer_comments=answer_comments,
-                           tags=tags,
-                           this_question_id=question_id)
+    try:
+        if session['user_name']:
+            print(session['user_name'])
+            answers = data_handler.get_answers_by_question_id(question_id)
+            question = util.get_data_by_id(question_id, "question")[0]
+            question_comments = comment.get_comments("question_id", question_id)
+            answer_comments = {answer["id"]: comment.get_comments("answer_id", answer["id"]) for answer in answers}
+            tags = tag.get_question_tags(question_id)
+            data_handler.count_views(question_id)
+            return render_template("question.html",
+                                   question=question,
+                                   answers=answers,
+                                   question_comments=question_comments,
+                                   answer_comments=answer_comments,
+                                   tags=tags,
+                                   this_question_id=question_id)
+    except KeyError:
+        # else:
+        return redirect(url_for('open_all_questions'))
 
 
 # validate if user logged in or not
 # REFACTORING Needed
 @app.route("/add_question", methods=["GET", "POST"])
 def open_add_question():
-    if request.method == "GET":
-        return render_template("add_question.html")
-    file = request.files["image"]
-    # TODO: remove TEST DATA ------------------
-    session['user_id'] = 1
-    # ----------------------------
-    user_id = session['user_id']
-    if file.filename != "":
-        file.save(os.path.join(app.config["UPLOAD_FOLDER"][0], file.filename))
-        data_handler.add_question(request.form, user_id, image_name=file.filename)
-    else:
-        data_handler.add_question(request.form, user_id)
-    return redirect("/")
+    try:
+        if session['user_name']:
+            if request.method == "GET":
+                return render_template("add_question.html")
+            file = request.files["image"]
+            # TODO: remove TEST DATA ------------------
+            session['user_id'] = 1
+            # ----------------------------
+            user_id = session['user_id']
+            if file.filename != "":
+                file.save(os.path.join(app.config["UPLOAD_FOLDER"][0], file.filename))
+                data_handler.add_question(request.form, user_id, image_name=file.filename)
+            else:
+                data_handler.add_question(request.form, user_id)
+            return redirect("/")
+    except KeyError:
+        return redirect(url_for('open_all_questions'))
 
 
 # REFACTORING Needed
@@ -120,8 +130,12 @@ def delete_answer_from_question_page(answer_id):
 
 @app.route("/question/<question_id>/vote_up", methods=["POST"])
 def vote_question_up(question_id):
-    data_handler.handle_votes(int(question_id), "vote_up")
-    return redirect("/")
+    try:
+        if session['user_name']:
+            data_handler.handle_votes(int(question_id), "vote_up")
+            return redirect("/")
+    except KeyError:
+        return redirect(url_for('open_all_questions'))
 
 
 @app.route("/comments/<comment_id>/delete", methods=['POST'])
@@ -133,8 +147,12 @@ def delete_comment(comment_id):
 
 @app.route("/question/<question_id>/vote_down", methods=["POST"])
 def vote_question_down(question_id):
-    data_handler.handle_votes(int(question_id), "vote_down")
-    return redirect("/")
+    try:
+        if session['user_name']:
+            data_handler.handle_votes(int(question_id), "vote_down")
+            return redirect("/")
+    except KeyError:
+        return redirect(url_for('open_all_questions'))
 
 
 @app.route("/answer/<answer_id>/vote_up", methods=["POST"])
@@ -237,6 +255,28 @@ def registration():
         registration_date = util.get_current_time()
         register_new_user.add_new_account_into_db(username, hashed_pw, registration_date)
         return redirect(url_for('open_all_questions'))
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def sign_in():
+    if request.method == 'GET':
+        return render_template('login.html')
+    else:
+        session['user_name'] = request.form['username']
+        session['user_id'] = login.get_user_id_by_username(request.form['username'])[0]["user_id"]
+        user_login_password = request.form.get('password')
+        user_password_in_db = login.get_user_password_by_username(request.form['username'])[0]["password"]
+        if user_password_in_db:
+            password_check = login.verify_password(user_login_password, user_password_in_db)
+            if password_check:
+                return redirect(url_for('open_all_questions'))
+
+
+@app.route('/logout')
+def logout():
+    session.pop('user_name', None)
+    session.pop('user_id', None)
+    return redirect(url_for('open_all_questions'))
 
 
 @app.route("/bonus-questions")

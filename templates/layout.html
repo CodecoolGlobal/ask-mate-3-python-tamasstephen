@@ -13,11 +13,21 @@
 <nav>
     <div class="wrapper">
         <p class="logo"><a href="{{ url_for('open_questions') }}">Ask Mate</a></p>
+        {% set username = session.user_name %}
+        {% if username %}
+            <p>Logged in as {{ session.user_name }}</p>
+        {% endif %}
         <form class="search_bar" action="{{ url_for('search_data') }}" method="get">
             <input type="text" name="q">
             <input type="submit" value="Search">
         </form>
-        <a class="sign_up" href="{{ url_for('registration') }}">Sign Up</a>
+        {% set username = session.user_name %}
+        {% if username %}
+            <a href="{{ url_for('logout') }}" class="logout">Logout</a>
+        {% else %}
+            <a class="sign_up" href="{{ url_for('registration') }}">Sign Up</a>
+            <a href="{{ url_for('sign_in') }}" class="sign_in">Sign in</a>
+        {% endif %}
     </div>
 </nav>
 {% block content %}{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="login_form">
+    <p class="heading">Sign in</p>
+    <form action="/login" method="post">
+        <div class="box">
+            <p>Email</p>
+            <div>
+                <input type="username" name="username" id="username" placeholder="Enter your UserName">
+            </div>
+            <div class="box">
+                <p>Password</p>
+                <div>
+                    <input type="Password" name="password" id="password" placeholder="Enter your password">
+                    <br><br>
+                </div>
+            </div>
+        </div>
+        <input type="submit" value="submit" class="login_button">
+        <br><br>
+        <p class="text">Don't have an account? <a href="{{ url_for('registration') }}">Sign up</a></p>
+    </form>
+</div>
+{% endblock %}
