@@ -79,7 +79,12 @@ def add_question(form_data, user_id, question_id=None, image_name=None):
     mutable_form_data = get_data_from_form(form_data)
     add_missing_initial_values_to_question(mutable_form_data, image_name, question_id)
     add_question_to_db(mutable_form_data)
-    user_commits.bind_user_to_question(user_id)
+    bind_dict = {"id": user_id,
+                 "bind_column": "question_id",
+                 "message_table": "question",
+                 "connection_table": "question_to_user",
+                 "user_table_column": "asked_questions"}
+    user_commits.bind_user_to_message(bind_dict)
 
 
 def add_new_answer(form_data, question_id, user_id, image_name=None):

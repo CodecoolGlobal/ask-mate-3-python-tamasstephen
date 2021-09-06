@@ -2,9 +2,14 @@ import connection
 from psycopg2 import sql
 
 
-def bind_user_to_question(user_id):
-    handle_new_message(user_id, "question_id", "question", "question_to_user")
-    handle_user_attributes("asked_questions", user_id)
+def bind_user_to_message(data_dict):
+    msg_id, msg_column, msg_table, connection_table, usr_table = (data_dict["id"],
+                                                                  data_dict["bind_column"],
+                                                                  data_dict["message_table"],
+                                                                  data_dict["connection_table"],
+                                                                  data_dict["user_table_column"])
+    handle_new_message(msg_id, msg_column, msg_table, connection_table)
+    handle_user_attributes(usr_table, msg_id)
 
 
 def handle_new_message(user_id, column, message_table, connection_table):
