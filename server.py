@@ -158,7 +158,7 @@ def add_comment_to_question(question_id):
         # ----------------------------
         user_id = session['user_id']
         comment.add_comment_to_question_db(question_id, request.form["message"], util.get_current_time())
-        user_commits.handle_new_message(user_id, "comment_id", "comment", "comment_to_user")
+        comment.bind_comments_to_user(user_id)
         return redirect(url_for("open_question_page", question_id=question_id))
     return render_template("comment.html", question_id=question_id)
 
@@ -172,7 +172,7 @@ def add_comment_to_answer(answer_id):
         user_id = session['user_id']
         comment.add_comment_to_answer_db(answer_id, request.form["message"], util.get_current_time())
         question_id = data_handler.get_question_id_by_answer_id(answer_id)[0]["question_id"]
-        user_commits.handle_new_message(user_id, "comment_id", "comment", "comment_to_user")
+        comment.bind_comments_to_user(user_id)
         return redirect(url_for("open_question_page", question_id=question_id))
     return render_template("answer_comment.html", answer_id=answer_id)
 

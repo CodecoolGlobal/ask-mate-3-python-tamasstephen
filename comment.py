@@ -1,7 +1,7 @@
 import connection
 from psycopg2 import sql
-
 import data_handler
+import user_commits
 
 
 @connection.connection_handler
@@ -80,3 +80,12 @@ def delete_comment_by_comment_id(cursor, comment_id):
     WHERE id = %(comment_id)s
     '''
     cursor.execute(query, {"comment_id": comment_id})
+
+
+def bind_comments_to_user(user_id):
+    bind_dict = {"id": user_id,
+                 "bind_column": "comment_id",
+                 "message_table": "comment",
+                 "connection_table": "comment_to_user",
+                 "user_table_column": "number_of_comments"}
+    user_commits.bind_user_to_message(bind_dict)
