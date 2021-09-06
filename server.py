@@ -1,17 +1,18 @@
 import bcrypt
 from flask import Flask, render_template, request, url_for, redirect, session
+
+import connection
 import data_handler
 import search
 import tag
 import os
 import comment
 from bonus_questions import SAMPLE_QUESTIONS
-
+import register_new_user
 import util
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = data_handler.UPLOAD_FOLDER
-
 
 app.secret_key = os.urandom(12)
 
@@ -208,23 +209,16 @@ def delete_tag_from_question(question_id, tag_id):
     return redirect(url_for('open_question_page', question_id=question_id))
 
 
-# register BEGIN
 @app.route('/registration', methods=['GET', 'POST'])
 def registration():
     if request.method == 'GET':
         return render_template('register.html')
     else:
-        hashed_pw = hash_password(request.form['password'])
+        hashed_pw = register_new_user.hash_password((request.form['password']))
         username = request.form['username']
-
-def hash_password(plain_text_password):
-    hashed_bytes = bcrypt.hashpw(plain_text_password.encode('utf-8'), bcrypt.gensalt())
-    return hashed_bytes.decode('utf-8')
-
-def verify_password(plain_text_word, hashed_password):
-    hashed_bytes_password = hashed_password.encode('utf-8')
-    return bcrypt.checkpw(plain_text_word.encode('utf-8'), hashed_bytes_password)
-# register END
+        registration_date = util.get_current_time()
+        register_new_user.add_new_account_into_db(username, hashed_pw, registration_date)
+        return redirect(url_for('open_all_questions'))
 
 
 @app.route("/bonus-questions")
