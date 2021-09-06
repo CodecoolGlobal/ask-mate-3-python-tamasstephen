@@ -9,6 +9,10 @@ import os
 import comment
 import user_commits
 from bonus_questions import SAMPLE_QUESTIONS
+<<<<<<< HEAD
+=======
+import register_new_user
+>>>>>>> register
 import util
 
 app = Flask(__name__)
@@ -227,14 +231,14 @@ def delete_tag_from_question(question_id, tag_id):
     return redirect(url_for('open_question_page', question_id=question_id))
 
 
-# register BEGIN
 @app.route('/registration', methods=['GET', 'POST'])
 def registration():
     if request.method == 'GET':
         return render_template('register.html')
     else:
-        hashed_pw = hash_password(request.form['password'])
+        hashed_pw = register_new_user.hash_password((request.form['password']))
         username = request.form['username']
+<<<<<<< HEAD
 
 
 def hash_password(plain_text_password):
@@ -255,6 +259,11 @@ def register_new_account_into_db(cursor, username, hashed_password):
 
 
 # register END
+=======
+        registration_date = util.get_current_time()
+        register_new_user.add_new_account_into_db(username, hashed_pw, registration_date)
+        return redirect(url_for('open_all_questions'))
+>>>>>>> register
 
 
 @app.route("/bonus-questions")
