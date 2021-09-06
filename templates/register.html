@@ -1,0 +1,16 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="register">
+    <form action="/registration" method="post">
+        <label for="username">Username:</label>
+        <br>
+        <textarea name="username" id="username" cols="30" rows="1"></textarea>
+        <br><br>
+        <label for="password">Password:</label>
+        <br>
+        <textarea name="password" id="password" cols="30" rows="1"></textarea>
+        <br><br>
+        <input type="submit">
+    </form>
+</div>
+{% endblock %}
