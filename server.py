@@ -4,6 +4,7 @@ import search
 import tag
 import os
 import comment
+from bonus_questions import SAMPLE_QUESTIONS
 
 import util
 
@@ -196,6 +197,11 @@ def add_tag(question_id):
 def delete_tag_from_question(question_id, tag_id):
     tag.delete_tag_from_question_tag_db(question_id, tag_id)
     return redirect(url_for('open_question_page', question_id=question_id))
+
+
+@app.route("/bonus-questions")
+def main():
+    return render_template('bonus_questions.html', questions=SAMPLE_QUESTIONS)
 
 
 if __name__ == "__main__":
