@@ -4,8 +4,6 @@ from psycopg2 import sql
 
 def handle_new_message(user_id, column, message_table, connection_table):
     message_id = get_id_from_messages(message_table)[0]['id']
-    print(message_id)
-    print(user_id)
     connect_user_to_id(user_id, column, message_id, connection_table)
 
 

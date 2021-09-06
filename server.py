@@ -5,6 +5,7 @@ import search
 import tag
 import os
 import comment
+import user_commits
 from bonus_questions import SAMPLE_QUESTIONS
 import util
 
@@ -63,7 +64,7 @@ def open_add_question():
     if request.method == "GET":
         return render_template("add_question.html")
     file = request.files["image"]
-    # TEST DATA ------------------
+    # TODO: remove TEST DATA ------------------
     session['user_id'] = 1
     # ----------------------------
     user_id = session['user_id']
@@ -80,7 +81,7 @@ def open_add_question():
 def add_answer(question_id):
     if request.method == "POST":
         file = request.files["image"]
-        # TEST DATA ------------------
+        # TODO: remove TEST DATA ------------------
         session['user_id'] = 1
         # ----------------------------
         user_id = session['user_id']
@@ -160,8 +161,13 @@ def add_comment_to_question(question_id):
 @app.route("/answer/<answer_id>/new-comment", methods=["GET", "POST"])
 def add_comment_to_answer(answer_id):
     if request.method == "POST":
+        # TODO: remove TEST DATA ------------------
+        session['user_id'] = 1
+        # ----------------------------
+        user_id = session['user_id']
         comment.add_comment_to_answer_db(answer_id, request.form["message"], util.get_current_time())
         question_id = data_handler.get_question_id_by_answer_id(answer_id)[0]["question_id"]
+        user_commits.handle_new_message(user_id, "comment_id", "comment", "comment_to_user")
         return redirect(url_for("open_question_page", question_id=question_id))
     return render_template("answer_comment.html", answer_id=answer_id)
 
