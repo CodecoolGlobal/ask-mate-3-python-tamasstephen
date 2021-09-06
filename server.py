@@ -235,9 +235,11 @@ def registration():
         hashed_pw = hash_password(request.form['password'])
         username = request.form['username']
 
+
 def hash_password(plain_text_password):
     hashed_bytes = bcrypt.hashpw(plain_text_password.encode('utf-8'), bcrypt.gensalt())
     return hashed_bytes.decode('utf-8')
+
 
 def verify_password(plain_text_word, hashed_password):
     hashed_bytes_password = hashed_password.encode('utf-8')
@@ -248,6 +250,16 @@ def verify_password(plain_text_word, hashed_password):
 @app.route("/bonus-questions")
 def main():
     return render_template('bonus_questions.html', questions=SAMPLE_QUESTIONS)
+
+
+@app.route("/user/<user_id>")
+def user_page(user_id):
+    questions = user_commits.get_questions_by_user_id(user_id)
+    print(questions)
+    answers = user_commits.get_answers_by_user_id(user_id)
+    print(answers)
+    comments = user_commits.get_comments_by_user_id(user_id)
+    print(comments)
 
 
 if __name__ == "__main__":
