@@ -2,19 +2,35 @@ import connection
 from psycopg2 import sql
 
 
+def bind_user_to_question(user_id):
+    handle_new_message(user_id, "question_id", "question", "question_to_user")
+    handle_user_attributes("asked_questions", user_id)
+
+
 def handle_new_message(user_id, column, message_table, connection_table):
-    message_id = get_id_from_messages(message_table)[0]['id']
+    message_id = get_last_id_from_table(message_table)[0]['id']
     connect_user_to_id(user_id, column, message_id, connection_table)
 
 
 @connection.connection_handler
-def get_id_from_messages(cursor, table):
+def handle_user_attributes(cursor, column, user_id):
     query = """
-    SELECT id FROM {table}
-    ORDER BY id DESC
-    LIMIT 1
+        UPDATE user_table
+        SET {column} = COALESCE(asked_questions, 0) + 1
+        WHERE user_id = {user_id}
     """
-    cursor.execute(sql.SQL(query).format(table = sql.Identifier(table)))
+    cursor.execute(sql.SQL(query).format(column=sql.Identifier(column),
+                                         user_id=sql.Literal(user_id)))
+
+
+@connection.connection_handler
+def get_last_id_from_table(cursor, table):
+    query = """
+        SELECT id FROM {table}
+        ORDER BY id DESC
+        LIMIT 1
+    """
+    cursor.execute(sql.SQL(query).format(table=sql.Identifier(table)))
     return cursor.fetchall()
 
 
