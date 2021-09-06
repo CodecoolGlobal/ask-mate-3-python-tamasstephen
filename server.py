@@ -5,7 +5,6 @@ import tag
 import os
 import comment
 from bonus_questions import SAMPLE_QUESTIONS
-
 import util
 
 app = Flask(__name__)
