@@ -1,9 +1,9 @@
 {% extends 'layout.html' %}
 {% block content %}
-<div class="topic_box">
+<div class="form_container">
 {% for user in users %}
     <a href="#">{{ user.user_name }}</a>
-    <div class="misc_data">
+    <div>
         <p>Registration Date: {{ user.registration_date }}</p>
         <p>Asked questions: {{ user.asked_questions }}</p>
         <p>Number_of_answers: {{ user.number_of_answers }}</p>
