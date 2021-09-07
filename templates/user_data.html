@@ -17,13 +17,38 @@
             <p class="data_label">Reputation</p>
             <p>{{ user.get("reputation") }}</p>
         </div>
-        <div class="user_commits">
-            {% for question in questions %}
-               <div>
-                    <p class="user_msg">{{ question.message }}</p>
-                    <a href="{{ url_for('open_question_page', question_id=question.id) }}"><p>Open question page</p></a>
-               </div>
-            {% endfor %}
-        </div>
+        {% if questions %}
+            <div class="user_commits">
+            <h5>Questions</h5>
+                {% for question in questions %}
+                   <div>
+                        <p class="user_msg">{{ question.message }}</p>
+                        <a href="{{ url_for('open_question_page', question_id=question.id) }}"><p>Open question page</p></a>
+                   </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% if answers %}
+            <div class="user_commits">
+                <h5>Answers</h5>
+                {% for answer in answers %}
+                    <div>
+                        <p class="user_msg">{{ answer.message }}</p>
+                        <a href="{{ url_for('open_question_page', question_id=answer.question_id) }}"><p>Open question page</p></a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% if comments %}
+            <div class="user_commits">
+                <h5>Comments</h5>
+                {% for comment in comments %}
+                    <div>
+                        <p class="user_msg">{{ comment.message }}</p>
+                        <a href="{{ url_for('open_question_page', question_id=comment.question_id) }}"><p>Open question page</p></a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
     </div>
 {% endblock %}
