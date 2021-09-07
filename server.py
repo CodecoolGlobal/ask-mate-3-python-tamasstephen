@@ -64,9 +64,6 @@ def open_add_question():
     if request.method == "GET":
         return render_template("add_question.html")
     file = request.files["image"]
-    # TODO: remove TEST DATA ------------------
-    session['user_id'] = 1
-    # ----------------------------
     user_id = session['user_id']
     if file.filename != "":
         file.save(os.path.join(app.config["UPLOAD_FOLDER"][0], file.filename))
@@ -81,9 +78,6 @@ def open_add_question():
 def add_answer(question_id):
     if request.method == "POST":
         file = request.files["image"]
-        # TODO: remove TEST DATA ------------------
-        session['user_id'] = 1
-        # ----------------------------
         user_id = session['user_id']
         if file.filename != "":
             file.save(os.path.join(app.config["UPLOAD_FOLDER"][1], file.filename))
@@ -153,9 +147,6 @@ def vote_answer_down(answer_id):
 @app.route("/question/<question_id>/comment", methods=["GET", "POST"])
 def add_comment_to_question(question_id):
     if request.method == "POST":
-        # TODO: remove TEST DATA ------------------
-        session['user_id'] = 1
-        # ----------------------------
         user_id = session['user_id']
         comment.add_comment_to_question_db(question_id, request.form["message"], util.get_current_time())
         comment.bind_comments_to_user(user_id)
@@ -166,9 +157,6 @@ def add_comment_to_question(question_id):
 @app.route("/answer/<answer_id>/new-comment", methods=["GET", "POST"])
 def add_comment_to_answer(answer_id):
     if request.method == "POST":
-        # TODO: remove TEST DATA ------------------
-        session['user_id'] = 1
-        # ----------------------------
         user_id = session['user_id']
         comment.add_comment_to_answer_db(answer_id, request.form["message"], util.get_current_time())
         question_id = data_handler.get_question_id_by_answer_id(answer_id)[0]["question_id"]
