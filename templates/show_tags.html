@@ -1,0 +1,9 @@
+{% extends 'layout.html' %}
+{% block content %}
+    <div class="form_container">
+        {% for tag in tags %}
+            <p>{{ tag.name }}</p>
+            <p>{{ tag.number_of_tags }}</p>
+        {% endfor %}
+    </div>
+{% endblock %}

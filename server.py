@@ -313,6 +313,12 @@ def user_page(user_id):
                            user=user_data)
 
 
+@app.route('/tags')
+def open_tags_page():
+    all_tags = data_handler.get_all_tags()
+    return render_template('show_tags.html', tags=all_tags)
+
+
 if __name__ == "__main__":
     app.run(
         port=5000,

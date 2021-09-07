@@ -244,3 +244,17 @@ def get_user_id_by_id(cursor, wanted_id, id_column_name, table_name):
                                          table_name=sql.Identifier(table_name),
                                          id_column_name=sql.Identifier(id_column_name)))
     return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_all_tags(cursor):
+    query = '''
+    SELECT name, COUNT(question_tag.tag_id) as number_of_tags
+    FROM tag
+    JOIN question_tag
+        ON tag.id = question_tag.tag_id
+    GROUP BY question_tag.tag_id, tag.name
+    ORDER BY name
+    '''
+    cursor.execute(query)
+    return cursor.fetchall()
