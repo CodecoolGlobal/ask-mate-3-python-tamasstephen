@@ -132,6 +132,9 @@ def delete_answer_from_question_page(answer_id):
 def vote_question_up(question_id):
     try:
         if session['user_name']:
+            user_id = data_handler.get_user_id_by_id(question_id, "question_id", "question_to_user")[0][
+                'user_id']
+            data_handler.gain_reputation(user_id, util.reputation_values['vote_up_question'])
             data_handler.handle_votes(int(question_id), "vote_up")
             return redirect("/")
     except KeyError:
@@ -149,6 +152,9 @@ def delete_comment(comment_id):
 def vote_question_down(question_id):
     try:
         if session['user_name']:
+            user_id = data_handler.get_user_id_by_id(question_id, "question_id", "question_to_user")[0][
+                'user_id']
+            data_handler.gain_reputation(user_id, util.reputation_values['vote_down_question'])
             data_handler.handle_votes(int(question_id), "vote_down")
             return redirect("/")
     except KeyError:
@@ -158,6 +164,8 @@ def vote_question_down(question_id):
 @app.route("/answer/<answer_id>/vote_up", methods=["POST"])
 def vote_answer_up(answer_id):
     question_id = util.get_data_by_id(answer_id, "answer")[0]['question_id']
+    user_id = data_handler.get_user_id_by_id(answer_id, "answer_id", "answer_to_user")[0]['user_id']
+    data_handler.gain_reputation(user_id, util.reputation_values['vote_answer_up'])
     data_handler.handle_votes(answer_id, "vote_up", "answer")
     return redirect(url_for("open_question_page", question_id=question_id))
 
@@ -165,6 +173,8 @@ def vote_answer_up(answer_id):
 @app.route("/answer/<answer_id>/vote_down", methods=["POST"])
 def vote_answer_down(answer_id):
     question_id = util.get_data_by_id(answer_id, "answer")[0]['question_id']
+    user_id = data_handler.get_user_id_by_id(answer_id, "answer_id", "answer_to_user")[0]['user_id']
+    data_handler.gain_reputation(user_id, util.reputation_values['vote_down_answer'])
     data_handler.handle_votes(answer_id, "vote_down", "answer")
     return redirect(url_for("open_question_page", question_id=question_id))
 

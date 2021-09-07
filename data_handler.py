@@ -219,3 +219,28 @@ def get_all_users(cursor):
     '''
     cursor.execute(query)
     return cursor.fetchall()
+
+
+@connection.connection_handler
+def gain_reputation(cursor, user_id, reputation_value):
+    query = '''
+    UPDATE user_table
+    SET { reputation } = COALESCE({reputation}, 0) + reputation_value
+    WHERE user_id = {user_id}
+    '''
+    cursor.execute(sql.SQL(query).format(user_id=sql.Literal(user_id),
+                                         reputation_value=sql.Literal(reputation_value)))
+
+
+@connection.connection_handler
+def get_user_id_by_id(cursor, wanted_id, id_column_name, table_name):
+    query = '''
+    SELECT user_id
+    FROM {table_name}
+    WHERE {id_column_name} = {wanted_id}
+    '''
+
+    cursor.execute(sql.SQL(query).format(wanted_id=sql.Literal(wanted_id),
+                                         table_name=sql.Identifier(table_name),
+                                         id_column_name=sql.Identifier(id_column_name)))
+    return cursor.fetchall()
