@@ -6,6 +6,7 @@
             {% set username = session.user_name %}
             {% if username %}
                 <a href="/users">List all users</a>
+                <a href="{{ url_for('user_page', user_id=session.get('user_id')) }}">Open user page</a>
             {% endif %}
             {% if questions %}
                 {% if not all %}
