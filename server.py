@@ -177,6 +177,7 @@ def add_comment_to_question(question_id):
 def add_comment_to_answer(answer_id):
     if request.method == "POST":
         user_id = session['user_id']
+        print(user_id)
         comment.add_comment_to_answer_db(answer_id, request.form["message"], util.get_current_time())
         question_id = data_handler.get_question_id_by_answer_id(answer_id)[0]["question_id"]
         comment.bind_comments_to_user(user_id)
