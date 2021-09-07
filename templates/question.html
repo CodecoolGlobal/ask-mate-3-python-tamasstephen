@@ -77,7 +77,7 @@
                                 <input type="image" value="Vote down" src="{{ url_for('static', filename='/images/icons/keyboard_arrow_down_black_24dp.svg') }}">
                             </form>
                         </div>
-                        <div class="answer_main">
+                        <div class="answer_main {% if answer.approved == True %}approved_answer{% endif %}">
                             <div class="answer_top">
                                 <div>
                                     {% if answer.image %}

@@ -484,6 +484,19 @@ input[type="submit"].answer_delete {
 	margin-top: 1rem;
 }
 
+div.answer_main.approved_answer::before {
+	content: 'APPROVED';
+	font-size: .625rem;
+	font-weight: 900;
+	display: inline-block;
+	padding: .225rem .225rem;
+	border-radius: 5px;
+	margin-left: .875rem;
+	margin-bottom: .275rem;
+	color: var(--color-clean-white);
+	background-color: var(--color-dark-blue);
+}
+
 /* Basic anim*/
 @keyframes fadein {
 	from {

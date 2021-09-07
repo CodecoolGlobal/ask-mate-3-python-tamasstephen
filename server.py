@@ -297,20 +297,31 @@ def main():
 
 @app.route("/user/<user_id>")
 def user_page(user_id):
-    print(user_id)
     questions = user_commits.get_questions_by_user_id(user_id)
-    print(questions)
+    answer_by_questions = user_commits.get_answer_dict_by_question_id(user_commits.get_message_ids(user_id,
+                                                                                                   "question_id",
+                                                                                                   "question_to_user"))
+    print(answer_by_questions)
     answers = user_commits.get_answers_by_user_id(user_id)
-    print(answers)
     comments = user_commits.get_comments_by_user_id(user_id)
-    print(comments)
     user_data = user_commits.get_user_data_by_user_id(user_id)[0]
-    print(user_data)
     return render_template("user_data.html",
                            questions=questions,
                            answers=answers,
+                           question_answers=answer_by_questions,
                            comments=comments,
                            user=user_data)
+
+
+@app.route("/answer/<answer_id>/approve/<user_id>", methods=["POST"])
+def approve_answer(answer_id, user_id):
+    print('running')
+    if request.form.get("approved") == 'on':
+        data_handler.approve_answer(True, answer_id)
+        return redirect(url_for("user_page", user_id=user_id))
+    data_handler.approve_answer(False, answer_id)
+    print('i am here')
+    return redirect(url_for("user_page", user_id=user_id))
 
 
 if __name__ == "__main__":

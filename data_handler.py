@@ -244,3 +244,14 @@ def get_user_id_by_id(cursor, wanted_id, id_column_name, table_name):
                                          table_name=sql.Identifier(table_name),
                                          id_column_name=sql.Identifier(id_column_name)))
     return cursor.fetchall()
+
+
+@connection.connection_handler
+def approve_answer(cursor, approve, answer_id):
+    query = """
+        UPDATE answer
+        SET approved = {approve}
+        WHERE id = {answer_id} 
+    """
+    cursor.execute(sql.SQL(query).format(approve=sql.Literal(approve),
+                                         answer_id=sql.Literal(answer_id)))
