@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="wrapper">
+        <div class="user_info">
+            <p class="data_label">Id</p>
+            <p>{{ user.user_id }}</p>
+            <p class="data_label">Username</p>
+            <p>{{ user.user_name }}</p>
+            <p class="data_label">Registration date</p>
+            <p>{{ user.registration_date }}</p>
+            <p class="data_label">Questions</p>
+            <p>{{ user.get("asked_questions") }}</p>
+            <p class="data_label">Answers</p>
+            <p>{{ user.get("number_of_answers") }}</p>
+            <p class="data_label">Comments</p>
+            <p>{{ user.get("number_of_comments") }}</p>
+            <p class="data_label">Reputation</p>
+            <p>{{ user.get("reputation") }}</p>
+        </div>
+    </div>
+{% endblock %}
