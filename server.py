@@ -73,9 +73,6 @@ def open_add_question():
             if request.method == "GET":
                 return render_template("add_question.html")
             file = request.files["image"]
-            # TODO: remove TEST DATA ------------------
-            session['user_id'] = 1
-            # ----------------------------
             user_id = session['user_id']
             if file.filename != "":
                 file.save(os.path.join(app.config["UPLOAD_FOLDER"][0], file.filename))
@@ -92,9 +89,6 @@ def open_add_question():
 def add_answer(question_id):
     if request.method == "POST":
         file = request.files["image"]
-        # TODO: remove TEST DATA ------------------
-        session['user_id'] = 1
-        # ----------------------------
         user_id = session['user_id']
         if file.filename != "":
             file.save(os.path.join(app.config["UPLOAD_FOLDER"][1], file.filename))
@@ -182,9 +176,6 @@ def vote_answer_down(answer_id):
 @app.route("/question/<question_id>/comment", methods=["GET", "POST"])
 def add_comment_to_question(question_id):
     if request.method == "POST":
-        # TODO: remove TEST DATA ------------------
-        session['user_id'] = 1
-        # ----------------------------
         user_id = session['user_id']
         comment.add_comment_to_question_db(question_id, request.form["message"], util.get_current_time())
         comment.bind_comments_to_user(user_id)
@@ -195,10 +186,8 @@ def add_comment_to_question(question_id):
 @app.route("/answer/<answer_id>/new-comment", methods=["GET", "POST"])
 def add_comment_to_answer(answer_id):
     if request.method == "POST":
-        # TODO: remove TEST DATA ------------------
-        session['user_id'] = 1
-        # ----------------------------
         user_id = session['user_id']
+        print(user_id)
         comment.add_comment_to_answer_db(answer_id, request.form["message"], util.get_current_time())
         question_id = data_handler.get_question_id_by_answer_id(answer_id)[0]["question_id"]
         comment.bind_comments_to_user(user_id)
@@ -298,6 +287,24 @@ def list_all_users():
 @app.route("/bonus-questions")
 def main():
     return render_template('bonus_questions.html', questions=SAMPLE_QUESTIONS)
+
+
+@app.route("/user/<user_id>")
+def user_page(user_id):
+    print(user_id)
+    questions = user_commits.get_questions_by_user_id(user_id)
+    print(questions)
+    answers = user_commits.get_answers_by_user_id(user_id)
+    print(answers)
+    comments = user_commits.get_comments_by_user_id(user_id)
+    print(comments)
+    user_data = user_commits.get_user_data_by_user_id(user_id)[0]
+    print(user_data)
+    return render_template("user_data.html",
+                           questions=questions,
+                           answers=answers,
+                           comments=comments,
+                           user=user_data)
 
 
 if __name__ == "__main__":
