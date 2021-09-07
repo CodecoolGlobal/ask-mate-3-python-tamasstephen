@@ -57,11 +57,13 @@ def connect_user_to_id(cursor, user_id, column, message_id, table):
 
 def get_questions_by_user_id(user_id):
     question_ids = get_message_ids(user_id, "question_id", "question_to_user")
-    print(question_ids)
+    return get_elements_from_db_by_id("question_id", "question", question_ids)
+
+
+def get_answer_dict_by_question_id(question_ids):
     answers = {id_dict['question_id']: data_handler.get_answers_by_question_id(id_dict['question_id'])
                for id_dict in question_ids}
-    print(answers)
-    return get_elements_from_db_by_id("question_id", "question", question_ids)
+    return answers
 
 
 def get_answers_by_user_id(user_id):
