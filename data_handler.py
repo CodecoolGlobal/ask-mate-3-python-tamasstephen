@@ -225,7 +225,7 @@ def get_all_users(cursor):
 def gain_reputation(cursor, user_id, reputation_value):
     query = '''
     UPDATE user_table
-    SET { reputation } = COALESCE({reputation}, 0) + reputation_value
+    SET reputation = COALESCE(reputation, 0) + {reputation_value}
     WHERE user_id = {user_id}
     '''
     cursor.execute(sql.SQL(query).format(user_id=sql.Literal(user_id),
