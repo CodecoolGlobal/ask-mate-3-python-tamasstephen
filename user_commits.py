@@ -23,7 +23,7 @@ def handle_new_message(user_id, column, message_table, connection_table):
 def handle_user_attributes(cursor, column, user_id):
     query = """
         UPDATE user_table
-        SET {column} quelstion_to_user= COALESCE({column}, 0) + 1
+        SET {column} = COALESCE({column}, 0) + 1
         WHERE user_id = {user_id}
     """
     cursor.execute(sql.SQL(query).format(column=sql.Identifier(column),
