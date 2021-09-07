@@ -17,5 +17,13 @@
             <p class="data_label">Reputation</p>
             <p>{{ user.get("reputation") }}</p>
         </div>
+        <div class="user_commits">
+            {% for question in questions %}
+               <div>
+                    <p class="user_msg">{{ question.message }}</p>
+                    <a href="{{ url_for('open_question_page', question_id=question.id) }}"><p>Open question page</p></a>
+               </div>
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}
