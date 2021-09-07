@@ -2,7 +2,7 @@
 {% block content %}
 <div class="form_container">
 {% for user in users %}
-    <a href="#">{{ user.user_name }}</a>
+    <a href="{{ url_for('user_page', user_id=user.user_id ) }}">{{ user.user_name }}</a>
     <div>
         <p>Registration Date: {{ user.registration_date }}</p>
         <p>Asked questions: {{ user.asked_questions }}</p>
