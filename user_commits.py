@@ -74,6 +74,17 @@ def get_elements_from_db_by_id(key, table, dictionary):
 
 
 @connection.connection_handler
+def get_user_data_by_user_id(cursor, user_id):
+    print(user_id)
+    query = """
+        SELECT * FROM user_table
+        WHERE user_id = {user_id} 
+    """
+    cursor.execute(sql.SQL(query).format(user_id=sql.Literal(user_id)))
+    return cursor.fetchall()
+
+
+@connection.connection_handler
 def get_message_ids(cursor, user_id, column, table):
     query = """
         SELECT {column} FROM {table}
