@@ -214,7 +214,7 @@ def handle_db_votes(cursor, table, vote, item_id):
 @connection.connection_handler
 def get_all_users(cursor):
     query = '''
-    SELECT user_name, registration_date, asked_questions, number_of_answers, number_of_comments, reputation
+    SELECT *
     FROM user_table
     '''
     cursor.execute(query)
