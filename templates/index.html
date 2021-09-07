@@ -2,13 +2,24 @@
 {% block content %}
     <div class="wrapper">
         <div class="top_options">
-            <a href="/add_question" class="primary_button"><p>Add New Question</p></a>
-            {% set username = session.user_name %}
-            {% if username %}
-                <a href="/users">List all users</a>
-                <a href="{{ url_for('user_page', user_id=session.get('user_id')) }}">Open user page</a>
-                <a href="/tags">List all tags</a>
-            {% endif %}
+            <div>
+                <a href="/add_question" class="primary_button"><p>Add New Question</p></a>
+                {% set username = session.user_name %}
+                {% if username %}
+                    <div class="more_wrapper">
+                        <div id="menu_more">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                        <div class="dropdown collapsed">
+                            <a href="/users">List all users</a>
+                            <a href="{{ url_for('user_page', user_id=session.get('user_id')) }}">Open user page</a>
+                            <a href="/tags">List all tags</a>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
             {% if questions %}
                 {% if not all %}
                     <form action="/" method="get">
