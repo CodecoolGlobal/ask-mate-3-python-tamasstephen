@@ -28,15 +28,25 @@ function getFilteredItems(items, filterValue) {
     console.log(items)
     console.log(filterValue)
 
+    if (filterValue.length === 0) {
+        return items;
+    }
+
+    const l = items.length;
+    let fuck_me = [];
+
     // === SAMPLE CODE ===
     // if you have not changed the original html uncomment the code below to have an idea of the
     // effect this function has on the table
     //
-    for (let i=0; i<filterValue.length; i++) {
-        items.pop()
+    for (let i=0; i<l; i++) {
+        if(items[i]["Title"].split(" ").includes(filterValue)){
+            fuck_me.push(items[i])
+        }
     }
+    console.log(fuck_me);
 
-    return items
+    return fuck_me
 }
 
 function toggleTheme() {

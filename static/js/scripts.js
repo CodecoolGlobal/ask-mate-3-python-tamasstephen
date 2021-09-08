@@ -5,10 +5,12 @@ document.addEventListener('DOMContentLoaded', ()=> {
     const menuDropdown = document.querySelector(".dropdown");
     const dropdownAll = document.querySelectorAll(".dropdown");
 
-    menuButton.addEventListener('click', (e)=>{
-       menuButton.classList.toggle('open');
-       menuDropdown.classList.toggle("collapsed");
-    })
+    if (menuButton) {
+        menuButton.addEventListener('click', (e)=>{
+           menuButton.classList.toggle('open');
+           menuDropdown.classList.toggle("collapsed");
+        })
+        }
     checkboxAll.forEach(checkbox => checkbox.addEventListener('click', fireSubmit))
     window.addEventListener('click', (e)=>{
         dropdownAll.forEach((dropdown )=> {
