@@ -258,3 +258,14 @@ def get_all_tags(cursor):
     '''
     cursor.execute(query)
     return cursor.fetchall()
+
+
+@connection.connection_handler
+def approve_answer(cursor, approve, answer_id):
+    query = """
+        UPDATE answer
+        SET approved = {approve}
+        WHERE id = {answer_id} 
+    """
+    cursor.execute(sql.SQL(query).format(approve=sql.Literal(approve),
+                                         answer_id=sql.Literal(answer_id)))

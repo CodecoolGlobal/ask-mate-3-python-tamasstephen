@@ -24,6 +24,23 @@
                    <div>
                         <p class="user_q_title">{{ question.title }}</p>
                         <p class="user_msg">{{ question.message }}</p>
+                        {% if session.get('user_id') == user.user_id %}
+                            {% if question_answers %}
+                                <div class="answers_to_approve">
+                                <p>------------------------------</p>
+                                    {% for key in question_answers.keys() %}
+                                        {% if question.id == key %}
+                                            {% for answer in question_answers.get(key) %}
+                                                <form action="{{ url_for('approve_answer', answer_id=answer.id, user_id=session.get('user_id')) }}" method="post">
+                                                    <input class='check_me' type="checkbox" name="approved" {% if answer.approved == True %} checked {% endif %}>
+                                                </form>
+                                                <p>{{ answer.message }}</p>
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        {% endif %}
                         <a href="{{ url_for('open_question_page', question_id=question.id) }}"><p>Open question page</p></a>
                    </div>
                 {% endfor %}

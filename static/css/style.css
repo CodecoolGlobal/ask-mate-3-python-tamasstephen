@@ -23,6 +23,66 @@ body {
 	background-color: var(--color-light); 
 }
 
+.more_wrapper {
+	position: relative;
+	align-self: center;
+}
+
+#menu_more {
+	display: flex;
+	height: 2rem;
+	width: 50px;
+	padding-left: .75rem;
+	padding-right: .75rem;
+	align-items: center;
+	justify-content: space-between;
+	border-radius: 5px;
+	border: 1px solid var(--color-link-blue);
+	cursor: pointer;
+}
+
+#menu_more.open >div:first-child,
+#menu_more.open >div:last-child {
+	opacity: 0;
+	visibility: hidden;
+}
+
+#menu_more > div {
+	content: " ";
+	display: block;
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	background-color: var(--color-link-blue);
+	transition-duration: .2s;
+}
+
+.dropdown {
+	display: flex;
+	width: 120px;
+	text-align: center;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-around;
+	padding: .75rem;
+	background-color: var(--color-bg-white);
+	border-radius: 5px;
+	box-shadow: 0 0 1rem rgba(0, 0, 0, .15);
+	position: absolute;
+	top: 50px;
+	transition-duration: .2s;
+	z-index: 5;
+}
+
+.dropdown > a + a{
+	padding-top: .5rem;
+}
+
+.dropdown.collapsed {
+	opacity: 0;
+	visibility: hidden;
+}
+
 div.wrapper {
 	animation: .1s fadein;
 
@@ -183,7 +243,7 @@ nav > .wrapper {
 }
 
 nav form {
-	width: 80%;
+	width: 50%;
 	display: flex;
 	align-items: center;
 	justify-content: flex-end;
@@ -191,7 +251,7 @@ nav form {
 
 nav input[type="text"] {
 	width: 100%;
-	margin-right: 1rem;
+	margin-right: .25rem;
 	flex-shrink: 2;
 	min-width: 150px;
 }
@@ -210,6 +270,15 @@ nav input[type="text"] {
 	justify-content: space-between;
 	padding-top: 1rem;
 	padding-bottom: 2rem;
+}
+
+.top_options div:first-child {
+	display: flex;
+	justify-content: center;
+}
+
+.top_options div:first-child > .primary_button{
+	margin-right: 1rem;
 }
 
 .card_frame {
@@ -482,6 +551,19 @@ input[type="submit"].answer_delete {
 
 .answer_container .vote_box {
 	margin-top: 1rem;
+}
+
+div.answer_main.approved_answer::before {
+	content: 'APPROVED';
+	font-size: .625rem;
+	font-weight: 900;
+	display: inline-block;
+	padding: .225rem .225rem;
+	border-radius: 5px;
+	margin-left: .875rem;
+	margin-bottom: .275rem;
+	color: var(--color-clean-white);
+	background-color: var(--color-dark-blue);
 }
 
 /* Basic anim*/

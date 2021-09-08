@@ -2,13 +2,24 @@
 {% block content %}
     <div class="wrapper">
         <div class="top_options">
-            <a href="/add_question" class="primary_button"><p>Add New Question</p></a>
-            {% set username = session.user_name %}
-            {% if username %}
-                <a href="/users">List all users</a>
-                <a href="{{ url_for('user_page', user_id=session.get('user_id')) }}">Open user page</a>
-                <a href="/tags">List all tags</a>
-            {% endif %}
+            <div>
+                <a href="/add_question" class="primary_button"><p>Add New Question</p></a>
+                {% set username = session.user_name %}
+                {% if username %}
+                    <div class="more_wrapper">
+                        <div id="menu_more">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                        <div class="dropdown collapsed">
+                            <a href="/users">List all users</a>
+                            <a href="{{ url_for('user_page', user_id=session.get('user_id')) }}">Open user page</a>
+                            <a href="/tags">List all tags</a>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
             {% if questions %}
                 {% if not all %}
                     <form action="/" method="get">
@@ -36,7 +47,7 @@
                             <div class="vote_box">
                                 <form action="{{ url_for("vote_question_up", question_id=question.id) }}" method="post">
                                     <input type="image"
-                                           src="{{ url_for('static', filename='/images/icons/keyboard_arrow_up_black_24dp.svg') }}"
+                                           src="{{ url_for('static', filename='images/icons/keyboard_arrow_up_black_24dp.svg') }}"
                                            value="Vote up">
                                 </form>
                                 <p class="vote_label">Votes</p>
@@ -44,7 +55,7 @@
                                 <form action="{{ url_for("vote_question_down", question_id=question.id) }}"
                                       method="post">
                                     <input type="image"
-                                           src="{{ url_for('static', filename='/images/icons/keyboard_arrow_down_black_24dp.svg') }}"
+                                           src="{{ url_for('static', filename='images/icons/keyboard_arrow_down_black_24dp.svg') }}"
                                            value="Vote down">
                                 </form>
                             </div>
