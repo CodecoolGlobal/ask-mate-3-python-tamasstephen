@@ -42,7 +42,7 @@
                                         {% endif %}
                                     </div>
                                     <a href="#popup{{ comment.id }}">
-                                        <img src="{{ url_for('static', filename='/images/icons/trash.svg') }}" width="16" height="16">
+                                        <img src="{{ url_for('static', filename='images/icons/trash.svg') }}" width="16" height="16">
                                     </a>
                                     <div class="popupwindow" id="popup{{ comment.id }}">
                                         <p>Would you like to delete the comment?</p>
@@ -69,12 +69,12 @@
                     <div class="answer_container">
                         <div class="vote_box">
                             <form action="{{ url_for("vote_answer_up", answer_id=answer.id ) }}" method="post">
-                                <input type="image" value="Vote up" src="{{ url_for('static', filename='/images/icons/keyboard_arrow_up_black_24dp.svg') }}">
+                                <input type="image" value="Vote up" src="{{ url_for('static', filename='images/icons/keyboard_arrow_up_black_24dp.svg') }}">
                             </form>
                             <p class="vote_label">Votes</p>
                             <p>{{ answer.vote_number }}</p>
                             <form action="{{ url_for("vote_answer_down", answer_id=answer.id ) }}" method="post">
-                                <input type="image" value="Vote down" src="{{ url_for('static', filename='/images/icons/keyboard_arrow_down_black_24dp.svg') }}">
+                                <input type="image" value="Vote down" src="{{ url_for('static', filename='images/icons/keyboard_arrow_down_black_24dp.svg') }}">
                             </form>
                         </div>
                         <div class="answer_main {% if answer.approved == True %}approved_answer{% endif %}">
@@ -110,7 +110,7 @@
                                                                     {% endif %}
                                                                 </div>
                                                                 <a href="#popup{{ comment.id }}">
-                                                                    <img src="{{ url_for('static', filename='/images/icons/trash.svg') }}" width="16" height="16">
+                                                                    <img src="{{ url_for('static', filename='images/icons/trash.svg') }}" width="16" height="16">
                                                                 </a>
                                                                 <div class="popupwindow" id="popup{{ comment.id }}">
                                                                     <p>Would you like to delete the comment?</p>
