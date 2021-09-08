@@ -1,5 +1,6 @@
 // you receive an array of objects which you must sort in the by the key "sortField" in the "sortDirection"
 function getSortedItems(items, sortField, sortDirection) {
+    console.log("SORTING THE SHIT OUT OF YOU")
     console.log(items)
     console.log(sortField)
     console.log(sortDirection)
@@ -9,15 +10,31 @@ function getSortedItems(items, sortField, sortDirection) {
     // effect this function has on the table
     //
     if (sortDirection === "asc") {
-        const firstItem = items.shift()
-        if (firstItem) {
-            items.push(firstItem)
-        }
+        items.sort((a,b)=> {
+            a = a["Description"];
+            b = b["Description"];
+            if(a<b){
+                return -1;
+            }
+            if(a>b){
+                return 1;
+            } else {
+                return 0;
+            }
+        })
     } else {
-        const lastItem = items.pop()
-        if (lastItem) {
-            items.push(lastItem)
-        }
+        items.sort((a,b)=> {
+            a = a["Description"];
+            b = b["Description"];
+            if(a<b){
+                return 1;
+            }
+            if(a>b){
+                return -1;
+            } else {
+                return 0;
+            }
+        })
     }
 
     return items
@@ -56,7 +73,6 @@ function filterByWord(c, initArr, arr, value, key){
             }
         }
     }
-
 }
 
 function toggleTheme() {
