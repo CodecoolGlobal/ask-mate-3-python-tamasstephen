@@ -25,42 +25,38 @@ function getSortedItems(items, sortField, sortDirection) {
 
 // you receive an array of objects which you must filter by all it's keys to have a value matching "filterValue"
 function getFilteredItems(items, filterValue) {
-    console.log(items)
-    console.log(filterValue)
 
     if (filterValue.length === 0) {
         return items;
     }
 
-    const l = items.length;
     const filterArr = filterValue.split(" ");
     let filteredData = [];
     const xlm = filterValue[0] === "!";
-    console.log(xlm);
 
-    if (filterArr.length < 2) {
-
+    if (filterArr.length < 2 && filterArr[0] !== "Description:") {
+        filterByWord(xlm, items, filteredData, filterValue, "Title")
     } else {
-
+        filterByWord(xlm, items, filteredData, filterArr[1], "Description")
     }
-    // === SAMPLE CODE ===
-    // if you have not changed the original html uncomment the code below to have an idea of the
-    // effect this function has on the table
-    //
+
+    return filteredData
+}
+
+function filterByWord(c, initArr, arr, value, key){
+    const l = initArr.length;
     for (let i=0; i<l; i++) {
-        if(!xlm) {
-            if(items[i]["Title"].split(" ").includes(filterValue)){
-                filteredData.push(items[i])
-                console.log(filteredData)
+        if(!c) {
+            if(initArr[i][key].split(" ").includes(value)){
+                arr.push(initArr[i])
             }
-            }else {
-             if(!(items[i]["Title"].split(" ").includes(filterValue.replace('!', '')))){
-                 filteredData.push(items[i])
+        }else {
+            if(!(initArr[i][key].split(" ").includes(value.replace('!', '')))){
+                arr.push(initArr[i])
             }
         }
     }
 
-    return filteredData
 }
 
 function toggleTheme() {
