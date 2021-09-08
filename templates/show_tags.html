@@ -1,8 +1,8 @@
 {% extends 'layout.html' %}
 {% block content %}
-    <div class="form_container">
+    <div class="tag_page">
         {% for tag in tags %}
-            <p>{{ tag.name }}: {{ tag.number_of_tags }}</p>
+            <p class="tag_page">{{ tag.name }}: {{ tag.number_of_tags }}</p>
         {% endfor %}
     </div>
 {% endblock %}
