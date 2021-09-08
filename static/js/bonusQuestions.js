@@ -33,20 +33,34 @@ function getFilteredItems(items, filterValue) {
     }
 
     const l = items.length;
-    let fuck_me = [];
+    const filterArr = filterValue.split(" ");
+    let filteredData = [];
+    const xlm = filterValue[0] === "!";
+    console.log(xlm);
 
+    if (filterArr.length < 2) {
+
+    } else {
+
+    }
     // === SAMPLE CODE ===
     // if you have not changed the original html uncomment the code below to have an idea of the
     // effect this function has on the table
     //
     for (let i=0; i<l; i++) {
-        if(items[i]["Title"].split(" ").includes(filterValue)){
-            fuck_me.push(items[i])
+        if(!xlm) {
+            if(items[i]["Title"].split(" ").includes(filterValue)){
+                filteredData.push(items[i])
+                console.log(filteredData)
+            }
+            }else {
+             if(!(items[i]["Title"].split(" ").includes(filterValue.replace('!', '')))){
+                 filteredData.push(items[i])
+            }
         }
     }
-    console.log(fuck_me);
 
-    return fuck_me
+    return filteredData
 }
 
 function toggleTheme() {
