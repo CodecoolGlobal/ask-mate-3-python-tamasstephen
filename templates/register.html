@@ -1,16 +1,27 @@
 {% extends 'layout.html' %}
 {% block content %}
-<div class="register">
-    <form class="form_container" action="/registration" method="post">
-        <label for="username">Username:</label>
-        <br>
-        <textarea name="username" id="username" cols="30" rows="1"></textarea>
-        <br><br>
-        <label for="password">Password:</label>
-        <br>
-        <textarea type="password" name="password" id="password" cols="30" rows="1"></textarea>
-        <br><br>
-        <input type="submit">
-    </form>
-</div>
+    <div class="register">
+        <form class="form_container" action="/registration" method="post">
+            <label for="username">Username:</label>
+            <br>
+            <textarea name="username" id="username" cols="30" rows="1"></textarea>
+            <br><br>
+            <label for="password">Password:</label>
+            <br>
+            <textarea type="password" name="password" id="password" cols="30" rows="1"></textarea>
+            <br><br>
+            <input type="submit">
+        </form>
+    </div>
+    <div class="flash_msg">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul class="form_container">
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+    </div>
 {% endblock %}

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, url_for, redirect, session
+from flask import Flask, render_template, request, url_for, redirect, session, flash
 
 import data_handler
 import search
@@ -10,6 +10,7 @@ from bonus_questions import SAMPLE_QUESTIONS
 import login
 import register_new_user
 import util
+import psycopg2
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = data_handler.UPLOAD_FOLDER
@@ -255,11 +256,15 @@ def registration():
     if request.method == 'GET':
         return render_template('register.html')
     else:
-        hashed_pw = register_new_user.hash_password((request.form['password']))
-        username = request.form['username']
-        registration_date = util.get_current_time()
-        register_new_user.add_new_account_into_db(username, hashed_pw, registration_date)
-        return redirect(url_for('open_all_questions'))
+        try:
+            hashed_pw = register_new_user.hash_password((request.form['password']))
+            username = request.form['username']
+            registration_date = util.get_current_time()
+            register_new_user.add_new_account_into_db(username, hashed_pw, registration_date)
+            return redirect(url_for('open_all_questions'))
+        except psycopg2.errors.UniqueViolation:
+            flash('Username already used')
+            return render_template('register.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -267,14 +272,23 @@ def sign_in():
     if request.method == 'GET':
         return render_template('login.html')
     else:
-        session['user_name'] = request.form['username']
-        session['user_id'] = login.get_user_id_by_username(request.form['username'])[0]["user_id"]
-        user_login_password = request.form.get('password')
-        user_password_in_db = login.get_user_password_by_username(request.form['username'])[0]["password"]
-        if user_password_in_db:
-            password_check = login.verify_password(user_login_password, user_password_in_db)
-            if password_check:
-                return redirect(url_for('open_all_questions'))
+        try:
+            session['user_name'] = request.form['username']
+            session['user_id'] = login.get_user_id_by_username(request.form['username'])[0]["user_id"]
+            user_login_password = request.form.get('password')
+            user_password_in_db = login.get_user_password_by_username(request.form['username'])[0]["password"]
+            if user_password_in_db:
+                password_check = login.verify_password(user_login_password, user_password_in_db)
+                if password_check:
+                    return redirect(url_for('open_all_questions'))
+                else:
+                    session.pop('user_name', None)
+                    session.pop('user_id', None)
+                    flash('Invalid username or password')
+                    return render_template('login.html')
+        except IndexError:
+            flash('Invalid username or password')
+            return render_template('login.html')
 
 
 @app.route('/logout')
