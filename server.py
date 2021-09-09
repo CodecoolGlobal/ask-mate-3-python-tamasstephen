@@ -270,6 +270,7 @@ def registration():
                 username = request.form['username']
                 registration_date = util.get_current_time()
                 register_new_user.add_new_account_into_db(username, hashed_pw, registration_date)
+                flash('The registration was successful.')
                 return redirect(url_for('open_questions'))
             except psycopg2.errors.UniqueViolation:
                 flash('Username already used')
