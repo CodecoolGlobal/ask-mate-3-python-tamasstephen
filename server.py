@@ -287,8 +287,10 @@ def sign_in():
                     flash('Invalid username or password')
                     return render_template('login.html')
         except IndexError:
+            session.pop('user_name', None)
+            session.pop('user_id', None)
             flash('Invalid username or password')
-            return render_template('login.html')
+            return redirect('/login')
 
 
 @app.route('/logout')
