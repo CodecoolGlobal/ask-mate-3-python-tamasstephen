@@ -60,8 +60,9 @@ def open_question_page(question_id):
                                    tags=tags,
                                    this_question_id=question_id)
     except KeyError:
+        flash("Please Sign up to get access to the whole content")
         # else:
-        return redirect(url_for('open_all_questions'))
+        return redirect(url_for('open_questions'))
 
 
 # validate if user logged in or not
@@ -81,7 +82,8 @@ def open_add_question():
                 data_handler.add_question(request.form, user_id)
             return redirect("/")
     except KeyError:
-        return redirect(url_for('open_all_questions'))
+        flash("Please Sign up to get access to the whole content")
+        return redirect(url_for('open_questions'))
 
 
 # REFACTORING Needed
@@ -133,7 +135,8 @@ def vote_question_up(question_id):
             data_handler.handle_votes(int(question_id), "vote_up")
             return redirect("/")
     except KeyError:
-        return redirect(url_for('open_all_questions'))
+        flash("Please Sign up to get access to the whole content")
+        return redirect(url_for('open_questions'))
 
 
 @app.route("/comments/<comment_id>/delete", methods=['POST'])
@@ -154,7 +157,8 @@ def vote_question_down(question_id):
             data_handler.handle_votes(int(question_id), "vote_down")
             return redirect("/")
     except KeyError:
-        return redirect(url_for('open_all_questions'))
+        flash("Please Sign up to get access to the whole content")
+        return redirect(url_for('open_questions'))
 
 
 @app.route("/answer/<answer_id>/vote_up", methods=["POST"])
@@ -254,15 +258,22 @@ def registration():
     if request.method == 'GET':
         return render_template('register.html')
     else:
-        try:
-            hashed_pw = register_new_user.hash_password((request.form['password']))
-            username = request.form['username']
-            registration_date = util.get_current_time()
-            register_new_user.add_new_account_into_db(username, hashed_pw, registration_date)
-            return redirect(url_for('open_all_questions'))
-        except psycopg2.errors.UniqueViolation:
-            flash('Username already used')
-            return render_template('register.html')
+        if (not request.form.get("password") or not request.form.get("username") is not True) or " " in request.form.get("username"):
+            print(request.form.get("password"), request.form.get("username"))
+            flash('Invalid username or password')
+            return render_template("register.html")
+        else:
+            try:
+                print("asd")
+                print("aaaaaaa")
+                hashed_pw = register_new_user.hash_password((request.form['password']))
+                username = request.form['username']
+                registration_date = util.get_current_time()
+                register_new_user.add_new_account_into_db(username, hashed_pw, registration_date)
+                return redirect(url_for('open_questions'))
+            except psycopg2.errors.UniqueViolation:
+                flash('Username already used')
+                return render_template('register.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -278,7 +289,7 @@ def sign_in():
             if user_password_in_db:
                 password_check = login.verify_password(user_login_password, user_password_in_db)
                 if password_check:
-                    return redirect(url_for('open_all_questions'))
+                    return redirect(url_for('open_questions'))
                 else:
                     session.pop('user_name', None)
                     session.pop('user_id', None)
@@ -295,7 +306,7 @@ def sign_in():
 def logout():
     session.pop('user_name', None)
     session.pop('user_id', None)
-    return redirect(url_for('open_all_questions'))
+    return redirect(url_for('open_questions'))
 
 
 @app.route('/users')

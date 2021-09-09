@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
     const menuDropdown = document.querySelector(".dropdown");
     const dropdownAll = document.querySelectorAll(".dropdown");
     const showAnswers = document.querySelectorAll(".dropdown_link");
+    const closeFlash = document.querySelector(".close");
 
     if (showAnswers) {
         showAnswers.forEach(link => {
@@ -22,6 +23,10 @@ document.addEventListener('DOMContentLoaded', ()=> {
         })
         }
 
+   if (closeFlash) {
+       closeFlash.addEventListener('click', removeWindow);
+   }
+
     checkboxAll.forEach(checkbox => checkbox.addEventListener('click', fireSubmit))
     window.addEventListener('click', (e)=>{
         dropdownAll.forEach((dropdown )=> {
@@ -33,6 +38,8 @@ document.addEventListener('DOMContentLoaded', ()=> {
             }
         })
     })
+
+
 })
 
 function fireSubmit(e) {
@@ -41,3 +48,7 @@ function fireSubmit(e) {
     currentForm.dispatchEvent(submitEvent)
 }
 
+function removeWindow(e) {
+    let popupWindow = e.currentTarget.closest("div");
+    popupWindow.remove()
+}

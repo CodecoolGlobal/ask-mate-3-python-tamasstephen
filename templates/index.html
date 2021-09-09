@@ -19,6 +19,17 @@
                         </div>
                     </div>
                 {% endif %}
+                <div class="flashes">
+                    {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                            <ul class="minor">
+                                {% for message in messages %}
+                                    <li><p>{{ message }}</p></li><a><img class="close" src="{{ url_for('static', filename='images/icons/close_black_24dp.svg') }}"></a>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    {% endwith %}
+                </div>
             </div>
             {% if questions %}
                 {% if not all %}
