@@ -1,8 +1,9 @@
 {% extends 'layout.html' %}
 {% block content %}
     <div class="tag_page">
+        <h1>Used tags</h1>
         {% for tag in tags %}
-            <p class="tag_page">{{ tag.name }}: {{ tag.number_of_tags }}</p>
+            <p>{{ tag.name }}: {{ tag.number_of_tags }}</p>
         {% endfor %}
     </div>
 {% endblock %}

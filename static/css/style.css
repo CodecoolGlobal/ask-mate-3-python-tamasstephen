@@ -78,7 +78,7 @@ body {
 	padding-top: .5rem;
 }
 
-.dropdown.collapsed {
+.dropdown.collapsed{
 	opacity: 0;
 	visibility: hidden;
 }
@@ -265,7 +265,6 @@ nav input[type="text"] {
 }
 
 
-
 .log_in_block {
 	display: flex;
 	align-items: center;
@@ -279,7 +278,7 @@ nav input[type="text"] {
 	color: var(--color-font-light);
 	text-align: center;
 	font-size: .725rem;
-	line-height: 100%;
+	line-height: 110%;
 }
 
 .logo {
@@ -614,6 +613,96 @@ div.answer_main.approved_answer::before {
 
 .users_list > div > p + p {
 	padding-top: .5rem;
+}
+
+
+/* Tag page */
+.tag_page {
+	margin: 0 auto;
+	width: 70%;
+}
+
+.tag_page > p {
+	box-shadow: 0 0 1rem rgba(0, 0, 0, .15);
+	border-radius: 5px;
+	padding: 1rem;
+	font-weight: bold;
+	color: var(--color-font-light);
+	text-transform: uppercase;
+	max-width: 25%;
+}
+
+.tag_page > p + p{
+	margin-top: 1rem;
+}
+
+.tag_page h1 {
+	margin-top: 2rem;
+}
+
+/* User page */
+.user_info,
+.user_commits{
+	margin-top: 2rem;
+	padding: .75rem 1rem;
+	border-radius: 5px;
+	box-shadow:  0 0 1rem rgba(0, 0, 0, .15);
+	max-width: 50%;
+	background-color: var(--color-bg-white);
+}
+
+.data_label {
+	font-size: .725rem;
+	color: var(--color-dark-blue);
+}
+
+.user_info > p:nth-of-type(odd) {
+	margin-top: .75rem;
+}
+
+.user_info > h2 {
+	margin: 0;
+}
+
+.user_msg {
+	font-size: 1.125rem;
+}
+
+.user_q_title {
+	font-size: 1.5rem;
+}
+
+.answers_to_approve{
+	padding-top: 1rem;
+	padding-bottom: 1rem;
+}
+
+.answer_valid_form {
+	display: flex;
+}
+
+
+.user_q_title:not(p.user_q_title:first-child){
+	border-top: 1px solid var(--color-font-light);
+	padding-top: .5rem;
+}
+
+.user_commits > div + div {
+	margin-top: 1rem;
+}
+
+.dropdown_link {
+	color: var(--color-link-blue);
+}
+
+.collapse {
+	opacity: 0;
+	display: none;
+}
+
+.user_commits h5 {
+	margin-top: 0;
+	margin-bottom: .5rem;
 }
 
 /* Basic anim*/

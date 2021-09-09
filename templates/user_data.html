@@ -2,6 +2,7 @@
 {% block content %}
     <div class="wrapper">
         <div class="user_info">
+            <h2>Personal details</h2>
             <p class="data_label">Id</p>
             <p>{{ user.user_id }}</p>
             <p class="data_label">Username</p>
@@ -19,26 +20,29 @@
         </div>
         {% if questions %}
             <div class="user_commits">
-            <h5>Questions</h5>
+            <h3>Questions</h3>
                 {% for question in questions %}
                    <div>
                         <p class="user_q_title">{{ question.title }}</p>
                         <p class="user_msg">{{ question.message }}</p>
                         {% if session.get('user_id') == user.user_id %}
                             {% if question_answers %}
-                                <div class="answers_to_approve">
-                                <p>------------------------------</p>
                                     {% for key in question_answers.keys() %}
-                                        {% if question.id == key %}
+                                        {% if question.id == key and question_answers.get(key) %}
+                                            <p class="dropdown_link">Show answers</p>
+                                            <div class="answers_to_approve collapse">
+                                            <h5>Approve answers</h5>
                                             {% for answer in question_answers.get(key) %}
-                                                <form action="{{ url_for('approve_answer', answer_id=answer.id, user_id=session.get('user_id')) }}" method="post">
-                                                    <input class='check_me' type="checkbox" name="approved" {% if answer.approved == True %} checked {% endif %}>
-                                                </form>
-                                                <p>{{ answer.message }}</p>
+                                                <div class="answer_valid_form">
+                                                    <form action="{{ url_for('approve_answer', answer_id=answer.id, user_id=session.get('user_id')) }}" method="post">
+                                                        <input class='check_me' type="checkbox" name="approved" {% if answer.approved == True %} checked {% endif %}>
+                                                    </form>
+                                                    <p>{{ answer.message }}</p>
+                                                </div>
                                             {% endfor %}
+                                            </div>
                                         {% endif %}
                                     {% endfor %}
-                                </div>
                             {% endif %}
                         {% endif %}
                         <a href="{{ url_for('open_question_page', question_id=question.id) }}"><p>Open question page</p></a>
@@ -48,7 +52,7 @@
         {% endif %}
         {% if answers %}
             <div class="user_commits">
-                <h5>Answers</h5>
+                <h3>Answers</h3>
                 {% for answer in answers %}
                     <div>
                         <p class="user_msg">{{ answer.message }}</p>
@@ -59,7 +63,7 @@
         {% endif %}
         {% if comments %}
             <div class="user_commits">
-                <h5>Comments</h5>
+                <h3>Comments</h3>
                 {% for comment in comments %}
                     <div>
                         <p class="user_msg">{{ comment.message }}</p>
