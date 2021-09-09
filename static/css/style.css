@@ -59,7 +59,7 @@ body {
 
 .dropdown {
 	display: flex;
-	width: 120px;
+	min-width: 12rem;
 	text-align: center;
 	flex-direction: column;
 	align-items: center;
@@ -564,6 +564,30 @@ div.answer_main.approved_answer::before {
 	margin-bottom: .275rem;
 	color: var(--color-clean-white);
 	background-color: var(--color-dark-blue);
+}
+
+/* Users List */
+.users_list > div {
+	padding-bottom: 1rem;
+}
+
+.users_list > h2 {
+	margin-top: 0;
+}
+
+.users_list > div + div {
+	border-top: 1px solid lightslategray;
+	padding-top: 2rem;
+}
+
+.users_list div > a > p {
+	padding-bottom: .5rem;
+	font-weight: 900;
+	font-size: 1.125rem;
+}
+
+.users_list > div > p + p {
+	padding-top: .5rem;
 }
 
 /* Basic anim*/
