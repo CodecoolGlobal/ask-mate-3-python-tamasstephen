@@ -46,7 +46,6 @@ def open_all_questions():
 def open_question_page(question_id):
     try:
         if session['user_name']:
-            print(session['user_name'])
             answers = data_handler.get_answers_by_question_id(question_id)
             question = util.get_data_by_id(question_id, "question")[0]
             question_comments = comment.get_comments("question_id", question_id)
@@ -194,7 +193,6 @@ def add_comment_to_question(question_id):
 def add_comment_to_answer(answer_id):
     if request.method == "POST":
         user_id = session['user_id']
-        print(user_id)
         comment.add_comment_to_answer_db(answer_id, request.form["message"], util.get_current_time())
         question_id = data_handler.get_question_id_by_answer_id(answer_id)[0]["question_id"]
         comment.bind_comments_to_user(user_id)
@@ -317,7 +315,6 @@ def user_page(user_id):
     answer_by_questions = user_commits.get_answer_dict_by_question_id(user_commits.get_message_ids(user_id,
                                                                                                    "question_id",
                                                                                                    "question_to_user"))
-    print(answer_by_questions)
     answers = user_commits.get_answers_by_user_id(user_id)
     comments = user_commits.get_comments_by_user_id(user_id)
     user_data = user_commits.get_user_data_by_user_id(user_id)[0]
@@ -337,12 +334,10 @@ def open_tags_page():
 
 @app.route("/answer/<answer_id>/approve/<user_id>", methods=["POST"])
 def approve_answer(answer_id, user_id):
-    print('running')
     if request.form.get("approved") == 'on':
         data_handler.approve_answer(True, answer_id)
         return redirect(url_for("user_page", user_id=user_id))
     data_handler.approve_answer(False, answer_id)
-    print('i am here')
     return redirect(url_for("user_page", user_id=user_id))
 
 

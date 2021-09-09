@@ -73,8 +73,11 @@ def get_answers_by_user_id(user_id):
 
 def get_comments_by_user_id(user_id):
     comment_ids = get_message_ids(user_id, "comment_id", "comment_to_user")
-    return get_elements_from_db_by_id("comment_id", "comment", comment_ids)
-
+    comments = get_elements_from_db_by_id("comment_id", "comment", comment_ids)
+    for comment in comments:
+        if not comment.get("question_id"):
+            comment['question_id'] = data_handler.get_question_id_by_answer_id(comment["answer_id"])[0]["question_id"]
+    return comments
 
 def get_elements_from_db_by_id(key, table, dictionary):
     return [util.get_data_by_id(answer_id[key], table)[0] for answer_id in dictionary]
@@ -82,7 +85,6 @@ def get_elements_from_db_by_id(key, table, dictionary):
 
 @connection.connection_handler
 def get_user_data_by_user_id(cursor, user_id):
-    print(user_id)
     query = """
         SELECT * FROM user_table
         WHERE user_id = {user_id} 
